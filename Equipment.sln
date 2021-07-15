@@ -1,0 +1,109 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResinSandPyrometer", "ResinSandPyrometer\ResinSandPyrometer.csproj", "{3B5CCF7F-76E8-4D36-B8BD-7ACC03947445}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "高温强度仪", "高温强度仪", "{15363B25-2F07-41CC-B57A-05D372B17A43}"
+	ProjectSection(SolutionItems) = preProject
+		ZGY_V30_RAM.doc = ZGY_V30_RAM.doc
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "高温发气仪", "高温发气仪", "{50DA38D6-4AE4-4706-8740-B26730F99BB1}"
+	ProjectSection(SolutionItems) = preProject
+		高温发气仪\GET3G_PID_RAM_New.doc = 高温发气仪\GET3G_PID_RAM_New.doc
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "英文版", "英文版", "{AE832A78-DA5F-4D90-A37C-EAC6EA3D18C0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "中文版", "中文版", "{4BA7BFCB-5626-49C5-9F24-6963605FF10E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GasDataReader_Eng", "高温发气仪\大屏-无系统温度-英文版\GasDataReader\GasDataReader_Eng.csproj", "{89F94F7A-DD25-4417-912A-AFF76442E5A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GET3G_PC_Eng", "高温发气仪\大屏-无系统温度-英文版\GET3G_PC\GET3G_PC_Eng.csproj", "{7A2F9FD2-60FA-487B-8B05-3AE564460E4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GET3G_PC.Controls_Eng", "高温发气仪\大屏-无系统温度-英文版\GET3G_PC.Controls\GET3G_PC.Controls_Eng.csproj", "{831A0742-296E-4B32-9919-48DFF060EB7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GasDataReader_Chs", "高温发气仪\大屏-无系统温度-中文版\GasDataReader\GasDataReader_Chs.csproj", "{0000E743-C7FB-43CD-9645-4370843EB9EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GET3G_PC_Chs", "高温发气仪\大屏-无系统温度-中文版\GET3G_PC\GET3G_PC_Chs.csproj", "{0C949E3F-0144-4416-BB8D-81AE1622632C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GET3G_PC.Controls_Chs", "高温发气仪\大屏-无系统温度-中文版\GET3G_PC.Controls\GET3G_PC.Controls_Chs.csproj", "{CB4E88CC-0067-4CAB-BDBA-6DF8F855C973}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "多功能消失模", "多功能消失模", "{DEB9054E-D0A9-4FFD-B315-6BEFFE3AC3D5}"
+	ProjectSection(SolutionItems) = preProject
+		多功能消失模仪\HMT-Z_RAM.doc = 多功能消失模仪\HMT-Z_RAM.doc
+		多功能消失模仪\HST-Z.asm = 多功能消失模仪\HST-Z.asm
+		多功能消失模仪\XSMT.ddb = 多功能消失模仪\XSMT.ddb
+		多功能消失模仪\外购件清单.doc = 多功能消失模仪\外购件清单.doc
+		多功能消失模仪\多功能消失模涂料测试仪研制2020.10.12.doc = 多功能消失模仪\多功能消失模涂料测试仪研制2020.10.12.doc
+		多功能消失模仪\气路图.jpg = 多功能消失模仪\气路图.jpg
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "相关驱动", "相关驱动", "{0CB82B99-DF4B-4E44-8099-28F74809F35E}"
+	ProjectSection(SolutionItems) = preProject
+		相关驱动\accessport133.zip = 相关驱动\accessport133.zip
+		相关驱动\CDM20602.zip = 相关驱动\CDM20602.zip
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HDoit.Instrument.CoatingAnalysis", "多功能消失模仪\CoatingAnalysis\HDoit.Instrument.CoatingAnalysis.csproj", "{455E1445-E1D0-438D-838B-318238BB4366}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3B5CCF7F-76E8-4D36-B8BD-7ACC03947445}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B5CCF7F-76E8-4D36-B8BD-7ACC03947445}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B5CCF7F-76E8-4D36-B8BD-7ACC03947445}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B5CCF7F-76E8-4D36-B8BD-7ACC03947445}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89F94F7A-DD25-4417-912A-AFF76442E5A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89F94F7A-DD25-4417-912A-AFF76442E5A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89F94F7A-DD25-4417-912A-AFF76442E5A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89F94F7A-DD25-4417-912A-AFF76442E5A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A2F9FD2-60FA-487B-8B05-3AE564460E4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A2F9FD2-60FA-487B-8B05-3AE564460E4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A2F9FD2-60FA-487B-8B05-3AE564460E4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A2F9FD2-60FA-487B-8B05-3AE564460E4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{831A0742-296E-4B32-9919-48DFF060EB7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{831A0742-296E-4B32-9919-48DFF060EB7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{831A0742-296E-4B32-9919-48DFF060EB7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{831A0742-296E-4B32-9919-48DFF060EB7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0000E743-C7FB-43CD-9645-4370843EB9EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0000E743-C7FB-43CD-9645-4370843EB9EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0000E743-C7FB-43CD-9645-4370843EB9EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0000E743-C7FB-43CD-9645-4370843EB9EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C949E3F-0144-4416-BB8D-81AE1622632C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C949E3F-0144-4416-BB8D-81AE1622632C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C949E3F-0144-4416-BB8D-81AE1622632C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C949E3F-0144-4416-BB8D-81AE1622632C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB4E88CC-0067-4CAB-BDBA-6DF8F855C973}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB4E88CC-0067-4CAB-BDBA-6DF8F855C973}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB4E88CC-0067-4CAB-BDBA-6DF8F855C973}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB4E88CC-0067-4CAB-BDBA-6DF8F855C973}.Release|Any CPU.Build.0 = Release|Any CPU
+		{455E1445-E1D0-438D-838B-318238BB4366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{455E1445-E1D0-438D-838B-318238BB4366}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{455E1445-E1D0-438D-838B-318238BB4366}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{455E1445-E1D0-438D-838B-318238BB4366}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3B5CCF7F-76E8-4D36-B8BD-7ACC03947445} = {15363B25-2F07-41CC-B57A-05D372B17A43}
+		{AE832A78-DA5F-4D90-A37C-EAC6EA3D18C0} = {50DA38D6-4AE4-4706-8740-B26730F99BB1}
+		{4BA7BFCB-5626-49C5-9F24-6963605FF10E} = {50DA38D6-4AE4-4706-8740-B26730F99BB1}
+		{89F94F7A-DD25-4417-912A-AFF76442E5A2} = {AE832A78-DA5F-4D90-A37C-EAC6EA3D18C0}
+		{7A2F9FD2-60FA-487B-8B05-3AE564460E4E} = {AE832A78-DA5F-4D90-A37C-EAC6EA3D18C0}
+		{831A0742-296E-4B32-9919-48DFF060EB7C} = {AE832A78-DA5F-4D90-A37C-EAC6EA3D18C0}
+		{0000E743-C7FB-43CD-9645-4370843EB9EC} = {4BA7BFCB-5626-49C5-9F24-6963605FF10E}
+		{0C949E3F-0144-4416-BB8D-81AE1622632C} = {4BA7BFCB-5626-49C5-9F24-6963605FF10E}
+		{CB4E88CC-0067-4CAB-BDBA-6DF8F855C973} = {4BA7BFCB-5626-49C5-9F24-6963605FF10E}
+		{455E1445-E1D0-438D-838B-318238BB4366} = {DEB9054E-D0A9-4FFD-B315-6BEFFE3AC3D5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {23EF6E35-3AD3-48F7-9773-74AA71025FBA}
+	EndGlobalSection
+EndGlobal
