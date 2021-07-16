@@ -8,23 +8,23 @@ using System.Threading.Tasks;
 
 namespace ResinSandPyrometer.Step
 {
-    public class StepOneState
+    public class FirstStepState
     {
 
-        private FirstStep enumFirst = FirstStep.NONE;
+        private FirstStep step = FirstStep.NONE;
 
-        public FirstStep EnumFirst
+        public FirstStep Step
         {
-            get { return enumFirst; }
-            set { enumFirst = value; }
+            get { return this.step; }
+            set { this.step = value; }
         }
         //最大压强值
         private float maxPressure = 0;
 
         public float MaxPressure
         {
-            get { return maxPressure; }
-            set { maxPressure = value; }
+            get { return this.maxPressure; }
+            set { this.maxPressure = value; }
         }
 
         //最大压强值对应的时间
@@ -32,8 +32,8 @@ namespace ResinSandPyrometer.Step
 
         public float MaxPreesureTime
         {
-            get { return maxPreesureTime; }
-            set { maxPreesureTime = value; }
+            get { return this.maxPreesureTime; }
+            set { this.maxPreesureTime = value; }
         }
 
         public int countTime = 0;
@@ -42,27 +42,27 @@ namespace ResinSandPyrometer.Step
 
         public bool IsTimeReached
         {
-            get { return isTimeReached; }
-            set { isTimeReached = value; }
+            get { return this.isTimeReached; }
+            set { this.isTimeReached = value; }
         }
 
         private bool isCommandReached = false;
 
         public bool IsCommandReached
         {
-            get { return isCommandReached; }
-            set { isCommandReached = value; }
+            get { return this.isCommandReached; }
+            set { this.isCommandReached = value; }
         }
 
         private int commandCount = 0;//收到指令的个数
 
         public void CommandCount(int timeCount)
         {
-            commandCount++;
-            if (commandCount == 5 * timeCount)
+            this.commandCount++;
+            if (this.commandCount == 5 * timeCount)
             {
-                isCommandReached = true;
-                commandCount = 0;
+                this.isCommandReached = true;
+                this.commandCount = 0;
             }
 
         }
@@ -72,49 +72,47 @@ namespace ResinSandPyrometer.Step
 
         public float PressureZero
         {
-            get { return pressureZero; }
-            set { pressureZero = value; }
+            get { return this.pressureZero; }
+            set { this.pressureZero = value; }
         }
 
-        private Queue<float> PressureZeroQueue = new Queue<float>();
+        private Queue<float> pressureZeroQueue = new Queue<float>();
 
         //取零点值最后十个数（去掉最大最小值，剩余的十个数平均值作为零点值）
         public void GetPressureZero(float pressure)
         {
-            if (pressure < 0.1f)
-                return;
+            if (pressure < 0.1f) return;
 
-            if (this.PressureZeroQueue.Count == 5)
+            if (this.pressureZeroQueue.Count == 5)
             {
-                this.PressureZeroQueue.Dequeue();
+                this.pressureZeroQueue.Dequeue();
             }
-            this.PressureZeroQueue.Enqueue(pressure);
+            this.pressureZeroQueue.Enqueue(pressure);
 
-            float[] zeroArray = PressureZeroQueue.ToArray();
+            float[] zeroArray = this.pressureZeroQueue.ToArray();
             float sum = 0;
             for (int i = 0; i < zeroArray.Length; i++)
             {
                 sum += zeroArray[i];
             }
-            this.PressureZero = sum / 5;
+            this.pressureZero = sum / 5;
         }
 
         public void PressureZeroClear()
         {
-            PressureZeroQueue.Clear();
-            commandCount = 0;
+            this.pressureZeroQueue.Clear();
+            this.commandCount = 0;
         }
         public int TimeCount(int soakingTime)
         {
-            countTime++;
-            if (countTime == 5 * soakingTime)
+            this.countTime++;
+            if (this.countTime == 5 * soakingTime)
             {
-                isTimeReached = true;
-                countTime = 5 * soakingTime;
+                this.isTimeReached = true;
+                this.countTime = 5 * soakingTime;
             }
-            return soakingTime - countTime / 5;
+            return soakingTime - this.countTime / 5;
         }
-
 
         //得到最大压强值和对应的时间
         public void GetMaxPressure(PointF point)
@@ -127,24 +125,24 @@ namespace ResinSandPyrometer.Step
         }
 
         //判断压强是否突变
-        private bool ispressureSudChange = false;
+        private bool isPressureSudChange = false;
 
-        public bool IspressureSudChange
+        public bool IsPressureSudChange
         {
-            get { return ispressureSudChange; }
-            set { ispressureSudChange = value; }
+            get { return this.isPressureSudChange; }
+            set { this.isPressureSudChange = value; }
         }
 
         //检查位移是否突变
-        int changeCount = 0;
+        private int changeCount = 0;
         public void CheckPressureSubChange(float pressure)
         {
-            changeCount++;
-            if (changeCount < 75) return;
+            this.changeCount++;
+            if (this.changeCount < 75) return;
 
-            if ((maxPressure - pressure) / maxPressure > 0.75 /*0.5*/ || changeCount >600 /*450*/)
+            if ((this.maxPressure - pressure) / this.maxPressure > 0.75 /*0.5*/ || this.changeCount >600 /*450*/)
             {
-                ispressureSudChange = true;
+                this.isPressureSudChange = true;
             }
 
         }
@@ -156,7 +154,7 @@ namespace ResinSandPyrometer.Step
             this.countTime = 0;
             this.isTimeReached = false;
             this.changeCount = 0;
-            this.ispressureSudChange = false;
+            this.isPressureSudChange = false;
             this.maxPressure = 0;
             this.maxPreesureTime = 0;
         }

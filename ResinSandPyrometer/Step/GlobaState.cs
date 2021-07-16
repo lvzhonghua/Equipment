@@ -10,47 +10,47 @@ namespace ResinSandPyrometer.Step
     public class GlobaState
     {
         //第一步变量状态
-        private StepOneState oneState = new StepOneState();
+        private FirstStepState firstStepState = new FirstStepState();
 
-        public StepOneState OneState
+        public FirstStepState FirstStepState
         {
-            get { return oneState; }
-            set { oneState = value; }
+            get { return this.firstStepState; }
+            set { this.firstStepState = value; }
         }
 
         //第二步变量状态
-        private StepTwoState twoState = new StepTwoState();
+        private SecondStepState secondStepState = new SecondStepState();
 
-        public StepTwoState TwoState
+        public SecondStepState SecondStepState
         {
-            get { return twoState; }
-            set { twoState = value; }
+            get { return this.secondStepState; }
+            set { this.secondStepState = value; }
         }
 
         //第三步变量状态
-        private StepThreeState threeState = new StepThreeState();
+        private ThirdStepState thirdStepState = new ThirdStepState();
 
-        public StepThreeState ThreeState
+        public ThirdStepState ThirdStepState
         {
-            get { return threeState; }
-            set { threeState = value; }
+            get { return this.thirdStepState; }
+            set { this.thirdStepState = value; }
         }
 
-        private StepFourState fourState = new StepFourState();
+        private FourthStepState fouthStepState = new FourthStepState();
 
-        public StepFourState FourState
+        public FourthStepState FouthStepState
         {
-            get { return fourState; }
-            set { fourState = value; }
+            get { return this.fouthStepState; }
+            set { this.fouthStepState = value; }
         }
 
         //测试枚举
-        private Common.Steps stepNum = Common.Steps.None;
+        private Steps stepNum = Steps.None;
 
-        public Common.Steps StepNum
+        public Steps StepNum
         {
-            get { return stepNum; }
-            set { stepNum = value; }
+            get { return this.stepNum; }
+            set { this.stepNum = value; }
         }
 
 
@@ -60,8 +60,8 @@ namespace ResinSandPyrometer.Step
 
         public bool IsStarttest
         {
-            get { return isStarttest; }
-            set { isStarttest = value; }
+            get { return this.isStarttest; }
+            set { this.isStarttest = value; }
         }
 
         //结束测试
@@ -69,8 +69,8 @@ namespace ResinSandPyrometer.Step
 
         public bool IsEndtest
         {
-            get { return isEndtest; }
-            set { isEndtest = value; }
+            get { return this.isEndtest; }
+            set { this.isEndtest = value; }
         }
 
         //高温抗压强度
@@ -88,7 +88,6 @@ namespace ResinSandPyrometer.Step
             this.isEndtest = false;
             this.isStarttest = true;
         }
-
 
         //热稳定性
         public void GoToThreeStep()
@@ -110,19 +109,19 @@ namespace ResinSandPyrometer.Step
 
         public bool IsTimeReached
         {
-            get { return isTimeReached; }
-            set { isTimeReached = value; }
+            get { return this.isTimeReached; }
+            set { this.isTimeReached = value; }
         }
 
         private int countTime = 0;//收到指令的个数
 
         public void TimeCount(int timeCount)
         {
-            countTime++;
-            if (countTime == 5 * timeCount)
+            this.countTime++;
+            if (this.countTime == 5 * timeCount)
             {
-                isTimeReached = true;
-                countTime = 0;
+                this.isTimeReached = true;
+                this.countTime = 0;
             }
 
         }
@@ -132,8 +131,8 @@ namespace ResinSandPyrometer.Step
 
         public float PressZero
         {
-            get { return pressZero; }
-            set { pressZero = value; }
+            get { return this.pressZero; }
+            set { this.pressZero = value; }
         }
 
         private Queue<float> PPressZeroQueue = new Queue<float>();
@@ -141,8 +140,7 @@ namespace ResinSandPyrometer.Step
         //取零点值最后十个数（去掉最大最小值，剩余的十个数平均值作为零点值）
         public void GetPressZero(float pressure)
         {
-            if (pressure < 0.1f)
-                return;
+            if (pressure < 0.1f) return;
 
             if (this.PPressZeroQueue.Count == 5)
             {

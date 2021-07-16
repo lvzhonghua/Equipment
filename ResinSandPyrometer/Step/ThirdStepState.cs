@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace ResinSandPyrometer.Step
 {
-    public class StepThreeState
+    public class ThirdStepState
     {
 
-        private ThirdStep enumThree = ThirdStep.NONE;
+        private ThirdStep step = ThirdStep.NONE;
 
-        public ThirdStep EnumThree
+        public ThirdStep Step
         {
-            get { return enumThree; }
-            set { enumThree = value; }
+            get { return this.step; }
+            set { this.step = value; }
         }
 
         //压力
@@ -23,34 +23,33 @@ namespace ResinSandPyrometer.Step
 
         public float BalancePress
         {
-            get { return balancePress; }
-            set { balancePress = value; }
+            get { return this.balancePress; }
+            set { this.balancePress = value; }
         }
 
         private bool isBPGet = false;
 
         public bool IsBPGet
         {
-            get { return isBPGet; }
-            set { isBPGet = value; }
+            get { return this.isBPGet; }
+            set { this.isBPGet = value; }
         }
 
-
-        //最大时间
+        //结束次数
         private float endTime;
 
         public float EndTime
         {
-            get { return endTime; }
-            set { endTime = value; }
+            get { return this.endTime; }
+            set { this.endTime = value; }
         }
 
         private bool isTimeReached = false;
 
         public bool IsTimeReached
         {
-            get { return isTimeReached; }
-            set { isTimeReached = value; }
+            get { return this.isTimeReached; }
+            set { this.isTimeReached = value; }
         }
 
 
@@ -58,37 +57,37 @@ namespace ResinSandPyrometer.Step
 
         public float BalanceTime
         {
-            get { return balanceTime; }
-            set { balanceTime = value; }
+            get { return this.balanceTime; }
+            set { this.balanceTime = value; }
         }
+
         public void getBalanceTime(float time)
         {
             this.balanceTime = time;
         }
+
         private int countTime = 0;//收到指令的个数
 
         public void TimeCount(int timeCount)
         {
-            countTime++;
-            if (countTime == 5 * timeCount)
+            this.countTime++;
+            if (this.countTime == 5 * timeCount)
             {
-                isTimeReached = true;
-                countTime = 0;
+                this.isTimeReached = true;
+                this.countTime = 0;
             }
-
         }
-
 
         //判断压力是否突变
         private bool isBalancePressSudChange = false;
 
         public bool IsBalancePressSudChange
         {
-            get { return isBalancePressSudChange; }
-            set { isBalancePressSudChange = value; }
+            get { return this.isBalancePressSudChange; }
+            set { this.isBalancePressSudChange = value; }
         }
 
-        int changeCount = 0;
+        private int changeCount = 0;
 
         private Queue<float> balancePressSudChangeQueue = new Queue<float>();
         //检查压力是否突变
@@ -100,21 +99,19 @@ namespace ResinSandPyrometer.Step
             }
             this.balancePressSudChangeQueue.Enqueue(pressure);
 
-            changeCount++;
-            if (changeCount < 300) return;
+            this.changeCount++;
+            if (this.changeCount < 300) return;
 
             int sum = 0;
             if (this.balancePressSudChangeQueue.Count == 50)
             {
                 float[] array = this.balancePressSudChangeQueue.ToArray();
-                for (int i = 0; i < array.Length; i++)
+                for (int index = 0; index < array.Length; index++)
                 {
-                    if (array[i] > setPress - 0.005f)
-                        sum++;
+                    if (array[index] > setPress - 0.005f) sum++;
                 }
 
-                if (sum == 0 || changeCount > 1250)
-                    this.isBalancePressSudChange = true;
+                if (sum == 0 || changeCount > 1250)  this.isBalancePressSudChange = true;
             }
         }
 

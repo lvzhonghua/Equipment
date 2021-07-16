@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace ResinSandPyrometer.Step
 {
-    public class StepFourState
+    public class FourthStepState
     {
-        private FourthStep enumFour = FourthStep.NONE;
+        private FourthStep step = FourthStep.NONE;
 
-        public FourthStep EnumFour
+        public FourthStep Step
         {
-            get { return enumFour; }
-            set { enumFour = value; }
+            get { return this.step; }
+            set { this.step = value; }
         }
 
         //最大位移
@@ -23,35 +23,35 @@ namespace ResinSandPyrometer.Step
 
         public float MaxDisplacement
         {
-            get { return maxDisplacement; }
-            set { maxDisplacement = value; }
+            get { return this.maxDisplacement; }
+            set { this.maxDisplacement = value; }
         }
 
         private float maxDisplacementTime = 0;
 
         public float MaxDisplacementTime
         {
-            get { return maxDisplacementTime; }
-            set { maxDisplacementTime = value; }
+            get { return this.maxDisplacementTime; }
+            set { this.maxDisplacementTime = value; }
         }
 
         private bool isTimeReached = false;
 
         public bool IsTimeReached
         {
-            get { return isTimeReached; }
-            set { isTimeReached = value; }
+            get { return this.isTimeReached; }
+            set { this.isTimeReached = value; }
         }
 
         private int countTime = 0;//收到指令的个数
 
         public void TimeCount(int timeCount)
         {
-            countTime++;
-            if (countTime == 5 * timeCount)
+            this.countTime++;
+            if (this.countTime == 5 * timeCount)
             {
-                isTimeReached = true;
-                countTime = 0;
+                this.isTimeReached = true;
+                this.countTime = 0;
             }
 
         }
@@ -59,66 +59,68 @@ namespace ResinSandPyrometer.Step
         private bool isOK = false;
         public bool IsOK
         {
-            get { return isOK; }
-            set { isOK = value; }
+            get { return this.isOK; }
+            set { this.isOK = value; }
         }
-        int count = 0;
+
+
+        private int count = 0;
         public void Sleep()
         {
-            count++;
-            if (count < 60) return;
-            isOK = true;
+            this.count++;
+            if (this.count < 60) return;
+            this.isOK = true;
         }
 
         private bool isWaitOver = false;
         public bool IsWaitOver
         {
-            get { return isWaitOver; }
-            set { isWaitOver = value; }
+            get { return this.isWaitOver; }
+            set { this.isWaitOver = value; }
         }
 
-        int waitCout = 0;
+        private int waitCout = 0;
         public void Wait()
         {
-            waitCout++;
-            if (waitCout < 40) return;
-            isWaitOver = true;
+            this.waitCout++;
+            if (this.waitCout < 40) return;
+            this.isWaitOver = true;
         }
         //定义零点值
         private float displacementZero = 0f;
 
         public float DisplacementZero
         {
-            get { return displacementZero; }
-            set { displacementZero = value; }
+            get { return this.displacementZero; }
+            set { this.displacementZero = value; }
         }
 
-        private Queue<float> DisplacementZeroQueue = new Queue<float>();
+        private Queue<float> displacementZeroQueue = new Queue<float>();
 
         //取零点值最后十个数（去掉最大最小值，剩余的十个数平均值作为零点值）
         public void GetDisplacementZero(float pressure)
         {
-            if (pressure < 0.1f)
-                return;
+            if (pressure < 0.1f) return;
 
-            if (this.DisplacementZeroQueue.Count == 5)
+            if (this.displacementZeroQueue.Count == 5)
             {
-                this.DisplacementZeroQueue.Dequeue();
+                this.displacementZeroQueue.Dequeue();
             }
-            this.DisplacementZeroQueue.Enqueue(pressure);
+            this.displacementZeroQueue.Enqueue(pressure);
 
-            float[] zeroArray = DisplacementZeroQueue.ToArray();
+            float[] zeroArray = displacementZeroQueue.ToArray();
             float sum = 0;
-            for (int i = 0; i < zeroArray.Length; i++)
+            for (int index = 0; index < zeroArray.Length; index++)
             {
-                sum += zeroArray[i];
+                sum += zeroArray[index];
             }
-            this.DisplacementZero = sum / 5;
+            this.displacementZero = sum / 5;
         }
+
         public void DisplacementZeroClear()
         {
-            DisplacementZeroQueue.Clear();
-            countTime = 0;
+            this.displacementZeroQueue.Clear();
+            this.countTime = 0;
         }
 
         //得到最大位移值和对应的时间
@@ -136,21 +138,21 @@ namespace ResinSandPyrometer.Step
 
         public bool IsDisplacementSudChange
         {
-            get { return isDisplacementSudChange; }
-            set { isDisplacementSudChange = value; }
+            get { return this.isDisplacementSudChange; }
+            set { this.isDisplacementSudChange = value; }
         }
 
         //检查位移是否突变
-        int changeCount = 0;
+        private int changeCount = 0;
         public void CheckDisplacementSubChange(PointF point)
         {
-            changeCount++;
-            if (changeCount < 300) return;
+            this.changeCount++;
+            if (this.changeCount < 300) return;
 
 
-            if ((maxDisplacement - point.Y) / maxDisplacement > 0.3 || changeCount > 1200)
+            if ((this.maxDisplacement - point.Y) / this.maxDisplacement > 0.3 || this.changeCount > 1200)
             {
-                isDisplacementSudChange = true;
+                this.isDisplacementSudChange = true;
             }
 
         }

@@ -9,19 +9,19 @@ namespace ResinSandPyrometer.Step
     public class TemperatureState
     {
         //温度是否重设
-        private bool isTemReset = false;
+        private bool isTemperatureReset = false;
 
-        public bool IsTemReset
+        public bool IsTemperatureReset
         {
-            get { return isTemReset; }
-            set { isTemReset = value; }
+            get { return isTemperatureReset; }
+            set { isTemperatureReset = value; }
         }
         private bool isCountSend = false;
 
         public bool IsCountSend
         {
-            get { return isCountSend; }
-            set { isCountSend = value; }
+            get { return this.isCountSend; }
+            set { this.isCountSend = value; }
         }
 
         //当温度达到时开始计数
@@ -29,11 +29,9 @@ namespace ResinSandPyrometer.Step
 
         public int TimeCount
         {
-            get { return timeCount; }
-            set { timeCount = value; }
+            get { return this.timeCount; }
+            set { this.timeCount = value; }
         }
-
-
 
         //是否开始加热
         private bool isCanStartHeat = false;
@@ -56,8 +54,7 @@ namespace ResinSandPyrometer.Step
                 this.timeCount = 0;
             }
 
-            if (this.timeCount >= 50)
-                return true;
+            if (this.timeCount >= 50)  return true;
             return false;
         }
 
@@ -66,10 +63,9 @@ namespace ResinSandPyrometer.Step
 
         public bool IstemperatureSudChange
         {
-            get { return istemperatureSudChange; }
-            set { istemperatureSudChange = value; }
+            get { return this.istemperatureSudChange; }
+            set { this.istemperatureSudChange = value; }
         }
-
 
         private Queue<float> temperatureSubChangeQueue = new Queue<float>();
 
@@ -93,12 +89,10 @@ namespace ResinSandPyrometer.Step
                 {
                     sum += array[i];
                     avg = sum / this.temperatureSubChangeQueue.Count;
-                    if (avg + 100 > array[i])
-                        count++;
+                    if (avg + 100 > array[i])  count++;
                 }
 
-                if (count == 0)
-                    this.istemperatureSudChange = true;
+                if (count == 0)  this.istemperatureSudChange = true;
             }
         }
 
