@@ -1,6 +1,6 @@
 ﻿namespace ResinSandPyrometer
 {
-    partial class FormSpecimenSetting
+    partial class FormSampleInfo
     {
         /// <summary>
         /// Required designer variable.
@@ -286,7 +286,7 @@
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
-            // FormSpecimenSetting
+            // FormSampleInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -298,8 +298,8 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "FormSpecimenSetting";
-            this.Text = "试样信息设置";
+            this.Name = "FormSampleInfo";
+            this.Text = "试样信息";
             this.Load += new System.EventHandler(this.FormSpecimenSetting_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

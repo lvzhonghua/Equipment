@@ -10,9 +10,9 @@ namespace ResinSandPyrometer.Step
 {
     public class StepFourState
     {
-        private EnumOfFourStep enumFour = EnumOfFourStep.NONE;
+        private FourthStep enumFour = FourthStep.NONE;
 
-        public EnumOfFourStep EnumFour
+        public FourthStep EnumFour
         {
             get { return enumFour; }
             set { enumFour = value; }

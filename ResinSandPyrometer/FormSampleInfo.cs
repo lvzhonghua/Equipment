@@ -13,9 +13,9 @@ using System.Windows.Forms;
 
 namespace ResinSandPyrometer
 {
-    public partial class FormSpecimenSetting : Form
+    public partial class FormSampleInfo : Form
     {
-        public FormSpecimenSetting()
+        public FormSampleInfo()
         {
             InitializeComponent();
         }

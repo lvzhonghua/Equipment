@@ -25,15 +25,11 @@ namespace ResinSandPyrometer
         public static byte[] CutBuffer(byte[] buffer, int startIndex, int length)
         {
             byte[] bytes = new byte[length];
-            for (int index = 0; (index < length) && (startIndex + index < buffer.Length); index++)
-            {
-                bytes[index] = buffer[startIndex + index];
-            }
+
+            Buffer.BlockCopy(buffer, startIndex, bytes, 0,bytes.Length);
+
             return bytes;
         }
-
-
-
 
         //将浮点数保留四位
         //public static string GetFourValue(float value)
@@ -53,8 +49,6 @@ namespace ResinSandPyrometer
             v = Convert.ToInt32(value * 10);
             return v / 10.0f;
         }
-
-
 
         //将浮点数保留四位
         public static string GetThreeValue(float value)

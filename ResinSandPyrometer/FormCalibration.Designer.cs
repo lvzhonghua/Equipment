@@ -1,6 +1,6 @@
 ﻿namespace ResinSandPyrometer
 {
-    partial class FormCheckout
+    partial class FormCalibration
     {
         /// <summary>
         /// Required designer variable.
@@ -31,7 +31,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnWeight = new System.Windows.Forms.Button();
             this.btnZero = new System.Windows.Forms.Button();
-            this.TxtJiaoZheng = new System.Windows.Forms.TextBox();
+            this.txtRevise = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCE = new System.Windows.Forms.Button();
@@ -70,14 +70,14 @@
             this.btnZero.UseVisualStyleBackColor = true;
             this.btnZero.Click += new System.EventHandler(this.btnZero_Click);
             // 
-            // TxtJiaoZheng
+            // txtRevise
             // 
-            this.TxtJiaoZheng.Font = new System.Drawing.Font("宋体", 14F);
-            this.TxtJiaoZheng.Location = new System.Drawing.Point(187, 154);
-            this.TxtJiaoZheng.Name = "TxtJiaoZheng";
-            this.TxtJiaoZheng.Size = new System.Drawing.Size(102, 29);
-            this.TxtJiaoZheng.TabIndex = 14;
-            this.TxtJiaoZheng.Text = "1";
+            this.txtRevise.Font = new System.Drawing.Font("宋体", 14F);
+            this.txtRevise.Location = new System.Drawing.Point(187, 154);
+            this.txtRevise.Name = "txtRevise";
+            this.txtRevise.Size = new System.Drawing.Size(102, 29);
+            this.txtRevise.TabIndex = 14;
+            this.txtRevise.Text = "1";
             // 
             // label1
             // 
@@ -96,7 +96,7 @@
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(88, 41);
             this.btnOK.TabIndex = 12;
-            this.btnOK.Text = "确定";
+            this.btnOK.Text = "关闭";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
@@ -121,7 +121,7 @@
             this.lstInfo.Size = new System.Drawing.Size(173, 172);
             this.lstInfo.TabIndex = 10;
             // 
-            // FormCheckout
+            // FormCalibration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -130,13 +130,14 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnWeight);
             this.Controls.Add(this.btnZero);
-            this.Controls.Add(this.TxtJiaoZheng);
+            this.Controls.Add(this.txtRevise);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnCE);
             this.Controls.Add(this.lstInfo);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.Name = "FormCheckout";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Name = "FormCalibration";
             this.Text = "校验";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -148,10 +149,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnWeight;
         private System.Windows.Forms.Button btnZero;
-        public System.Windows.Forms.TextBox TxtJiaoZheng;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCE;
         private System.Windows.Forms.ListBox lstInfo;
+        private System.Windows.Forms.TextBox txtRevise;
     }
 }

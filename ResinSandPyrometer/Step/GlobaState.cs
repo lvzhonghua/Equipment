@@ -45,9 +45,9 @@ namespace ResinSandPyrometer.Step
         }
 
         //测试枚举
-        private StepEnum stepNum = StepEnum.None;
+        private Common.Steps stepNum = Common.Steps.None;
 
-        public StepEnum StepNum
+        public Common.Steps StepNum
         {
             get { return stepNum; }
             set { stepNum = value; }
@@ -76,7 +76,7 @@ namespace ResinSandPyrometer.Step
         //高温抗压强度
         public void GoToFirstStep()
         {
-            this.stepNum = StepEnum.FirstStep;
+            this.stepNum = Common.Steps.FirstStep;
             this.isStarttest = true;
             this.isEndtest = false;
         }
@@ -84,7 +84,7 @@ namespace ResinSandPyrometer.Step
         //高温膨胀力
         public void GoToSecondStep()
         {
-            this.stepNum = StepEnum.TwoStep;
+            this.stepNum = Common.Steps.SecondStep;
             this.isEndtest = false;
             this.isStarttest = true;
         }
@@ -93,7 +93,7 @@ namespace ResinSandPyrometer.Step
         //热稳定性
         public void GoToThreeStep()
         {
-            this.stepNum = StepEnum.ThreeStep;
+            this.stepNum = Common.Steps.ThirdStep;
             this.isEndtest = false;
             this.isStarttest = true;
         }
@@ -101,7 +101,7 @@ namespace ResinSandPyrometer.Step
         //高温急热膨胀力
         public void GoToFourStep()
         {
-            this.stepNum = StepEnum.FourStep;
+            this.stepNum = Common.Steps.FourthStep;
             this.isEndtest = false;
             this.isStarttest = true;
         }

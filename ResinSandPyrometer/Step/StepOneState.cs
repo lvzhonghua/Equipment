@@ -11,9 +11,9 @@ namespace ResinSandPyrometer.Step
     public class StepOneState
     {
 
-        private EnumOfFirstStep enumFirst = EnumOfFirstStep.NONE;
+        private FirstStep enumFirst = FirstStep.NONE;
 
-        public EnumOfFirstStep EnumFirst
+        public FirstStep EnumFirst
         {
             get { return enumFirst; }
             set { enumFirst = value; }
@@ -135,8 +135,6 @@ namespace ResinSandPyrometer.Step
             set { ispressureSudChange = value; }
         }
 
-        
-
         //检查位移是否突变
         int changeCount = 0;
         public void CheckPressureSubChange(float pressure)
@@ -144,8 +142,7 @@ namespace ResinSandPyrometer.Step
             changeCount++;
             if (changeCount < 75) return;
 
-
-            if ((maxPressure - pressure) / maxPressure > 0.5 || changeCount > 450)
+            if ((maxPressure - pressure) / maxPressure > 0.75 /*0.5*/ || changeCount >600 /*450*/)
             {
                 ispressureSudChange = true;
             }

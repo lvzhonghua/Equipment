@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ResinSandPyrometer.Common
 {
-    public enum EnumOfFirstStep
+    public enum FirstStep
     {
         NONE,
         加热炉按行程下降,
@@ -19,9 +19,8 @@ namespace ResinSandPyrometer.Common
 
     }
 
-    public enum EnumOfTwoStep
+    public enum SecondStep
     {
-
         NONE,
         开始调试并发送指令,
         检测预载荷是否为10主机发送指令加载电机停止,
@@ -34,7 +33,7 @@ namespace ResinSandPyrometer.Common
 
     }
 
-    public enum EnumOfThreeStep
+    public enum ThirdStep
     {
         NONE,
         开始测试并发送指令,
@@ -44,10 +43,9 @@ namespace ResinSandPyrometer.Common
         采样数据并绘制压强时间曲线及判断压强值是否突变,
         突变并返回,
         测试结束
-
     }
 
-    public enum EnumOfFourStep
+    public enum FourthStep
     {
         NONE,
         取预置零点值,
@@ -59,16 +57,17 @@ namespace ResinSandPyrometer.Common
         采集位移数据并绘制曲线以及判断是否突变,
         测试结束
     }
-    public enum StepEnum
+
+    public enum Steps
     {
         None = 0,
         FirstStep = 1,//高温抗压强度
-        TwoStep = 2,//高温膨胀力
-        ThreeStep = 3,//热稳定性
-        FourStep=4 //位移传感器
+        SecondStep = 2,//高温膨胀力
+        ThirdStep = 3,//热稳定性
+        FourthStep = 4 //位移传感器
     }
 
-    public enum EnumOfSetPara
+    public enum StateOfSetParameter
     {
         NONE,
         设置加载电机加载速度,

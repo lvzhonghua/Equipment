@@ -59,11 +59,17 @@
     <Compile Include="Common\SampleLoggerOnTextFile.cs" />
     <Compile Include="Common\Setting.cs" />
     <Compile Include="Common\SettingReaderAndWriter.cs" />
-    <Compile Include="FormCheckout.cs">
+    <Compile Include="FormCalcForce.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormCheckout.Designer.cs">
-      <DependentUpon>FormCheckout.cs</DependentUpon>
+    <Compile Include="FormCalcForce.Designer.cs">
+      <DependentUpon>FormCalcForce.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormCalibration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCalibration.Designer.cs">
+      <DependentUpon>FormCalibration.cs</DependentUpon>
     </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
@@ -71,23 +77,23 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormOpenFile.cs">
+    <Compile Include="FormDataReader.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormOpenFile.Designer.cs">
-      <DependentUpon>FormOpenFile.cs</DependentUpon>
+    <Compile Include="FormDataReader.Designer.cs">
+      <DependentUpon>FormDataReader.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormParameterSetting.cs">
+    <Compile Include="FormSetting.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormParameterSetting.Designer.cs">
-      <DependentUpon>FormParameterSetting.cs</DependentUpon>
+    <Compile Include="FormSetting.Designer.cs">
+      <DependentUpon>FormSetting.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormSpecimenSetting.cs">
+    <Compile Include="FormSampleInfo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormSpecimenSetting.Designer.cs">
-      <DependentUpon>FormSpecimenSetting.cs</DependentUpon>
+    <Compile Include="FormSampleInfo.Designer.cs">
+      <DependentUpon>FormSampleInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -98,20 +104,24 @@
     <Compile Include="Step\StepThreeState.cs" />
     <Compile Include="Step\StepTwoState.cs" />
     <Compile Include="Step\TemperatureState.cs" />
-    <EmbeddedResource Include="FormCheckout.resx">
-      <DependentUpon>FormCheckout.cs</DependentUpon>
+    <Compile Include="Utilities.cs" />
+    <EmbeddedResource Include="FormCalcForce.resx">
+      <DependentUpon>FormCalcForce.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCalibration.resx">
+      <DependentUpon>FormCalibration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormOpenFile.resx">
-      <DependentUpon>FormOpenFile.cs</DependentUpon>
+    <EmbeddedResource Include="FormDataReader.resx">
+      <DependentUpon>FormDataReader.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormParameterSetting.resx">
-      <DependentUpon>FormParameterSetting.cs</DependentUpon>
+    <EmbeddedResource Include="FormSetting.resx">
+      <DependentUpon>FormSetting.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormSpecimenSetting.resx">
-      <DependentUpon>FormSpecimenSetting.cs</DependentUpon>
+    <EmbeddedResource Include="FormSampleInfo.resx">
+      <DependentUpon>FormSampleInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

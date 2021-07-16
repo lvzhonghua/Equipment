@@ -11,9 +11,9 @@ namespace ResinSandPyrometer.Step
     public class StepTwoState
     {
 
-        private EnumOfTwoStep enumTwo = EnumOfTwoStep.NONE;
+        private SecondStep enumTwo = SecondStep.NONE;
 
-        public EnumOfTwoStep EnumTwo
+        public SecondStep EnumTwo
         {
             get { return enumTwo; }
             set { enumTwo = value; }

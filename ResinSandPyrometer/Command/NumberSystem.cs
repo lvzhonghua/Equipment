@@ -9,21 +9,21 @@ namespace ResinSandPyrometer
     public class NumberSystem
     {
         //2进制转10进制补码
-        public static long BinaryToDecimal_Complement(byte[] buffer, int fromBase)
+        public static long BinaryToDecimal_Complement(byte[] buffer, int fromBase = 16)
         {
-            long firstValue = Convert.ToInt64(BitConverter.ToString(buffer, 0, 1), 16);
+            long firstValue = Convert.ToInt64(BitConverter.ToString(buffer, 0, 1), fromBase);
             if (firstValue <= 127)//正数
             {
-                return BinaryToDecimal(buffer, 16);
+                return BinaryToDecimal(buffer, fromBase);
             }
 
             //负数
             long maxValue = (long)Math.Pow(2, buffer.Length * 8);
-            return 0 - (maxValue - BinaryToDecimal(buffer, 16));
+            return 0 - (maxValue - BinaryToDecimal(buffer, fromBase));
         }
 
         //2进制转10进原码
-        public static long BinaryToDecimal(byte[] buffer, int fromBase)
+        public static long BinaryToDecimal(byte[] buffer, int fromBase = 16)
         {
             string value = BitConverter.ToString(buffer);
             value = value.ToUpper();//转换为大写字符串；

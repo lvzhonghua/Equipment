@@ -45,6 +45,7 @@
             System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Title title4 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslblDan = new System.Windows.Forms.ToolStripStatusLabel();
@@ -54,6 +55,7 @@
             this.tsslblWei = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblReceivedInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblDisplacement = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblDebugInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.lblMotorDis = new System.Windows.Forms.ToolStripLabel();
@@ -65,12 +67,12 @@
             this.lblDispalcementMotorIdlePath = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
-            this.adviceLB = new System.Windows.Forms.ToolStripLabel();
+            this.lblStatusTip = new System.Windows.Forms.ToolStripLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.setParaBtn = new System.Windows.Forms.Button();
-            this.setDeviceBtn = new System.Windows.Forms.Button();
+            this.btnSampleInfoSetting = new System.Windows.Forms.Button();
+            this.btnSettings = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label23 = new System.Windows.Forms.Label();
             this.txbNum = new System.Windows.Forms.TextBox();
@@ -86,10 +88,10 @@
             this.txtSpecimenHeight = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.btnStartHeat = new System.Windows.Forms.Button();
-            this.setTemTxt = new System.Windows.Forms.TextBox();
+            this.btnSettingFurnaceTemperature = new System.Windows.Forms.Button();
+            this.txtTargetTemperature = new System.Windows.Forms.TextBox();
             this.label24 = new System.Windows.Forms.Label();
-            this.nowTemLbl = new System.Windows.Forms.Label();
+            this.lblCurrentTemperature = new System.Windows.Forms.Label();
             this.lable1 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.selectTabControl = new System.Windows.Forms.TabControl();
@@ -136,14 +138,15 @@
             this.label29 = new System.Windows.Forms.Label();
             this.chartExpansionRate = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.btnStop = new System.Windows.Forms.Button();
-            this.btnStart = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnOpenFile = new System.Windows.Forms.Button();
+            this.btnReset = new System.Windows.Forms.Button();
+            this.btnStartTest = new System.Windows.Forms.Button();
+            this.btnSaveData = new System.Windows.Forms.Button();
+            this.btnDataReader = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btn0 = new System.Windows.Forms.Button();
-            this.btnJiao = new System.Windows.Forms.Button();
+            this.btnBackToZero = new System.Windows.Forms.Button();
+            this.btnCalibration = new System.Windows.Forms.Button();
             this.tmCheckTem = new System.Windows.Forms.Timer(this.components);
+            this.btnCalcForce = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -191,7 +194,8 @@
             this.toolStripStatusLabel2,
             this.tsslblWei,
             this.lblReceivedInfo,
-            this.lblDisplacement});
+            this.lblDisplacement,
+            this.lblDebugInfo});
             this.statusStrip1.Location = new System.Drawing.Point(0, 613);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 9, 0);
@@ -249,6 +253,12 @@
             this.lblDisplacement.Size = new System.Drawing.Size(80, 26);
             this.lblDisplacement.Text = "0";
             // 
+            // lblDebugInfo
+            // 
+            this.lblDebugInfo.AutoSize = false;
+            this.lblDebugInfo.Name = "lblDebugInfo";
+            this.lblDebugInfo.Size = new System.Drawing.Size(300, 26);
+            // 
             // toolStrip
             // 
             this.toolStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
@@ -263,95 +273,96 @@
             this.lblDispalcementMotorIdlePath,
             this.toolStripSeparator1,
             this.toolStripLabel3,
-            this.adviceLB});
+            this.lblStatusTip,
+            this.btnCalcForce});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStrip.Size = new System.Drawing.Size(1246, 30);
+            this.toolStrip.Size = new System.Drawing.Size(1246, 25);
             this.toolStrip.TabIndex = 2;
             this.toolStrip.Text = "ToolString";
             // 
             // toolStripLabel2
             // 
-            this.toolStripLabel2.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.toolStripLabel2.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(152, 27);
+            this.toolStripLabel2.Size = new System.Drawing.Size(142, 22);
             this.toolStripLabel2.Text = "电机空载行程：";
             // 
             // lblMotorDis
             // 
-            this.lblMotorDis.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblMotorDis.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblMotorDis.Name = "lblMotorDis";
-            this.lblMotorDis.Size = new System.Drawing.Size(24, 27);
+            this.lblMotorDis.Size = new System.Drawing.Size(19, 22);
             this.lblMotorDis.Text = "0";
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 30);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
             // lblHeatD
             // 
-            this.lblHeatD.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblHeatD.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblHeatD.Name = "lblHeatD";
-            this.lblHeatD.Size = new System.Drawing.Size(172, 27);
+            this.lblHeatD.Size = new System.Drawing.Size(161, 22);
             this.lblHeatD.Text = "加热炉下降距离：";
             // 
             // lblHeatDis
             // 
-            this.lblHeatDis.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblHeatDis.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblHeatDis.Name = "lblHeatDis";
-            this.lblHeatDis.Size = new System.Drawing.Size(24, 27);
+            this.lblHeatDis.Size = new System.Drawing.Size(19, 22);
             this.lblHeatDis.Text = "0";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 30);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripLabel1
             // 
-            this.toolStripLabel1.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.toolStripLabel1.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(212, 27);
+            this.toolStripLabel1.Size = new System.Drawing.Size(199, 22);
             this.toolStripLabel1.Text = "膨胀率电机空载行程：";
             // 
             // lblDispalcementMotorIdlePath
             // 
-            this.lblDispalcementMotorIdlePath.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblDispalcementMotorIdlePath.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblDispalcementMotorIdlePath.Name = "lblDispalcementMotorIdlePath";
-            this.lblDispalcementMotorIdlePath.Size = new System.Drawing.Size(24, 27);
+            this.lblDispalcementMotorIdlePath.Size = new System.Drawing.Size(19, 22);
             this.lblDispalcementMotorIdlePath.Text = "0";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 30);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripLabel3
             // 
-            this.toolStripLabel3.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.toolStripLabel3.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.toolStripLabel3.ForeColor = System.Drawing.Color.Red;
             this.toolStripLabel3.Name = "toolStripLabel3";
-            this.toolStripLabel3.Size = new System.Drawing.Size(90, 27);
+            this.toolStripLabel3.Size = new System.Drawing.Size(104, 22);
             this.toolStripLabel3.Text = "信息提示：";
             // 
-            // adviceLB
+            // lblStatusTip
             // 
-            this.adviceLB.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.adviceLB.ForeColor = System.Drawing.Color.Red;
-            this.adviceLB.Name = "adviceLB";
-            this.adviceLB.Size = new System.Drawing.Size(202, 27);
-            this.adviceLB.Text = "加热炉和电机到达零位提示";
+            this.lblStatusTip.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblStatusTip.ForeColor = System.Drawing.Color.Red;
+            this.lblStatusTip.Name = "lblStatusTip";
+            this.lblStatusTip.Size = new System.Drawing.Size(237, 22);
+            this.lblStatusTip.Text = "加热炉和电机到达零位提示";
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.tableLayoutPanel1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 30);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Location = new System.Drawing.Point(0, 25);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1246, 583);
+            this.panel1.Size = new System.Drawing.Size(1246, 588);
             this.panel1.TabIndex = 3;
             // 
             // tableLayoutPanel1
@@ -365,51 +376,51 @@
             this.tableLayoutPanel1.Controls.Add(this.panel4, 2, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1246, 583);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1246, 588);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.setParaBtn);
-            this.panel2.Controls.Add(this.setDeviceBtn);
+            this.panel2.Controls.Add(this.btnSampleInfoSetting);
+            this.panel2.Controls.Add(this.btnSettings);
             this.panel2.Controls.Add(this.groupBox1);
-            this.panel2.Controls.Add(this.btnStartHeat);
-            this.panel2.Controls.Add(this.setTemTxt);
+            this.panel2.Controls.Add(this.btnSettingFurnaceTemperature);
+            this.panel2.Controls.Add(this.txtTargetTemperature);
             this.panel2.Controls.Add(this.label24);
-            this.panel2.Controls.Add(this.nowTemLbl);
+            this.panel2.Controls.Add(this.lblCurrentTemperature);
             this.panel2.Controls.Add(this.lable1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(2, 2);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(329, 579);
+            this.panel2.Size = new System.Drawing.Size(329, 584);
             this.panel2.TabIndex = 0;
             // 
-            // setParaBtn
+            // btnSampleInfoSetting
             // 
-            this.setParaBtn.Font = new System.Drawing.Font("宋体", 12F);
-            this.setParaBtn.Location = new System.Drawing.Point(31, 503);
-            this.setParaBtn.Name = "setParaBtn";
-            this.setParaBtn.Size = new System.Drawing.Size(125, 42);
-            this.setParaBtn.TabIndex = 27;
-            this.setParaBtn.Text = "试样信息设置";
-            this.setParaBtn.UseVisualStyleBackColor = true;
-            this.setParaBtn.Click += new System.EventHandler(this.setParaBtn_Click);
+            this.btnSampleInfoSetting.Font = new System.Drawing.Font("宋体", 12F);
+            this.btnSampleInfoSetting.Location = new System.Drawing.Point(31, 503);
+            this.btnSampleInfoSetting.Name = "btnSampleInfoSetting";
+            this.btnSampleInfoSetting.Size = new System.Drawing.Size(125, 42);
+            this.btnSampleInfoSetting.TabIndex = 27;
+            this.btnSampleInfoSetting.Text = "试样信息设置";
+            this.btnSampleInfoSetting.UseVisualStyleBackColor = true;
+            this.btnSampleInfoSetting.Click += new System.EventHandler(this.btnSampleInfoSetting_Click);
             // 
-            // setDeviceBtn
+            // btnSettings
             // 
-            this.setDeviceBtn.Font = new System.Drawing.Font("宋体", 12F);
-            this.setDeviceBtn.Location = new System.Drawing.Point(190, 503);
-            this.setDeviceBtn.Name = "setDeviceBtn";
-            this.setDeviceBtn.Size = new System.Drawing.Size(125, 42);
-            this.setDeviceBtn.TabIndex = 26;
-            this.setDeviceBtn.Text = "参数设置";
-            this.setDeviceBtn.UseVisualStyleBackColor = true;
-            this.setDeviceBtn.Click += new System.EventHandler(this.setDeviceBtn_Click);
+            this.btnSettings.Font = new System.Drawing.Font("宋体", 12F);
+            this.btnSettings.Location = new System.Drawing.Point(190, 503);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(125, 42);
+            this.btnSettings.TabIndex = 26;
+            this.btnSettings.Text = "参数设置";
+            this.btnSettings.UseVisualStyleBackColor = true;
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
             // groupBox1
             // 
@@ -427,11 +438,11 @@
             this.groupBox1.Controls.Add(this.txtSpecimenHeight);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.groupBox1.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.groupBox1.Location = new System.Drawing.Point(16, 241);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(299, 246);
             this.groupBox1.TabIndex = 25;
             this.groupBox1.TabStop = false;
@@ -443,10 +454,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label23.AutoSize = true;
-            this.label23.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label23.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label23.Location = new System.Drawing.Point(8, 29);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(93, 16);
+            this.label23.Size = new System.Drawing.Size(88, 16);
             this.label23.TabIndex = 17;
             this.label23.Text = "试样编号：";
             // 
@@ -469,10 +480,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label7.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label7.Location = new System.Drawing.Point(7, 87);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(93, 16);
+            this.label7.Size = new System.Drawing.Size(88, 16);
             this.label7.TabIndex = 18;
             this.label7.Text = "试样直径：";
             // 
@@ -482,10 +493,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label22.AutoSize = true;
-            this.label22.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label22.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label22.Location = new System.Drawing.Point(8, 59);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(93, 16);
+            this.label22.Size = new System.Drawing.Size(88, 16);
             this.label22.TabIndex = 18;
             this.label22.Text = "试样名称：";
             // 
@@ -495,7 +506,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbReNum.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txbReNum.Location = new System.Drawing.Point(103, 204);
+            this.txbReNum.Location = new System.Drawing.Point(101, 204);
             this.txbReNum.Name = "txbReNum";
             this.txbReNum.ReadOnly = true;
             this.txbReNum.Size = new System.Drawing.Size(194, 26);
@@ -508,10 +519,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label11.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label11.Location = new System.Drawing.Point(8, 207);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(93, 16);
+            this.label11.Size = new System.Drawing.Size(88, 16);
             this.label11.TabIndex = 19;
             this.label11.Text = "重复次数：";
             // 
@@ -521,10 +532,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label19.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label19.Location = new System.Drawing.Point(8, 119);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(93, 16);
+            this.label19.Size = new System.Drawing.Size(88, 16);
             this.label19.TabIndex = 23;
             this.label19.Text = "试样高度：";
             // 
@@ -534,7 +545,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbFrom.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txbFrom.Location = new System.Drawing.Point(103, 175);
+            this.txbFrom.Location = new System.Drawing.Point(101, 175);
             this.txbFrom.Name = "txbFrom";
             this.txbFrom.ReadOnly = true;
             this.txbFrom.Size = new System.Drawing.Size(194, 26);
@@ -573,7 +584,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txbPersonName.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txbPersonName.Location = new System.Drawing.Point(103, 145);
+            this.txbPersonName.Location = new System.Drawing.Point(101, 145);
             this.txbPersonName.Name = "txbPersonName";
             this.txbPersonName.ReadOnly = true;
             this.txbPersonName.Size = new System.Drawing.Size(194, 26);
@@ -599,10 +610,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label13.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label13.Location = new System.Drawing.Point(8, 148);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(93, 16);
+            this.label13.Size = new System.Drawing.Size(88, 16);
             this.label13.TabIndex = 20;
             this.label13.Text = "测试人员：";
             // 
@@ -612,37 +623,37 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label12.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label12.Location = new System.Drawing.Point(8, 177);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(93, 16);
+            this.label12.Size = new System.Drawing.Size(88, 16);
             this.label12.TabIndex = 21;
             this.label12.Text = "测试单位：";
             // 
-            // btnStartHeat
+            // btnSettingFurnaceTemperature
             // 
-            this.btnStartHeat.Font = new System.Drawing.Font("宋体", 12F);
-            this.btnStartHeat.Location = new System.Drawing.Point(205, 175);
-            this.btnStartHeat.Name = "btnStartHeat";
-            this.btnStartHeat.Size = new System.Drawing.Size(110, 47);
-            this.btnStartHeat.TabIndex = 24;
-            this.btnStartHeat.Text = "设定温度";
-            this.btnStartHeat.UseVisualStyleBackColor = true;
-            this.btnStartHeat.Click += new System.EventHandler(this.btnStartHeat_Click);
+            this.btnSettingFurnaceTemperature.Font = new System.Drawing.Font("宋体", 12F);
+            this.btnSettingFurnaceTemperature.Location = new System.Drawing.Point(205, 175);
+            this.btnSettingFurnaceTemperature.Name = "btnSettingFurnaceTemperature";
+            this.btnSettingFurnaceTemperature.Size = new System.Drawing.Size(110, 47);
+            this.btnSettingFurnaceTemperature.TabIndex = 24;
+            this.btnSettingFurnaceTemperature.Text = "设定温度";
+            this.btnSettingFurnaceTemperature.UseVisualStyleBackColor = true;
+            this.btnSettingFurnaceTemperature.Click += new System.EventHandler(this.btnSettingFurnaceTemperature_Click);
             // 
-            // setTemTxt
+            // txtTargetTemperature
             // 
-            this.setTemTxt.BackColor = System.Drawing.SystemColors.MenuText;
-            this.setTemTxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 42F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.setTemTxt.ForeColor = System.Drawing.SystemColors.Window;
-            this.setTemTxt.Location = new System.Drawing.Point(17, 159);
-            this.setTemTxt.Multiline = true;
-            this.setTemTxt.Name = "setTemTxt";
-            this.setTemTxt.ReadOnly = true;
-            this.setTemTxt.Size = new System.Drawing.Size(184, 71);
-            this.setTemTxt.TabIndex = 22;
-            this.setTemTxt.Text = "1000";
-            this.setTemTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTargetTemperature.BackColor = System.Drawing.SystemColors.MenuText;
+            this.txtTargetTemperature.Font = new System.Drawing.Font("Microsoft Sans Serif", 42F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTargetTemperature.ForeColor = System.Drawing.SystemColors.Window;
+            this.txtTargetTemperature.Location = new System.Drawing.Point(17, 159);
+            this.txtTargetTemperature.Multiline = true;
+            this.txtTargetTemperature.Name = "txtTargetTemperature";
+            this.txtTargetTemperature.ReadOnly = true;
+            this.txtTargetTemperature.Size = new System.Drawing.Size(184, 71);
+            this.txtTargetTemperature.TabIndex = 22;
+            this.txtTargetTemperature.Text = "1000";
+            this.txtTargetTemperature.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label24
             // 
@@ -654,17 +665,17 @@
             this.label24.TabIndex = 9;
             this.label24.Text = "设定温度(℃):";
             // 
-            // nowTemLbl
+            // lblCurrentTemperature
             // 
-            this.nowTemLbl.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.nowTemLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 42F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nowTemLbl.ForeColor = System.Drawing.Color.Red;
-            this.nowTemLbl.Location = new System.Drawing.Point(21, 43);
-            this.nowTemLbl.Name = "nowTemLbl";
-            this.nowTemLbl.Size = new System.Drawing.Size(246, 67);
-            this.nowTemLbl.TabIndex = 16;
-            this.nowTemLbl.Text = "----";
-            this.nowTemLbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCurrentTemperature.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.lblCurrentTemperature.Font = new System.Drawing.Font("Microsoft Sans Serif", 42F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCurrentTemperature.ForeColor = System.Drawing.Color.Red;
+            this.lblCurrentTemperature.Location = new System.Drawing.Point(21, 43);
+            this.lblCurrentTemperature.Name = "lblCurrentTemperature";
+            this.lblCurrentTemperature.Size = new System.Drawing.Size(294, 67);
+            this.lblCurrentTemperature.TabIndex = 16;
+            this.lblCurrentTemperature.Text = "----";
+            this.lblCurrentTemperature.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lable1
             // 
@@ -681,9 +692,9 @@
             this.panel3.Controls.Add(this.selectTabControl);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(335, 2);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(756, 579);
+            this.panel3.Size = new System.Drawing.Size(756, 584);
             this.panel3.TabIndex = 1;
             // 
             // selectTabControl
@@ -695,10 +706,10 @@
             this.selectTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.selectTabControl.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.selectTabControl.Location = new System.Drawing.Point(0, 0);
-            this.selectTabControl.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.selectTabControl.Margin = new System.Windows.Forms.Padding(2);
             this.selectTabControl.Name = "selectTabControl";
             this.selectTabControl.SelectedIndex = 0;
-            this.selectTabControl.Size = new System.Drawing.Size(756, 579);
+            this.selectTabControl.Size = new System.Drawing.Size(756, 584);
             this.selectTabControl.TabIndex = 0;
             this.selectTabControl.SelectedIndexChanged += new System.EventHandler(this.selectTabControl_SelectedIndexChanged);
             // 
@@ -707,10 +718,10 @@
             this.tabPage1.Controls.Add(this.splitContainer1);
             this.tabPage1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tabPage1.Location = new System.Drawing.Point(4, 26);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tabPage1.Size = new System.Drawing.Size(748, 549);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(2);
+            this.tabPage1.Size = new System.Drawing.Size(748, 554);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "高温抗压强度";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -720,7 +731,7 @@
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.Location = new System.Drawing.Point(2, 2);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -739,8 +750,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.chartPressure);
-            this.splitContainer1.Size = new System.Drawing.Size(744, 545);
-            this.splitContainer1.SplitterDistance = 180;
+            this.splitContainer1.Size = new System.Drawing.Size(744, 550);
+            this.splitContainer1.SplitterDistance = 144;
             this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -852,7 +863,7 @@
             legend1.Name = "Legend1";
             this.chartPressure.Legends.Add(legend1);
             this.chartPressure.Location = new System.Drawing.Point(0, 0);
-            this.chartPressure.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chartPressure.Margin = new System.Windows.Forms.Padding(2);
             this.chartPressure.Name = "chartPressure";
             series1.BorderWidth = 3;
             series1.ChartArea = "ChartArea1";
@@ -863,7 +874,7 @@
             series1.MarkerColor = System.Drawing.Color.Red;
             series1.Name = "抗压强度";
             this.chartPressure.Series.Add(series1);
-            this.chartPressure.Size = new System.Drawing.Size(744, 362);
+            this.chartPressure.Size = new System.Drawing.Size(744, 403);
             this.chartPressure.TabIndex = 0;
             this.chartPressure.Text = "chart1";
             title1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -875,10 +886,10 @@
             // 
             this.tabPage2.Controls.Add(this.splitContainer2);
             this.tabPage2.Location = new System.Drawing.Point(4, 26);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tabPage2.Size = new System.Drawing.Size(748, 549);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
+            this.tabPage2.Size = new System.Drawing.Size(748, 554);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "膨胀力测试";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -888,7 +899,7 @@
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer2.Location = new System.Drawing.Point(2, 2);
-            this.splitContainer2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -907,8 +918,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.chartPengZhang);
-            this.splitContainer2.Size = new System.Drawing.Size(744, 545);
-            this.splitContainer2.SplitterDistance = 180;
+            this.splitContainer2.Size = new System.Drawing.Size(744, 550);
+            this.splitContainer2.SplitterDistance = 144;
             this.splitContainer2.SplitterWidth = 3;
             this.splitContainer2.TabIndex = 1;
             // 
@@ -1020,7 +1031,7 @@
             legend2.Name = "Legend1";
             this.chartPengZhang.Legends.Add(legend2);
             this.chartPengZhang.Location = new System.Drawing.Point(0, 0);
-            this.chartPengZhang.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chartPengZhang.Margin = new System.Windows.Forms.Padding(2);
             this.chartPengZhang.Name = "chartPengZhang";
             series2.BorderWidth = 3;
             series2.ChartArea = "ChartArea1";
@@ -1031,7 +1042,7 @@
             series2.MarkerColor = System.Drawing.Color.Red;
             series2.Name = "膨胀力";
             this.chartPengZhang.Series.Add(series2);
-            this.chartPengZhang.Size = new System.Drawing.Size(744, 362);
+            this.chartPengZhang.Size = new System.Drawing.Size(744, 403);
             this.chartPengZhang.TabIndex = 0;
             this.chartPengZhang.Text = "chart1";
             title2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1043,10 +1054,10 @@
             // 
             this.tabPage3.Controls.Add(this.splitContainer3);
             this.tabPage3.Location = new System.Drawing.Point(4, 26);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage3.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tabPage3.Size = new System.Drawing.Size(748, 549);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(2);
+            this.tabPage3.Size = new System.Drawing.Size(748, 554);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "耐高温时间测试";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -1056,7 +1067,7 @@
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer3.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer3.Location = new System.Drawing.Point(2, 2);
-            this.splitContainer3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer3.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer3.Name = "splitContainer3";
             this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -1072,8 +1083,8 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.chartBalancePress);
-            this.splitContainer3.Size = new System.Drawing.Size(744, 545);
-            this.splitContainer3.SplitterDistance = 180;
+            this.splitContainer3.Size = new System.Drawing.Size(744, 550);
+            this.splitContainer3.SplitterDistance = 144;
             this.splitContainer3.SplitterWidth = 3;
             this.splitContainer3.TabIndex = 1;
             // 
@@ -1153,7 +1164,7 @@
             legend3.Name = "Legend1";
             this.chartBalancePress.Legends.Add(legend3);
             this.chartBalancePress.Location = new System.Drawing.Point(0, 0);
-            this.chartBalancePress.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chartBalancePress.Margin = new System.Windows.Forms.Padding(2);
             this.chartBalancePress.Name = "chartBalancePress";
             series3.BorderWidth = 3;
             series3.ChartArea = "ChartArea1";
@@ -1164,7 +1175,7 @@
             series3.MarkerColor = System.Drawing.Color.Red;
             series3.Name = "耐高温时间";
             this.chartBalancePress.Series.Add(series3);
-            this.chartBalancePress.Size = new System.Drawing.Size(744, 362);
+            this.chartBalancePress.Size = new System.Drawing.Size(744, 403);
             this.chartBalancePress.TabIndex = 0;
             this.chartBalancePress.Text = "chart1";
             title3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1176,9 +1187,9 @@
             // 
             this.tabPage4.Controls.Add(this.splitContainer4);
             this.tabPage4.Location = new System.Drawing.Point(4, 26);
-            this.tabPage4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage4.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(748, 549);
+            this.tabPage4.Size = new System.Drawing.Size(748, 554);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "高温急热膨胀率";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1188,7 +1199,7 @@
             this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer4.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer4.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer4.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer4.Name = "splitContainer4";
             this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -1204,8 +1215,8 @@
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.chartExpansionRate);
-            this.splitContainer4.Size = new System.Drawing.Size(748, 549);
-            this.splitContainer4.SplitterDistance = 180;
+            this.splitContainer4.Size = new System.Drawing.Size(748, 554);
+            this.splitContainer4.SplitterDistance = 144;
             this.splitContainer4.SplitterWidth = 3;
             this.splitContainer4.TabIndex = 0;
             // 
@@ -1285,7 +1296,7 @@
             legend4.Name = "Legend1";
             this.chartExpansionRate.Legends.Add(legend4);
             this.chartExpansionRate.Location = new System.Drawing.Point(0, 0);
-            this.chartExpansionRate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chartExpansionRate.Margin = new System.Windows.Forms.Padding(2);
             this.chartExpansionRate.Name = "chartExpansionRate";
             series4.BorderWidth = 3;
             series4.ChartArea = "ChartArea1";
@@ -1296,7 +1307,7 @@
             series4.MarkerColor = System.Drawing.Color.Red;
             series4.Name = "膨胀率";
             this.chartExpansionRate.Series.Add(series4);
-            this.chartExpansionRate.Size = new System.Drawing.Size(748, 366);
+            this.chartExpansionRate.Size = new System.Drawing.Size(748, 407);
             this.chartExpansionRate.TabIndex = 1;
             this.chartExpansionRate.Text = "chart1";
             title4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1306,67 +1317,67 @@
             // 
             // panel4
             // 
-            this.panel4.Controls.Add(this.btnStop);
-            this.panel4.Controls.Add(this.btnStart);
-            this.panel4.Controls.Add(this.btnSave);
-            this.panel4.Controls.Add(this.btnOpenFile);
+            this.panel4.Controls.Add(this.btnReset);
+            this.panel4.Controls.Add(this.btnStartTest);
+            this.panel4.Controls.Add(this.btnSaveData);
+            this.panel4.Controls.Add(this.btnDataReader);
             this.panel4.Controls.Add(this.groupBox2);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(1095, 2);
-            this.panel4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel4.Margin = new System.Windows.Forms.Padding(2);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(149, 579);
+            this.panel4.Size = new System.Drawing.Size(149, 584);
             this.panel4.TabIndex = 2;
             // 
-            // btnStop
+            // btnReset
             // 
-            this.btnStop.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnStop.Location = new System.Drawing.Point(13, 245);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(127, 61);
-            this.btnStop.TabIndex = 16;
-            this.btnStop.Text = "复     位";
-            this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            this.btnReset.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnReset.Location = new System.Drawing.Point(13, 245);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(127, 61);
+            this.btnReset.TabIndex = 16;
+            this.btnReset.Text = "复     位";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
-            // btnStart
+            // btnStartTest
             // 
-            this.btnStart.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnStart.Location = new System.Drawing.Point(13, 147);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(127, 61);
-            this.btnStart.TabIndex = 17;
-            this.btnStart.Text = "开始测试";
-            this.btnStart.UseVisualStyleBackColor = true;
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            this.btnStartTest.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnStartTest.Location = new System.Drawing.Point(13, 147);
+            this.btnStartTest.Name = "btnStartTest";
+            this.btnStartTest.Size = new System.Drawing.Size(127, 61);
+            this.btnStartTest.TabIndex = 17;
+            this.btnStartTest.Text = "开始测试";
+            this.btnStartTest.UseVisualStyleBackColor = true;
+            this.btnStartTest.Click += new System.EventHandler(this.btnStartTest_Click);
             // 
-            // btnSave
+            // btnSaveData
             // 
-            this.btnSave.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSave.Location = new System.Drawing.Point(13, 336);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(127, 61);
-            this.btnSave.TabIndex = 14;
-            this.btnSave.Text = "保存数据";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            this.btnSaveData.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnSaveData.Location = new System.Drawing.Point(13, 336);
+            this.btnSaveData.Name = "btnSaveData";
+            this.btnSaveData.Size = new System.Drawing.Size(127, 61);
+            this.btnSaveData.TabIndex = 14;
+            this.btnSaveData.Text = "保存数据";
+            this.btnSaveData.UseVisualStyleBackColor = true;
+            this.btnSaveData.Click += new System.EventHandler(this.btnSaveData_Click);
             // 
-            // btnOpenFile
+            // btnDataReader
             // 
-            this.btnOpenFile.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnOpenFile.Location = new System.Drawing.Point(13, 426);
-            this.btnOpenFile.Name = "btnOpenFile";
-            this.btnOpenFile.Size = new System.Drawing.Size(127, 61);
-            this.btnOpenFile.TabIndex = 15;
-            this.btnOpenFile.Text = "打开文件";
-            this.btnOpenFile.UseVisualStyleBackColor = true;
-            this.btnOpenFile.Click += new System.EventHandler(this.btnOpenFile_Click);
+            this.btnDataReader.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnDataReader.Location = new System.Drawing.Point(13, 426);
+            this.btnDataReader.Name = "btnDataReader";
+            this.btnDataReader.Size = new System.Drawing.Size(127, 61);
+            this.btnDataReader.TabIndex = 15;
+            this.btnDataReader.Text = "查看数据";
+            this.btnDataReader.UseVisualStyleBackColor = true;
+            this.btnDataReader.Click += new System.EventHandler(this.btnDataReader_Click);
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.btn0);
-            this.groupBox2.Controls.Add(this.btnJiao);
-            this.groupBox2.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.groupBox2.Controls.Add(this.btnBackToZero);
+            this.groupBox2.Controls.Add(this.btnCalibration);
+            this.groupBox2.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Bold);
             this.groupBox2.Location = new System.Drawing.Point(1, 23);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(150, 107);
@@ -1374,32 +1385,43 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "标定信息";
             // 
-            // btn0
+            // btnBackToZero
             // 
-            this.btn0.Font = new System.Drawing.Font("宋体", 12F);
-            this.btn0.Location = new System.Drawing.Point(81, 37);
-            this.btn0.Name = "btn0";
-            this.btn0.Size = new System.Drawing.Size(57, 54);
-            this.btn0.TabIndex = 11;
-            this.btn0.Text = "电机归零";
-            this.btn0.UseVisualStyleBackColor = true;
-            this.btn0.Click += new System.EventHandler(this.btn0_Click);
+            this.btnBackToZero.Font = new System.Drawing.Font("宋体", 12F);
+            this.btnBackToZero.Location = new System.Drawing.Point(81, 37);
+            this.btnBackToZero.Name = "btnBackToZero";
+            this.btnBackToZero.Size = new System.Drawing.Size(57, 54);
+            this.btnBackToZero.TabIndex = 11;
+            this.btnBackToZero.Text = "电机归零";
+            this.btnBackToZero.UseVisualStyleBackColor = true;
+            this.btnBackToZero.Click += new System.EventHandler(this.btnBackToZero_Click);
             // 
-            // btnJiao
+            // btnCalibration
             // 
-            this.btnJiao.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnJiao.Location = new System.Drawing.Point(6, 37);
-            this.btnJiao.Name = "btnJiao";
-            this.btnJiao.Size = new System.Drawing.Size(57, 54);
-            this.btnJiao.TabIndex = 10;
-            this.btnJiao.Text = "标定";
-            this.btnJiao.UseVisualStyleBackColor = true;
-            this.btnJiao.Click += new System.EventHandler(this.btnJiao_Click);
+            this.btnCalibration.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnCalibration.Location = new System.Drawing.Point(13, 37);
+            this.btnCalibration.Name = "btnCalibration";
+            this.btnCalibration.Size = new System.Drawing.Size(57, 54);
+            this.btnCalibration.TabIndex = 10;
+            this.btnCalibration.Text = "标定";
+            this.btnCalibration.UseVisualStyleBackColor = true;
+            this.btnCalibration.Click += new System.EventHandler(this.btnCalibration_Click);
             // 
             // tmCheckTem
             // 
             this.tmCheckTem.Interval = 1000;
             this.tmCheckTem.Tick += new System.EventHandler(this.tmCheckTem_Tick);
+            // 
+            // btnCalcForce
+            // 
+            this.btnCalcForce.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.btnCalcForce.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnCalcForce.Image = ((System.Drawing.Image)(resources.GetObject("btnCalcForce.Image")));
+            this.btnCalcForce.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCalcForce.Name = "btnCalcForce";
+            this.btnCalcForce.Size = new System.Drawing.Size(48, 22);
+            this.btnCalcForce.Text = "力计算";
+            this.btnCalcForce.Click += new System.EventHandler(this.btnCalcForce_Click);
             // 
             // FormMain
             // 
@@ -1409,7 +1431,7 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.statusStrip1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FormMain";
             this.Text = "树脂砂高温测试仪";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
@@ -1475,7 +1497,7 @@
         private System.Windows.Forms.ToolStripLabel lblHeatDis;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripLabel toolStripLabel3;
-        private System.Windows.Forms.ToolStripLabel adviceLB;
+        private System.Windows.Forms.ToolStripLabel lblStatusTip;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel2;
@@ -1527,21 +1549,21 @@
         private System.Windows.Forms.TextBox txtSpecimenHeight;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Button btnStartHeat;
-        private System.Windows.Forms.TextBox setTemTxt;
+        private System.Windows.Forms.Button btnSettingFurnaceTemperature;
+        private System.Windows.Forms.TextBox txtTargetTemperature;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Label nowTemLbl;
+        private System.Windows.Forms.Label lblCurrentTemperature;
         private System.Windows.Forms.Label lable1;
-        private System.Windows.Forms.Button setDeviceBtn;
-        private System.Windows.Forms.Button setParaBtn;
+        private System.Windows.Forms.Button btnSettings;
+        private System.Windows.Forms.Button btnSampleInfoSetting;
         private System.Windows.Forms.ToolStripStatusLabel lblReceivedInfo;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button btn0;
-        private System.Windows.Forms.Button btnJiao;
-        private System.Windows.Forms.Button btnStop;
-        private System.Windows.Forms.Button btnStart;
-        private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Button btnOpenFile;
+        private System.Windows.Forms.Button btnBackToZero;
+        private System.Windows.Forms.Button btnCalibration;
+        private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.Button btnStartTest;
+        private System.Windows.Forms.Button btnSaveData;
+        private System.Windows.Forms.Button btnDataReader;
         private System.Windows.Forms.Timer tmCheckTem;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.TabControl selectTabControl;
@@ -1561,6 +1583,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtSpecimenDiameter;
+        private System.Windows.Forms.ToolStripStatusLabel lblDebugInfo;
+        private System.Windows.Forms.ToolStripButton btnCalcForce;
     }
 }
 

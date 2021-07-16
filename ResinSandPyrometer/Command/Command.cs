@@ -9,107 +9,83 @@ namespace ResinSandPyrometer
 {
     public class Command
     {
+        private CommandCode code = CommandCode.NONE;
 
-        private CommandCode cmdCode = CommandCode.NONE;
-
-        public CommandCode CmdCode
+        public CommandCode Code
         {
-            get { return cmdCode; }
-            set { cmdCode = value; }
+            get { return this.code; }
+            set { this.code = value; }
         }
 
         private long data = 0;
-        private string dateString = "";
+        private string dataString = "";
 
         public Command(byte[] buffer)
         {
-            byte[] checkBuffer = new byte[3];
-            byte[] checkBuffer1 = new byte[4];
-
-            checkBuffer = BytesOperator.CutBuffer(buffer, 1, 3);
-            checkBuffer1 = BytesOperator.CutBuffer(buffer, 0, 4);
+            byte[] bytesOfData = BytesOperator.CutBuffer(buffer, 1, 3);
 
             if (buffer.Length == 5)//主机发送指令长度
             {
-                string comdTemp = Encoding.Default.GetString(BytesOperator.CutBuffer(buffer, 0, 1));
+                string commandType = Encoding.ASCII.GetString(BytesOperator.CutBuffer(buffer, 0, 1));
 
-                if (comdTemp == "#")//返回值正确指令#
+                if (commandType == "#")//返回值正确指令#
                 {
-                    comdTemp = "Sharp";
+                    commandType = "Sharp";
                 }
 
-                if (comdTemp == "Z")//#7指令
+                if (commandType == "Z")//#7指令
                 {
-                    comdTemp = "_7";
+                    commandType = "_7";
                 }
-                if (comdTemp == "?")//返回值错误指令
+                if (commandType == "?")//返回值错误指令
                 {
-                    comdTemp = "Error";
+                    commandType = "Error";
                 }
 
-                switch (comdTemp)//从机指令
+                switch (commandType)//从机指令
                 {
                     case "R":
-                        this.cmdCode = CommandCode.R;
-                        this.dateString = Encoding.Default.GetString(checkBuffer);
+                        this.code = CommandCode.R;
                         break;
                     case "C":
-                        this.cmdCode = CommandCode.C;
-                        this.dateString = Encoding.Default.GetString(checkBuffer);
+                        this.code = CommandCode.C;
                         break;
                     case "F":
-                        this.cmdCode = CommandCode.F;
-                        this.data = NumberSystem.BinaryToDecimal_Complement(checkBuffer, 16);
-                        this.dateString = Encoding.Default.GetString(checkBuffer);
+                        this.code = CommandCode.F;
+                        this.data = NumberSystem.BinaryToDecimal_Complement(bytesOfData, 16);
                         break;
                     case "E":
-                        this.cmdCode = CommandCode.E;
-                        this.dateString = Encoding.Default.GetString(checkBuffer);
+                        this.code = CommandCode.E;
                         break;
                     case "O":
-                        this.cmdCode = CommandCode.O;
-                        this.dateString = Encoding.Default.GetString(checkBuffer);
+                        this.code = CommandCode.O;
                         break;
                     case "K":
-                        this.cmdCode = CommandCode.K;
-                        this.dateString = Encoding.Default.GetString(checkBuffer);
+                        this.code = CommandCode.K;
                         break;
                     case "L":
-                        this.cmdCode = CommandCode.L;
-                        this.dateString = Encoding.Default.GetString(checkBuffer);
+                        this.code = CommandCode.L;
                         break;
                     case "P":
-                        this.cmdCode = CommandCode.P;
-                        this.dateString = Encoding.Default.GetString(checkBuffer);
+                        this.code = CommandCode.P;
                         break;
                     case "G":
-                        this.cmdCode = CommandCode.G;
-                        this.dateString = Encoding.Default.GetString(checkBuffer);
+                        this.code = CommandCode.G;
                         break;
-
                     case "Sharp":
-                        this.cmdCode = CommandCode.Sharp;
-                        this.dateString = Encoding.Default.GetString(checkBuffer);
+                        this.code = CommandCode.Sharp;
                         break;
                     case "Error":
-                        this.cmdCode = CommandCode.Error;
-                        this.dateString = Encoding.Default.GetString(checkBuffer);
+                        this.code = CommandCode.Error;
                         break;
                     case "_7":
-                        this.cmdCode = CommandCode._7;
-                        this.dateString = Encoding.Default.GetString(checkBuffer1);
-                        break;
-
-
-                    default:
+                        this.code = CommandCode._7;
                         break;
                 }
-
+                this.dataString = BitConverter.ToString(bytesOfData);
+                if(this.code == CommandCode._7) this.dataString = BitConverter.ToString(BytesOperator.CutBuffer(buffer, 0, 4));
             }
-
-
         }
-
 
         //返回F的数据
         public long GetData()
@@ -120,7 +96,7 @@ namespace ResinSandPyrometer
         //返回字符串
         public string GetDataString()
         {
-            return this.dateString;
+            return this.dataString;
         }
 
     }

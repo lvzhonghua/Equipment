@@ -31,7 +31,6 @@ namespace ResinSandPyrometer.Common
         /// </summary>
         public static float SpecimenHeight { get; set; }
 
-
         /// <summary>
         /// 实验人员
         /// </summary>
@@ -71,7 +70,6 @@ namespace ResinSandPyrometer.Common
         /// 保温时间
         /// </summary>
         public static int SoakingTime { get; set; }
-
 
         /// <summary>
         /// 预载荷力
@@ -113,7 +111,6 @@ namespace ResinSandPyrometer.Common
         /// </summary>
         public static int RepeatTimes { get; set; }
 
-
         private static int testType = 0;
         public static int TestType
         {
@@ -128,18 +125,18 @@ namespace ResinSandPyrometer.Common
             set { points = value; }
         }
 
-        public static string TstTime
+        public static string TestTime
         {
             get { return DateTime.Now.ToLongDateString().ToString(); }
         }
 
-        public static void InitResult(int tstType)
+        public static void InitResult(int type)
         {
-            testType = tstType;
+            testType = type;
             points.Clear();
         }
 
-        public static string GetTypeStr()
+        public static string GetLabType()
         {
             string result= "高温抗压强度试验";
             switch (testType)

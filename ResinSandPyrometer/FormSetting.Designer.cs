@@ -1,6 +1,6 @@
 ﻿namespace ResinSandPyrometer
 {
-    partial class FormParameterSetting
+    partial class FormSetting
     {
         /// <summary>
         /// Required designer variable.

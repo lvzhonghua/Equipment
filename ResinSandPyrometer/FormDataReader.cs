@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace ResinSandPyrometer
 {
-    public partial class FormOpenFile : Form
+    public partial class FormDataReader : Form
     {
         private int testCount = 0;
         int pathCount = 0;
@@ -36,7 +36,7 @@ namespace ResinSandPyrometer
         //        return "条件热稳定性试验";
         //}
 
-        public FormOpenFile()
+        public FormDataReader()
         {
             InitializeComponent();
 
