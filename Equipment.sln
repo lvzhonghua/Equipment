@@ -7,7 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResinSandPyrometer", "Resin
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "高温强度仪", "高温强度仪", "{15363B25-2F07-41CC-B57A-05D372B17A43}"
 	ProjectSection(SolutionItems) = preProject
-		ZGY_V30_RAM.doc = ZGY_V30_RAM.doc
+		2019数字式LVDT位移传感器编程手册2.0.doc = 2019数字式LVDT位移传感器编程手册2.0.doc
+		AIBUS通讯协议说明V80.pdf = AIBUS通讯协议说明V80.pdf
+		ZGY_V30_RAM.docx = ZGY_V30_RAM.docx
+		ZGY_V30_RAM_最新.docx = ZGY_V30_RAM_最新.docx
+		高温强度仪-程序结构.md = 高温强度仪-程序结构.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "高温发气仪", "高温发气仪", "{50DA38D6-4AE4-4706-8740-B26730F99BB1}"

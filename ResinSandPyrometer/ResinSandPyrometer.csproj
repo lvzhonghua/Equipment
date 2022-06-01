@@ -50,13 +50,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Command\BytesOperator.cs" />
-    <Compile Include="Command\Command.cs" />
-    <Compile Include="Command\CommandCode.cs" />
-    <Compile Include="Command\NumberSystem.cs" />
+    <Compile Include="CommandAndReply\CommandExecutor.cs" />
+    <Compile Include="CommandAndReply\CommandHandler.cs" />
+    <Compile Include="CommandAndReply\FurnaceDesendDistance.cs" />
+    <Compile Include="CommandAndReply\FurnaceDesendSpeed.cs" />
+    <Compile Include="CommandAndReply\MotorRunOrStop.cs" />
+    <Compile Include="CommandAndReply\MotorSpeed.cs" />
+    <Compile Include="CommandAndReply\MotorTestType.cs" />
+    <Compile Include="CommandAndReply\MotorUpOrDown.cs" />
+    <Compile Include="CommandAndReply\Slave_Reply.cs" />
+    <Compile Include="CommandAndReply\Slave_ReplyAnalyzer.cs" />
+    <Compile Include="CommandAndReply\Slave_ReplyCode.cs" />
+    <Compile Include="CommandAndReply\Temperature_ReplayAnalyzer.cs" />
+    <Compile Include="CommandAndReply\Temperature_Reply.cs" />
+    <Compile Include="CommandAndReply\Temperature_Reply_Warning.cs" />
+    <Compile Include="CommandAndReply\TestType.cs" />
+    <Compile Include="Common\BytesOperator.cs" />
+    <Compile Include="CommandAndReply\Command.cs" />
+    <Compile Include="CommandAndReply\CommandCode.cs" />
+    <Compile Include="CommandAndReply\CommandGenerator.cs" />
+    <Compile Include="Common\NumberSystem.cs" />
     <Compile Include="Common\CRC.cs" />
     <Compile Include="Common\Enums.cs" />
     <Compile Include="Common\SampleLoggerOnTextFile.cs" />
+    <Compile Include="Common\SerialPortManager.cs" />
     <Compile Include="Common\Setting.cs" />
     <Compile Include="Common\SettingReaderAndWriter.cs" />
     <Compile Include="FormCalcForce.cs">
@@ -70,6 +87,12 @@
     </Compile>
     <Compile Include="FormCalibration.Designer.cs">
       <DependentUpon>FormCalibration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormDebug.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDebug.designer.cs">
+      <DependentUpon>FormDebug.cs</DependentUpon>
     </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
@@ -111,6 +134,9 @@
     <EmbeddedResource Include="FormCalibration.resx">
       <DependentUpon>FormCalibration.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormDebug.resx">
+      <DependentUpon>FormDebug.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -131,6 +157,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -147,6 +174,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="dvdprofiler_128px_1126212_easyicon.net.ico" />
+    <None Include="Resources\校准_red_16.png" />
+    <None Include="Resources\发送_16.png" />
+    <None Include="Resources\断开链接2_16.png" />
+    <None Include="Resources\连接_红色_16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

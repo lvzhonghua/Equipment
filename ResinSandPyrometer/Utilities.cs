@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ResinSandPyrometer.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,29 @@ namespace ResinSandPyrometer
             double result = voltage * revise * sensorMax *(2500.0f / sensorMV) / (8388607.0f * 128.0f * sensibility) * 9.81f;
 
             return result;
+        }
+
+
+        public static double GetForceFromVoltage(float voltage, float sensorMax, float sensorMV, float sensibility)
+        {
+            double result = voltage * sensorMax * (2500.0f / sensorMV) / (8388607.0f * 128.0f * sensibility) * 9.81f;
+
+            return result;
+        }
+
+
+        public static double GetForceFromVoltage(byte[] bytes, float sensorMax, float sensorMV, float sensibility, float revise)
+        {
+            long voltage = NumberSystem.BinaryToDecimal_Complement(bytes, 16);
+
+            return Utilities.GetForceFromVoltage((float)voltage,sensorMax, sensorMV, sensibility, revise);
+        }
+
+        public static double GetForceFromVoltage(byte[] bytes)
+        {
+            long voltage = NumberSystem.BinaryToDecimal_Complement(bytes, 16);
+
+            return Utilities.GetForceFromVoltage((float)voltage, Setting.SensorMax, Setting.SensorMV, Setting.SensorSys, Setting.TxtRevise);
         }
     }
 }

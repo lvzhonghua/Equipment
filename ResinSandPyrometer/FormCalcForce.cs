@@ -8,10 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using ResinSandPyrometer.Common;
+
 namespace ResinSandPyrometer
 {
     public partial class FormCalcForce : Form
-    {
+    { 
         public FormCalcForce()
         {
             InitializeComponent();

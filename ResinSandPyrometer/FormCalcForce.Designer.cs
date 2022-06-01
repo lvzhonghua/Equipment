@@ -81,7 +81,7 @@ namespace ResinSandPyrometer
             this.txtSensorMax.Name = "txtSensorMax";
             this.txtSensorMax.Size = new System.Drawing.Size(139, 21);
             this.txtSensorMax.TabIndex = 1;
-            this.txtSensorMax.Text = "200";
+            this.txtSensorMax.Text = "20";
             // 
             // label3
             // 
@@ -210,7 +210,7 @@ namespace ResinSandPyrometer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(629, 156);
+            this.ClientSize = new System.Drawing.Size(561, 156);
             this.Controls.Add(this.txtWeight);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label9);

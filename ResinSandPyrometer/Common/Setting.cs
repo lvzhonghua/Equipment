@@ -44,7 +44,7 @@ namespace ResinSandPyrometer.Common
         /// <summary>
         /// 电机空载行程
         /// </summary>
-        public static float MotorIdlePath { get; set; }
+        public static float MotorIdlePath { get; set; } = 2.5f;
 
         /// <summary>
         /// 电机加载速度
@@ -89,22 +89,22 @@ namespace ResinSandPyrometer.Common
         /// <summary>
         /// 传感器最大量程
         /// </summary>
-        public static int SensorMax { get; set; }
+        public static int SensorMax { get; set; } = 20;
 
         /// <summary>
         /// 传感器灵敏度系数
         /// </summary>
-        public static float SensorSys { get; set; }
+        public static float SensorSys { get; set; } = 2;
 
         /// <summary>
         /// 供桥电压
         /// </summary>
-        public static int SensorMV { get; set; }
+        public static int SensorMV { get; set; } = 10;
 
         /// <summary>
         /// 校正
         /// </summary>
-        public static int TxtRevise { get; set; }
+        public static float TxtRevise { get; set; } = 1.0f;
 
         /// <summary>
         /// 重复次数
@@ -183,7 +183,7 @@ namespace ResinSandPyrometer.Common
             SensorMax = int.Parse(allSettings["SensorMax"]);
             SensorSys = float.Parse(allSettings["SensorSys"]);
             SensorMV = int.Parse(allSettings["SensorMV"]);
-            TxtRevise = int.Parse(allSettings["TxtRevise"]);
+            TxtRevise = float.Parse(allSettings["TxtRevise"]);
         }
 
         public static void Save(string key,string value)

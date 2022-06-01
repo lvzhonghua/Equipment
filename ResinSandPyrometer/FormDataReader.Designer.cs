@@ -124,11 +124,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.infoListBox.Font = new System.Drawing.Font("微软雅黑", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.infoListBox.FormattingEnabled = true;
+            this.infoListBox.IntegralHeight = false;
             this.infoListBox.ItemHeight = 20;
             this.infoListBox.Location = new System.Drawing.Point(2, 40);
             this.infoListBox.Margin = new System.Windows.Forms.Padding(2);
             this.infoListBox.Name = "infoListBox";
-            this.infoListBox.Size = new System.Drawing.Size(224, 644);
+            this.infoListBox.Size = new System.Drawing.Size(225, 657);
             this.infoListBox.TabIndex = 1;
             // 
             // btnPrint
