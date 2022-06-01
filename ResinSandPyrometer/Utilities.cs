@@ -33,7 +33,6 @@ namespace ResinSandPyrometer
             return result;
         }
 
-
         public static double GetForceFromVoltage(byte[] bytes, float sensorMax, float sensorMV, float sensibility, float revise)
         {
             long voltage = NumberSystem.BinaryToDecimal_Complement(bytes, 16);

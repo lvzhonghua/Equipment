@@ -11,7 +11,7 @@ namespace ResinSandPyrometer.CommandAndReply
     /// <summary>
     /// 温控仪回应解析器
     /// </summary>
-    public class Temperature_ReplayAnalyzer
+    public class Temperature_ReplyAnalyzer
     {
         public static Temperature_Reply Analyse(byte[] buffer)
         {

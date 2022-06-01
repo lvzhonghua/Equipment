@@ -52,6 +52,8 @@
   <ItemGroup>
     <Compile Include="CommandAndReply\CommandExecutor.cs" />
     <Compile Include="CommandAndReply\CommandHandler.cs" />
+    <Compile Include="CommandAndReply\Displacement_Reply.cs" />
+    <Compile Include="CommandAndReply\Displacement_ReplyAnalyzer.cs" />
     <Compile Include="CommandAndReply\FurnaceDesendDistance.cs" />
     <Compile Include="CommandAndReply\FurnaceDesendSpeed.cs" />
     <Compile Include="CommandAndReply\MotorRunOrStop.cs" />
@@ -61,7 +63,7 @@
     <Compile Include="CommandAndReply\Slave_Reply.cs" />
     <Compile Include="CommandAndReply\Slave_ReplyAnalyzer.cs" />
     <Compile Include="CommandAndReply\Slave_ReplyCode.cs" />
-    <Compile Include="CommandAndReply\Temperature_ReplayAnalyzer.cs" />
+    <Compile Include="CommandAndReply\Temperature_ReplyAnalyzer.cs" />
     <Compile Include="CommandAndReply\Temperature_Reply.cs" />
     <Compile Include="CommandAndReply\Temperature_Reply_Warning.cs" />
     <Compile Include="CommandAndReply\TestType.cs" />
