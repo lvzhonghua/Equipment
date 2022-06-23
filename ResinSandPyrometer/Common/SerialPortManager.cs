@@ -12,150 +12,220 @@ namespace ResinSandPyrometer.Common
     /// </summary>
     public class SerialPortManager
     {
-        private static SerialPort serialPort_DanPianJi;
-        private static SerialPort serialPort_WenKongYi;
-        private static SerialPort serialPort_WeiYi;
+        public static SerialPort SerialPort_Slave;              //单片机串口
+        public static SerialPort SerialPort_Temperature;    //温控仪串口
+        public static SerialPort SerialPort_Displacement;   //温控仪串口
 
-        public static void SetSerialPort(SerialPort danPianJi, SerialPort wenKongYi, SerialPort weiYi)
+        public static void OpenSerial_Slave(string portName)
         {
-            serialPort_DanPianJi = danPianJi;
-            serialPort_WenKongYi = wenKongYi;
-            serialPort_WeiYi = weiYi;
+            try
+            {
+                SerialPort_Slave = new SerialPort();
+                SerialPort_Slave.PortName = portName;//串口端口
+                SerialPort_Slave.BaudRate = 115200;//波特率
+                SerialPort_Slave.Parity = (Parity)Enum.Parse(typeof(Parity), (string)"None");//奇偶校验
+                SerialPort_Slave.DataBits = 8;//数据位
+                SerialPort_Slave.StopBits = (StopBits)Enum.Parse(typeof(StopBits), (string)"One");//停止位 
+                SerialPort_Slave.Handshake = (Handshake)Enum.Parse(typeof(Handshake), (string)"None");//握手协议即流控制方式
+                SerialPort_Slave.ReadTimeout = 2000; //超时读取异常
+
+                SerialPort_Slave.Open();
+            }
+            catch (Exception ex)
+            {
+                SampleLoggerOnTextFile.Log($"OpenSerialPort_Slave方法 打开单片机串口 出现异常：{ex.Message}");
+            }
+            
         }
 
-        public static void OpenDanPianJi()
+        public static void AddDataReceivedEventHandler_Slave(SerialDataReceivedEventHandler eventHandler)
         {
-            serialPort_DanPianJi.Open();
+            SerialPort_Slave.DataReceived += eventHandler;
         }
 
-        public static void AddDataReceivedEventHandler_DanPianJi(SerialDataReceivedEventHandler eventHandler)
+        public static void RemoveDataReceivedEventHandler_Slave(SerialDataReceivedEventHandler eventHandler)
         {
-            serialPort_DanPianJi.DataReceived += eventHandler;
+            SerialPort_Slave.DataReceived -= eventHandler;
         }
 
-        public static void RemoveDataReceivedEventHandler_DanPianJi(SerialDataReceivedEventHandler eventHandler)
+        public static void AddErrorReceivedEventHandler_Slave(SerialErrorReceivedEventHandler eventHandler)
         {
-            serialPort_DanPianJi.DataReceived -= eventHandler;
+            SerialPort_Slave.ErrorReceived += eventHandler;
         }
 
-        public static void AddErrorReceivedEventHandler_DanPianJi(SerialErrorReceivedEventHandler eventHandler)
+        public static void RemoveErrorReceivedEventHandler_Slave(SerialErrorReceivedEventHandler eventHandler)
         {
-            serialPort_DanPianJi.ErrorReceived += eventHandler;
+            SerialPort_Slave.ErrorReceived -= eventHandler;
         }
 
-        public static void RemoveErrorReceivedEventHandler_DanPianJi(SerialErrorReceivedEventHandler eventHandler)
+        public static void OpenSerial_Temperature(string portName)
         {
-            serialPort_DanPianJi.ErrorReceived -= eventHandler;
+            //由于温控仪与位移传感器共用一个串口，所以必须必须关闭一个，才能打开另一个
+            try
+            {
+                if (SerialPort_Displacement != null && SerialPort_Displacement.IsOpen == true)
+                {
+                    SerialPort_Displacement.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                SampleLoggerOnTextFile.Log($"OpenSerial_Temperature方法 关闭位移传感器串口 出现异常：{ex.Message}");
+            }
+
+            try
+            {
+                SerialPort_Temperature = new SerialPort();
+                SerialPort_Temperature.PortName = portName;                //COM口
+                SerialPort_Temperature.BaudRate = 19200;                     //波特率
+                SerialPort_Temperature.Parity = Parity.None;                   //校验位
+                SerialPort_Temperature.DataBits = 8;                             //数据位
+                SerialPort_Temperature.StopBits = StopBits.Two;             //停止位
+
+                SerialPort_Temperature.Open();
+            }
+            catch (Exception ex)
+            {
+                SampleLoggerOnTextFile.Log($"OpenSerial_Temperature方法 打开温控仪串口 出现异常：{ex.Message}");
+            }
+
         }
 
-        public static void OpenWenKongYi()
+        public static void OpenSerial_Displacement(string portName) 
         {
-            serialPort_WenKongYi.Open();
+            //由于温控仪与位移传感器共用一个串口，所以必须必须关闭一个，才能打开另一个
+
+            try
+            {
+                if (SerialPort_Temperature != null && SerialPort_Temperature.IsOpen == true)
+                {
+                    SerialPort_Temperature.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                SampleLoggerOnTextFile.Log($"OpenSerial_Displacement方法 关闭温控仪串口 出现异常：{ex.Message}");
+            }
+
+            try
+            {
+                SerialPort_Displacement = new SerialPort();
+                SerialPort_Displacement.PortName = portName; //串口
+                SerialPort_Displacement.BaudRate = 9600;//波特率
+                SerialPort_Displacement.Parity = Parity.None;//奇偶校验
+                SerialPort_Displacement.DataBits = 8;//数据位
+                SerialPort_Displacement.StopBits = (StopBits)Enum.Parse(typeof(StopBits), (string)"One");//停止位 
+                SerialPort_Displacement.Handshake = (Handshake)Enum.Parse(typeof(Handshake), (string)"None");//握手协议即流控制方式
+                SerialPort_Displacement.ReadTimeout = 2000;//超时读取异常
+
+                SerialPort_Displacement.Open();
+
+            }
+            catch (Exception ex)
+            {
+                SampleLoggerOnTextFile.Log($"OpenSerial_Displacement方法 打开位移串口串口 出现异常：{ex.Message}");
+            }
+
         }
 
-        public static void AddDataReceivedEventHandler_WenKongYi(SerialDataReceivedEventHandler eventHandler)
+        public static void AddDataReceivedEventHandler_Temperature(SerialDataReceivedEventHandler eventHandler)
         {
-            serialPort_WenKongYi.DataReceived += eventHandler;
+            SerialPort_Temperature.DataReceived += eventHandler;
         }
 
-        public static void RemoveDataReceivedEventHandler_WenKongYi(SerialDataReceivedEventHandler eventHandler)
+        public static void RemoveDataReceivedEventHandler_Temperature(SerialDataReceivedEventHandler eventHandler)
         {
-            serialPort_WenKongYi.DataReceived -= eventHandler;
+            SerialPort_Temperature.DataReceived -= eventHandler;
         }
 
-        public static void AddErrorReceivedEventHandler_WenKongYi(SerialErrorReceivedEventHandler eventHandler)
+        public static void AddErrorReceivedEventHandler_Temperature(SerialErrorReceivedEventHandler eventHandler)
         {
-            serialPort_WenKongYi.ErrorReceived += eventHandler;
+            SerialPort_Temperature.ErrorReceived += eventHandler;
         }
 
-        public static void RemoveErrorReceivedEventHandler_WenKongYi(SerialErrorReceivedEventHandler eventHandler)
+        public static void RemoveErrorReceivedEventHandler_Temperature(SerialErrorReceivedEventHandler eventHandler)
         {
-            serialPort_WenKongYi.ErrorReceived -= eventHandler;
+            SerialPort_Temperature.ErrorReceived -= eventHandler;
         }
 
-        public static void OpenWeiYi() 
+        public static void AddDataReceivedEventHandler_Displacement(SerialDataReceivedEventHandler eventHandler)
         {
-            serialPort_WeiYi.Open();
+            SerialPort_Displacement.DataReceived += eventHandler;
         }
 
-        public static void AddDataReceivedEventHandler_WeiYi(SerialDataReceivedEventHandler eventHandler)
+        public static void RemoveDataReceivedEventHandler_Displacement(SerialDataReceivedEventHandler eventHandler)
         {
-            serialPort_WeiYi.DataReceived += eventHandler;
+            SerialPort_Displacement.DataReceived -= eventHandler;
         }
 
-        public static void RemoveDataReceivedEventHandler_WeiYi(SerialDataReceivedEventHandler eventHandler)
+        public static void AddErrorReceivedEventHandler_Displacement(SerialErrorReceivedEventHandler eventHandler)
         {
-            serialPort_WeiYi.DataReceived -= eventHandler;
+            SerialPort_Displacement.ErrorReceived += eventHandler;
         }
 
-        public static void AddErrorReceivedEventHandler_WeiYi(SerialErrorReceivedEventHandler eventHandler)
+        public static void RemoveErrorReceivedEventHandler_Displacement(SerialErrorReceivedEventHandler eventHandler)
         {
-            serialPort_WeiYi.ErrorReceived += eventHandler;
+            SerialPort_Displacement.ErrorReceived -= eventHandler;
         }
 
-        public static void RemoveErrorReceivedEventHandler_WeiYi(SerialErrorReceivedEventHandler eventHandler)
+        public static void CloseSlave()
         {
-            serialPort_WeiYi.ErrorReceived -= eventHandler;
+            SerialPort_Slave.Close();
         }
 
-        public static void CloseDanPianJi()
+        public static void CloseTemperature()
         {
-            serialPort_DanPianJi.Close();
+            SerialPort_Temperature.Close();
         }
 
-        public static void CloseWenKongYi()
+        public static void CloseDisplacement()
         {
-            serialPort_WenKongYi.Close();
+            SerialPort_Displacement.Close();
         }
 
-        public static void CloseWeiYi()
-        {
-            serialPort_WeiYi.Close();
-        }
-
-        public static bool Write_DianPianJi(byte[] bytes)
+        public static bool Write_Slave(byte[] bytes)
         {
             bool success = false;
             try
             {
-                serialPort_DanPianJi.Write(bytes,0, bytes.Length);
+                SerialPort_Slave.Write(bytes,0, bytes.Length);
                 success = true;
             }
             catch (Exception ex)
             {
-                SampleLoggerOnTextFile.Log($"Write_DianPianJi 出现异常：{ex.Message}");
+                SampleLoggerOnTextFile.Log($"向单片机串口写数据 出现异常：{ex.Message}");
             }
 
             return success;
         }
 
-        public static bool Write_WenKongYi(byte[] bytes)
+        public static bool Write_Temperature(byte[] bytes)
         {
             bool success = false;
             try
             {
-                serialPort_WenKongYi.Write(bytes, 0, bytes.Length);
+                SerialPort_Temperature.Write(bytes, 0, bytes.Length);
                 success = true;
             }
             catch (Exception ex)
             {
-                SampleLoggerOnTextFile.Log($"Write_WenKongYi 出现异常：{ex.Message}");
+                SampleLoggerOnTextFile.Log($"向温控仪串口写数据 出现异常：{ex.Message}");
             }
 
             return success;
         }
 
-        public static bool Write_WeiYi(byte[] bytes)
+        public static bool Write_Displacement(byte[] bytes)
         {
             bool success = false;
             try
             {
-                serialPort_WeiYi.Write(bytes, 0, bytes.Length);
+                SerialPort_Displacement.Write(bytes, 0, bytes.Length);
                 success = true;
             }
             catch (Exception ex)
             {
-                SampleLoggerOnTextFile.Log($"Write_WeiYi 出现异常：{ex.Message}");
+                SampleLoggerOnTextFile.Log($"向位移传感器串口写数据 出现异常：{ex.Message}");
             }
 
             return success;

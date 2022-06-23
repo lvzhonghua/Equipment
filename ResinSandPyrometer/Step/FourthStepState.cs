@@ -53,7 +53,6 @@ namespace ResinSandPyrometer.Step
                 this.isTimeReached = true;
                 this.countTime = 0;
             }
-
         }
 
         private bool isOK = false;
@@ -62,7 +61,6 @@ namespace ResinSandPyrometer.Step
             get { return this.isOK; }
             set { this.isOK = value; }
         }
-
 
         private int count = 0;
         public void Sleep()
@@ -86,9 +84,9 @@ namespace ResinSandPyrometer.Step
             if (this.waitCout < 40) return;
             this.isWaitOver = true;
         }
+
         //定义零点值
         private float displacementZero = 0f;
-
         public float DisplacementZero
         {
             get { return this.displacementZero; }
@@ -149,12 +147,10 @@ namespace ResinSandPyrometer.Step
             this.changeCount++;
             if (this.changeCount < 300) return;
 
-
             if ((this.maxDisplacement - point.Y) / this.maxDisplacement > 0.3 || this.changeCount > 1200)
             {
                 this.isDisplacementSudChange = true;
             }
-
         }
 
         public void InitState()

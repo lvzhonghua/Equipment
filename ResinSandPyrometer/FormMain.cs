@@ -18,12 +18,6 @@ namespace ResinSandPyrometer
 {
     public partial class FormMain : Form
     {
-        private SerialPort serialPort_DanPianJi = null;  //单片机串口
-
-        private SerialPort serialPort_WenKongYi = null;  //温控仪串口
-
-        private SerialPort serialPort_WeiYi = null;   //位移传感器串口
-
         private TemperatureState temperatureState = new TemperatureState();
 
         private GlobaState globaState = new GlobaState();
@@ -64,16 +58,13 @@ namespace ResinSandPyrometer
             this.btnSaveData.Enabled = false;
             this.timerDisplacement = new System.Threading.Timer(this.DisplacementWrite, null, 0, 200);
 
-            this.OpenInitSeralPort();
-
-            if (this.serialPort_DanPianJi == null) return;
-            if (!this.serialPort_DanPianJi.IsOpen) return;
+            this.InitSerialPorts();
 
             try
             {
                 this.SendLocation();
                 Thread.Sleep(500);
-                this.serialPort_DanPianJi.Write("#5");//复位
+                SerialPortManager.SerialPort_Slave.Write("#5");//复位
                 this.isReset = true;
 
             }
@@ -81,149 +72,50 @@ namespace ResinSandPyrometer
             {
                 SampleLoggerOnTextFile.Log(string.Format("单片机写入故障：{0}", ex.Message));
             }
-
-            SerialPortManager.SetSerialPort(this.serialPort_DanPianJi, this.serialPort_WenKongYi,this.serialPort_WeiYi);
         }
 
-        private void OpenInitSeralPort()
+        private void InitSerialPorts()
         {
-            int portID_Dan = 3;
-            int portID_Wen = 3;
-            int portID_Wei = 3;
+            int portID_Slave = 4;
+            int portID_Temperature = 3;
+            int portID_Displacement = 3;
 
-        InitCOMOne:
-            try
-            {
-                this.InitserialPort_DanPianJi(portID_Dan);
-                this.serialPort_DanPianJi.Open();
+            this.tlblPort_Slave.Text = portID_Slave.ToString();
+            this.tlblPort_Slave.ForeColor = Color.Green;
 
-            }
-            catch (IOException)
-            {
-                if (portID_Dan > 20)
-                {
-                    MessageBox.Show("串口无法打开", "连接错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                portID_Dan++;
-                //跳转
-                goto InitCOMOne;
-            }
-            //catch (Exception ex)
-            //{
-            //    this.serialPort_Dan.Close();
-            //    portID_Dan++;
-            //    goto InitCOMOne;
-            //}
-            this.tsslblDan.Text = portID_Dan.ToString();
-            this.tsslblDan.ForeColor = Color.Green;
-
-
-        //控温仪
-        InitCOMTwo:
-            try
-            {
-                if (portID_Wen == portID_Dan)
-                {
-                    portID_Wen++;
-                }
-                this.InitSerialPort_Wen(portID_Wen);
-                this.serialPort_WenKongYi.Open();
-            }
-            catch (IOException)
-            {
-                if (portID_Wen > 20)
-                {
-                    MessageBox.Show("串口无法打开", "连接错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                portID_Wen++;
-
-                //跳转
-                goto InitCOMTwo;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(string.Format("温控仪异常：{0}", ex.Message));
-            }
-
-            this.tsslblWen.Text = portID_Wen.ToString();
-            this.tsslblWen.ForeColor = Color.Green;
+            this.tlblPort_Temperature.Text = portID_Temperature.ToString();
+            this.tlblPort_Temperature.ForeColor = Color.Green;
             ////让温控仪开始检查数据
 
             this.tmCheckTemperature.Enabled = true;
-            WindowState = FormWindowState.Maximized;
+            this.WindowState = FormWindowState.Maximized;
 
-        ////位移传感器
-        InitCOMThree:
-            try
-            {
-                if (portID_Wei == portID_Dan)
-                {
-                    portID_Wei++;
-                }
+            this.tlblPort_Displacement.Text = portID_Displacement.ToString();
+            this.tlblPort_Displacement.ForeColor = Color.Green;
 
-                if (portID_Wei == portID_Wen)
-                {
-                    portID_Wei++;
-                }
+            SerialPortManager.OpenSerial_Slave($"COM{portID_Slave}");
+            SerialPortManager.AddDataReceivedEventHandler_Slave(new SerialDataReceivedEventHandler(serialPort_Slave_DataReceived));
+            SerialPortManager.AddErrorReceivedEventHandler_Slave(new SerialErrorReceivedEventHandler(serialPort_Slave_ErrorReceived));
+            
+            SerialPortManager.OpenSerial_Temperature($"COM{portID_Temperature}");
 
-                this.InitSerialPort_Wei(portID_Wei);
-                this.serialPort_WeiYi.Open();
-            }
-            catch (IOException)
-            {
-                if (portID_Wei > 20)
-                {
-                    MessageBox.Show("串口无法打开", "连接错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                portID_Wei++;
-
-                //跳转
-                goto InitCOMThree;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(string.Format("位移传感器异常：{0}",ex.Message));
-            }
-            this.tsslblWei.Text = portID_Wei.ToString();
-            //isStartDisplacement = true;
-            this.tsslblWei.ForeColor = Color.Green;
         }
 
         #region 单片机
-        //初始化端片机端口
-        private void InitserialPort_DanPianJi(int portID)
-        {
-            this.serialPort_DanPianJi = new SerialPort();
-            this.serialPort_DanPianJi.PortName = string.Format("COM{0}", portID);//串口端口
-            this.serialPort_DanPianJi.BaudRate = 115200;//波特率
-            this.serialPort_DanPianJi.Parity = (Parity)Enum.Parse(typeof(Parity), (string)"None");//奇偶校验
-            this.serialPort_DanPianJi.DataBits = 8;//数据位
-            this.serialPort_DanPianJi.StopBits = (StopBits)Enum.Parse(typeof(StopBits), (string)"One");//停止位 
-            this.serialPort_DanPianJi.Handshake = (Handshake)Enum.Parse(typeof(Handshake), (string)"None");//握手协议即流控制方式
-            this.serialPort_DanPianJi.ReadTimeout = 2000; ;//超时读取异常
-            //串口数据接收事件
-            this.serialPort_DanPianJi.DataReceived += new SerialDataReceivedEventHandler(serialPort_DanPianJi_DataReceived);
-            //串口出错事件处理
-            this.serialPort_DanPianJi.ErrorReceived += new SerialErrorReceivedEventHandler(serialPort_DanPianJi_ErrorReceived);
-        }
-
-        private void serialPort_DanPianJi_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
+        private void serialPort_Slave_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
         {
             MessageBox.Show("单片机串口出错，错误类型：" + e.EventType.ToString(), "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private void serialPort_DanPianJi_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        private void serialPort_Slave_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             Thread.Sleep(40);
             //获取串口传递过来数据（从串口读数据）
             byte[] buffer = new byte[5];
             try
             {
-                if (!this.serialPort_DanPianJi.IsOpen) return;
-                this.serialPort_DanPianJi.Read(buffer, 0, buffer.Length);
+                if (!SerialPortManager.SerialPort_Slave.IsOpen) return;
+                SerialPortManager.SerialPort_Slave.Read(buffer, 0, buffer.Length);
             }
             catch (Exception ex)
             {
@@ -250,7 +142,7 @@ namespace ResinSandPyrometer
                 case Slave_ReplyCode.C:
                     this.Invoke(new Action(delegate () {this.lblReceivedInfo.Text = reply.Code + "  " + reply.Answer_Content;}));
 
-                    this.globaState.IsEndtest = true;
+                    this.globaState.IsEndTest = true;
                     switch (Setting.TestType)
                     {
                         case 0:
@@ -291,7 +183,7 @@ namespace ResinSandPyrometer
 
                     if (this.stepOfSelected == Steps.FourthStep) break;
 
-                    if (this.globaState.IsStarttest && !this.globaState.IsEndtest)
+                    if (this.globaState.IsStartTest && !this.globaState.IsEndTest)
                     {
                         switch (this.stepOfSelected)
                         {
@@ -399,7 +291,7 @@ namespace ResinSandPyrometer
                     this.globaState.GetPressZero(result);//零点值
                     if (this.globaState.IsTimeReached)
                     {
-                        this.serialPort_DanPianJi.Write("#:1");
+                        SerialPortManager.SerialPort_Slave.Write("#:1");
                         this.isMotorZero = false;
                         this.globaState.ThirdStepState.Step = ThirdStep.读取传感器采样值并判断预载荷是否达到预定值;
                         this.globaState.IsTimeReached = false;
@@ -416,7 +308,7 @@ namespace ResinSandPyrometer
                     });
                     if (point.Y > Setting.PreloadedPressure - 0.005f)
                     {
-                        this.serialPort_DanPianJi.Write("#:0");
+                        SerialPortManager.SerialPort_Slave.Write("#:0");
                         this.globaState.ThirdStepState.Step = ThirdStep.继续采样并保证在一定范围内;
 
                     }
@@ -426,11 +318,11 @@ namespace ResinSandPyrometer
 
                     if (point.Y > Setting.PreloadedPressure + 0.005f)
                     {
-                        this.serialPort_DanPianJi.Write("#90");
+                        SerialPortManager.SerialPort_Slave.Write("#90");
                     }
                     else if (point.Y < Setting.PreloadedPressure - 0.005f)
                     {
-                        this.serialPort_DanPianJi.Write("#91");
+                        SerialPortManager.SerialPort_Slave.Write("#91");
                     }
                     else
                     {
@@ -457,7 +349,7 @@ namespace ResinSandPyrometer
                     string message = "#>" + (Setting.FurnaceLiftingSpeed / 10 - 1).ToString() + ((Setting.FurnaceFallingDistance - 150) / 2).ToString();
                     SampleLoggerOnTextFile.Log($"ThreeStep.加热炉下降，指令内容：{message}");
 
-                    this.serialPort_DanPianJi.Write(message);
+                    SerialPortManager.SerialPort_Slave.Write(message);
                     this.isFurnaceZero = false;
                     this.globaState.ThirdStepState.Step = ThirdStep.NONE;
                     break;
@@ -476,11 +368,11 @@ namespace ResinSandPyrometer
                     }
                     if (point.Y > Setting.PreloadedPressure + 0.005f)
                     {
-                        this.serialPort_DanPianJi.Write("#90");
+                        SerialPortManager.SerialPort_Slave.Write("#90");
                     }
                     else if (point.Y < Setting.PreloadedPressure - 0.005f)
                     {
-                        this.serialPort_DanPianJi.Write("#91");
+                        SerialPortManager.SerialPort_Slave.Write("#91");
                     }
                     else
                     {
@@ -500,8 +392,8 @@ namespace ResinSandPyrometer
                     this.globaState.ThirdStepState.Step = ThirdStep.测试结束;
                     break;
                 case ThirdStep.测试结束:
-                    this.serialPort_DanPianJi.Write("#4");
-                    this.globaState.IsEndtest = true;
+                    SerialPortManager.SerialPort_Slave.Write("#4");
+                    this.globaState.IsEndTest = true;
                     this.globaState.ThirdStepState.InitState();
                     this.globaState.PressZero = 0;
                     this.Invoke((EventHandler)delegate
@@ -527,7 +419,7 @@ namespace ResinSandPyrometer
                     this.globaState.GetPressZero(result);//零点值
                     if (this.globaState.IsTimeReached)
                     {
-                        this.serialPort_DanPianJi.Write("#:1");
+                        SerialPortManager.SerialPort_Slave.Write("#:1");
                         this.isMotorZero = false;
                         this.globaState.SecondStepState.Step = SecondStep.检测预载荷是否为10主机发送指令加载电机停止;
                     }
@@ -543,7 +435,7 @@ namespace ResinSandPyrometer
 
                     if (point.Y > Setting.PreloadedForce - 0.5)
                     {
-                        this.serialPort_DanPianJi.Write("#:0");
+                        SerialPortManager.SerialPort_Slave.Write("#:0");
                         this.globaState.SecondStepState.Step = SecondStep.检测载荷是否为9到11并调节预载荷;
                     }
                     break;
@@ -552,11 +444,11 @@ namespace ResinSandPyrometer
                     point.Y = result - this.globaState.PressZero;
                     if (point.Y > Setting.PreloadedForce + 0.5)
                     {
-                        this.serialPort_DanPianJi.Write("#90");
+                        SerialPortManager.SerialPort_Slave.Write("#90");
                     }
                     else if (point.Y < Setting.PreloadedForce - 0.5)
                     {
-                        this.serialPort_DanPianJi.Write("#91");
+                        SerialPortManager.SerialPort_Slave.Write("#91");
                     }
                     else
                     {
@@ -580,7 +472,7 @@ namespace ResinSandPyrometer
                     string message = "#>" + (Setting.FurnaceLiftingSpeed / 10 - 1).ToString() + ((Setting.FurnaceFallingDistance - 150) / 2).ToString();
                     SampleLoggerOnTextFile.Log($"TwoStep.加热炉下降，指令内容：{message}");
 
-                    this.serialPort_DanPianJi.Write(message);
+                    SerialPortManager.SerialPort_Slave.Write(message);
                     this.isFurnaceZero = false;
                     this.globaState.SecondStepState.Step = SecondStep.NONE;
                     break;
@@ -604,8 +496,8 @@ namespace ResinSandPyrometer
 
                     break;
                 case SecondStep.结束测试:
-                    this.serialPort_DanPianJi.Write("#4");
-                    this.globaState.IsEndtest = true;
+                    SerialPortManager.SerialPort_Slave.Write("#4");
+                    this.globaState.IsEndTest = true;
                     this.globaState.IsTimeReached = false;
                     this.globaState.SecondStepState.InitState();
                     this.Invoke((EventHandler)delegate
@@ -631,7 +523,7 @@ namespace ResinSandPyrometer
                     string message = "#>" + (Setting.FurnaceLiftingSpeed / 10 - 1).ToString() + ((Setting.FurnaceFallingDistance - 150) / 2).ToString();
 
                     SampleLoggerOnTextFile.Log($"FirstStep.加热炉按行程下降，指令内容：{message}");
-                    this.serialPort_DanPianJi.Write(message);//加热炉按行程下降
+                    SerialPortManager.SerialPort_Slave.Write(message);//加热炉按行程下降
 
                     this.isFurnaceZero = false;
                     this.globaState.FirstStepState.Step = Common.FirstStep.NONE;
@@ -642,7 +534,7 @@ namespace ResinSandPyrometer
 
                     if (this.globaState.FirstStepState.IsCommandReached)
                     {
-                        this.serialPort_DanPianJi.Write("#:1");
+                        SerialPortManager.SerialPort_Slave.Write("#:1");
                         this.globaState.FirstStepState.Step = Common.FirstStep.电机上升;
                     }
                     this.Invoke((EventHandler)delegate
@@ -656,7 +548,7 @@ namespace ResinSandPyrometer
 
                     if (Math.Abs(this.globaState.FirstStepState.PressureZero - result) >= 1)
                     {
-                        this.serialPort_DanPianJi.Write("#:0");
+                        SerialPortManager.SerialPort_Slave.Write("#:0");
                         SampleLoggerOnTextFile.Log("接触，电机停止上升");
 
                         this.globaState.FirstStepState.PressureZeroClear();
@@ -670,11 +562,11 @@ namespace ResinSandPyrometer
                     });
                     break;
                 case FirstStep.电机下降:
-                    this.serialPort_DanPianJi.Write("#93");
+                    SerialPortManager.SerialPort_Slave.Write("#93");
                     this.globaState.FirstStepState.Step = Common.FirstStep.抗压试样保温时间计时并更新零点值;
                     break;
                 case FirstStep.抗压试样保温时间计时并更新零点值:
-                    if (this.globaState.FirstStepState.countTime < 10)
+                    if (this.globaState.FirstStepState.CountTime < 10)
                     {
                         this.globaState.FirstStepState.CommandCount(1);
                         this.globaState.FirstStepState.GetPressureZero(result);//零点值
@@ -687,7 +579,7 @@ namespace ResinSandPyrometer
 
                     if (this.globaState.FirstStepState.IsTimeReached)
                     {
-                        this.serialPort_DanPianJi.Write("#:1");
+                        SerialPortManager.SerialPort_Slave.Write("#:1");
                         this.isMotorZero = false;
                         this.startTime = DateTime.Now;
                         this.globaState.FirstStepState.Step = Common.FirstStep.采集数据压力是否突变;
@@ -705,7 +597,7 @@ namespace ResinSandPyrometer
 
                     if (this.globaState.FirstStepState.IsPressureSudChange)//抗压强度值是否突变
                     {
-                        this.serialPort_DanPianJi.Write("#:0");
+                        SerialPortManager.SerialPort_Slave.Write("#:0");
                         this.globaState.FirstStepState.Step = Common.FirstStep.测试结束;
                     }
 
@@ -718,8 +610,8 @@ namespace ResinSandPyrometer
                     });
                     break;
                 case FirstStep.测试结束:
-                    this.serialPort_DanPianJi.Write("#4");
-                    this.globaState.IsEndtest = true;
+                    SerialPortManager.SerialPort_Slave.Write("#4");
+                    this.globaState.IsEndTest = true;
 
                     this.globaState.FirstStepState.InitState();
                     this.Invoke((EventHandler)delegate
@@ -737,41 +629,30 @@ namespace ResinSandPyrometer
         #endregion
 
         #region 温控仪
-        private void InitSerialPort_Wen(int portID)
+        private void InitSerialPort_Temperature(int portID)
         {
-
-            this.serialPort_WenKongYi = new SerialPort();
-            this.serialPort_WenKongYi.PortName = string.Format("COM{0}", portID);//串口端口
-            this.serialPort_WenKongYi.BaudRate = 19200;//波特率
-            this.serialPort_WenKongYi.Parity = (Parity)Enum.Parse(typeof(Parity), (string)"None");//奇偶校验
-            this.serialPort_WenKongYi.DataBits = 8;//数据位
-            this.serialPort_WenKongYi.StopBits = (StopBits)Enum.Parse(typeof(StopBits), (string)"One");//停止位 
-            this.serialPort_WenKongYi.Handshake = (Handshake)Enum.Parse(typeof(Handshake), (string)"None");//握手协议即流控制方式
-            this.serialPort_WenKongYi.ReadTimeout = 2000; ;//超时读取异常
+            SerialPortManager.OpenSerial_Temperature($"COM{portID}");
 
             //串口数据接收事件
-            this.serialPort_WenKongYi.DataReceived += new SerialDataReceivedEventHandler(
-                serialPort_WenKongYi_DataReceived);
+            SerialPortManager.AddDataReceivedEventHandler_Temperature(new SerialDataReceivedEventHandler(serialPort_Temperature_DataReceived));
             //串口出错事件处理
-            this.serialPort_WenKongYi.ErrorReceived += new SerialErrorReceivedEventHandler(
-                serialPort_Wen_ErrorReceived);
+            SerialPortManager.AddErrorReceivedEventHandler_Temperature(new SerialErrorReceivedEventHandler(serialPort_Temperature_ErrorReceived));
         }
 
-        private void serialPort_Wen_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
+        private void serialPort_Temperature_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
         {
-            MessageBox.Show("温控仪串口出错，错误类型：" + e.EventType.ToString(), "错误信息",
-                                       MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show("温控仪串口出错，错误类型：" + e.EventType.ToString(), "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private void serialPort_WenKongYi_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        private void serialPort_Temperature_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             Thread.Sleep(40);
             
             byte[] buffer = new byte[10];//从机返回十个字节
             try
             {
-                if (!this.serialPort_WenKongYi.IsOpen) return;
-                this.serialPort_WenKongYi.Read(buffer, 0, buffer.Length);
+                if (!SerialPortManager.SerialPort_Temperature.IsOpen) return;
+                SerialPortManager.SerialPort_Temperature.Read(buffer, 0, buffer.Length);
             }
             catch (Exception ex)
             {
@@ -796,7 +677,7 @@ namespace ResinSandPyrometer
 
                 if (!this.temperatureState.IsCountSend)
                 {
-                    this.serialPort_DanPianJi.Write("#6");
+                    SerialPortManager.SerialPort_Slave.Write("#6");
                     this.temperatureState.IsCountSend = true;
                 }
 
@@ -814,45 +695,36 @@ namespace ResinSandPyrometer
         #endregion
 
         #region 位移传感器
-        private void InitSerialPort_Wei(int portID)
+        private void InitSerialPort_Displacement(int portID)
         {
+            SerialPortManager.OpenSerial_Displacement($"COM{portID}");
 
-            this.serialPort_WeiYi = new SerialPort();
-            this.serialPort_WeiYi.PortName = string.Format("COM{0}", portID);//串口端口
-            this.serialPort_WeiYi.BaudRate = 9600;//波特率
-            this.serialPort_WeiYi.Parity = Parity.None;//奇偶校验
-            this.serialPort_WeiYi.DataBits = 8;//数据位
-            this.serialPort_WeiYi.StopBits = (StopBits)Enum.Parse(typeof(StopBits), (string)"One");//停止位 
-            this.serialPort_WeiYi.Handshake = (Handshake)Enum.Parse(typeof(Handshake), (string)"None");//握手协议即流控制方式
-            this.serialPort_WeiYi.ReadTimeout = 2000; ;//超时读取异常
-            Thread threadWei = new Thread(new ThreadStart(delegate ()
-              {
+            Thread threadDisplacement = new Thread(new ThreadStart(delegate ()
+            {
                 //串口数据接收事件
-                this.serialPort_WeiYi.DataReceived += new SerialDataReceivedEventHandler(
-                    serialPort_Wei_DataReceived);
+                SerialPortManager.AddDataReceivedEventHandler_Displacement(new SerialDataReceivedEventHandler(serialPort_Displacement_DataReceived));
                 //串口出错事件处理
-                this.serialPort_WeiYi.ErrorReceived += new SerialErrorReceivedEventHandler(
-                    serialPort_Wei_ErrorReceived);
-              }));
-            threadWei.IsBackground = true;
-            threadWei.Start();
+                SerialPortManager.AddErrorReceivedEventHandler_Displacement(new SerialErrorReceivedEventHandler(serialPort_Displacement_ErrorReceived));
+            }));
+
+            threadDisplacement.IsBackground = true;
+            threadDisplacement.Start();
         }
 
-        private void serialPort_Wei_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
+        private void serialPort_Displacement_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
         {
-            MessageBox.Show("位移传感器串口出错，错误类型：" + e.EventType.ToString(), "错误信息",
-                                       MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show("位移传感器串口出错，错误类型：" + e.EventType.ToString(), "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private void serialPort_Wei_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        private void serialPort_Displacement_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             Thread.Sleep(10);
             
             byte[] buffer = new byte[9];
             try
             {
-                if (!this.serialPort_WeiYi.IsOpen) return;
-                this.serialPort_WeiYi.Read(buffer, 0, buffer.Length);
+                if (!SerialPortManager.SerialPort_Displacement.IsOpen) return;
+                SerialPortManager.SerialPort_Displacement.Read(buffer, 0, buffer.Length);
             }
             catch (Exception ex)
             {
@@ -862,13 +734,12 @@ namespace ResinSandPyrometer
 
             if (CRC.ToModbusCRC16(buffer) != "0000") return;
             PointF point = new PointF(0f, 0f);
-            displacementResult = GetDisplacement(buffer);
+            displacementResult = Utilities.GetDisplacement(buffer);
             this.Invoke((EventHandler)delegate
             {
                 this.lblDisplacement.Text = displacementResult.ToString();
             });
             this.ExecuteFouthStep(point);
-
         }
 
         private void ExecuteFouthStep(PointF point)
@@ -882,7 +753,7 @@ namespace ResinSandPyrometer
                     this.globaState.FouthStepState.GetDisplacementZero(displacementResult);//零点值
                     if (this.globaState.FouthStepState.IsTimeReached)
                     {
-                        this.serialPort_DanPianJi.Write("#:1");
+                        SerialPortManager.SerialPort_Slave.Write("#:1");
                         this.globaState.FouthStepState.Step = Common.FourthStep.电机上升;
                     }
                     break;
@@ -890,14 +761,14 @@ namespace ResinSandPyrometer
 
                     if (Math.Abs(this.globaState.FouthStepState.DisplacementZero - displacementResult) >= 2)
                     {
-                        this.serialPort_DanPianJi.Write("#:0");
+                        SerialPortManager.SerialPort_Slave.Write("#:0");
                         this.globaState.FouthStepState.DisplacementZeroClear();
                         this.globaState.FouthStepState.Step = Common.FourthStep.电机下降;
                         this.globaState.FouthStepState.IsTimeReached = false;
                     }
                     break;
                 case FourthStep.电机下降:
-                    this.serialPort_DanPianJi.Write("#92");
+                    SerialPortManager.SerialPort_Slave.Write("#92");
                     this.globaState.FouthStepState.Step = Common.FourthStep.加热炉下降;
                     break;
                 case FourthStep.加热炉下降:
@@ -906,7 +777,7 @@ namespace ResinSandPyrometer
                     {
                         string message = "#>" + (Setting.FurnaceLiftingSpeed / 10 - 1).ToString() + ((Setting.FurnaceFallingDistance - 150) / 2).ToString();
                         SampleLoggerOnTextFile.Log($"FourStep.加热炉下降，指令内容：{message}");
-                        this.serialPort_DanPianJi.Write(message);
+                        SerialPortManager.SerialPort_Slave.Write(message);
 
                         this.isFurnaceZero = false;
 
@@ -946,12 +817,12 @@ namespace ResinSandPyrometer
                     });
                     if (this.globaState.FouthStepState.IsDisplacementSudChange)//抗压强度值是否突变
                     {
-                        this.serialPort_DanPianJi.Write("#4");
+                        SerialPortManager.SerialPort_Slave.Write("#4");
                         this.globaState.FouthStepState.Step = Common.FourthStep.测试结束;
                     }
                     break;
                 case FourthStep.测试结束:
-                    this.globaState.IsEndtest = true;
+                    this.globaState.IsEndTest = true;
                     this.globaState.FouthStepState.IsTimeReached = false;
                     this.globaState.FouthStepState.InitState();
                     this.Invoke((EventHandler)delegate
@@ -969,46 +840,6 @@ namespace ResinSandPyrometer
             }
         }
 
-
-        private float GetDisplacement(byte[] buffer)
-        {
-            byte[] integerBytes = new byte[2];
-            //低字节在前，高字节在后
-            integerBytes[0] = buffer[4];
-            integerBytes[1] = buffer[3];
-
-            var h = (integerBytes[1] & 0xf0) >> 4; // 高位
-
-            bool isSign = true;
-            if (h == 8)
-            {
-                integerBytes[1] = Convert.ToByte(integerBytes[1] ^ 0x80);
-                isSign = false;
-            }
-
-            int integerInt = BitConverter.ToInt16(integerBytes, 0);
-
-            byte[] decimalsBytes = new byte[2];
-            decimalsBytes[0] = buffer[6];
-            decimalsBytes[1] = buffer[5];
-
-            int decimalsInt = BitConverter.ToInt16(decimalsBytes, 0);
-
-            string distanceStr = string.Format("{0}.{1}", integerInt, decimalsInt);
-
-            float distance = float.Parse(distanceStr);
-
-            string show = distance.ToString("0.00");
-
-            if (isSign)
-            {
-                return float.Parse(show);
-            }
-            else
-            {
-                return 0 - float.Parse(show);
-            }
-        }
         #endregion
 
         private void btnSampleInfoSetting_Click(object sender, EventArgs e)
@@ -1027,7 +858,7 @@ namespace ResinSandPyrometer
             this.btnStartTest.Enabled = true;
             if (isReset)
             {
-                this.serialPort_DanPianJi.Write("#4");
+                SerialPortManager.SerialPort_Slave.Write("#4");
                 isReset = false;
             }
         }
@@ -1058,14 +889,14 @@ namespace ResinSandPyrometer
                     numData = BitConverter.GetBytes(Convert.ToInt32(Setting.MotorIdlePath * 2500));
                     sendData[2] = numData[1];
                     sendData[3] = numData[0];
-                    this.serialPort_DanPianJi.Write(sendData, 0, 4);
+                    SerialPortManager.SerialPort_Slave.Write(sendData, 0, 4);
                     Thread.Sleep(300);
                     break;
                 case 3:
                     numData = BitConverter.GetBytes(Convert.ToInt32(Setting.DisplacementMotorIdlePath * 2500));
                     sendData[2] = numData[1];
                     sendData[3] = numData[0];
-                    this.serialPort_DanPianJi.Write(sendData, 0, 4);
+                    SerialPortManager.SerialPort_Slave.Write(sendData, 0, 4);
                     Thread.Sleep(300);
                     break;
                 default:
@@ -1075,13 +906,13 @@ namespace ResinSandPyrometer
 
         private void tmCheckTemperature_Tick(object sender, EventArgs e)
         {
-            if (this.serialPort_WenKongYi == null) return;
-            if (!this.serialPort_WenKongYi.IsOpen) return;
+            if (SerialPortManager.SerialPort_Temperature == null) return;
+            if (!SerialPortManager.SerialPort_Temperature.IsOpen) return;
             try
             {
                 Command command_GetFurnaceTemperature = CommandGenerator.Generate_GetFurnaceTemperature();
                 byte[] buffer = command_GetFurnaceTemperature.Bytes;
-                this.serialPort_WenKongYi.Write(buffer, 0, buffer.Length);
+                SerialPortManager.SerialPort_Temperature.Write(buffer, 0, buffer.Length);
             }
             catch (Exception ex)
             {
@@ -1091,23 +922,9 @@ namespace ResinSandPyrometer
 
         private void btnStartTest_Click(object sender, EventArgs e)
         {
-            //if (!isFurnaceZero || !isMotorZero) 
-            //{
-            //    this.adviceLB.Text = "加热炉或者电机不在零点，请复位";
-            //    return;
-            //}
-            
-            this.serialPort_DanPianJi.Write("#3");
+            SerialPortManager.SerialPort_Slave.Write("#3");
             
             this.StartTest();
-           
-            //this.serialPort_Dan.Write("#:0");
-            
-            //System.Threading.Thread.Sleep(10);
-
-            //string message = "#>" + (Setting.FurnaceLiftingSpeed / 10 - 1).ToString() + ((Setting.FurnaceFallingDistance - 150) / 2).ToString();
-
-            //this.serialPort_Dan.Write(message);
         }
 
         private void StartTest()
@@ -1155,9 +972,9 @@ namespace ResinSandPyrometer
         private void Reset()
         {
             this.isStartDisplacement = false;
-            this.serialPort_DanPianJi.Write("#4");
-            //this.isReset = true;
-            this.globaState.IsEndtest = true;
+            SerialPortManager.SerialPort_Slave.Write("#4");
+
+            this.globaState.IsEndTest = true;
             this.isReachedGo = false;
             switch (Setting.TestType)
             {
@@ -1211,7 +1028,7 @@ namespace ResinSandPyrometer
 
         private void btnSaveData_Click(object sender, EventArgs e)
         {
-            if (!this.globaState.IsEndtest)
+            if (!this.globaState.IsEndTest)
             {
                 MessageBox.Show("正在进行测试!");
                 return;
@@ -1350,9 +1167,9 @@ namespace ResinSandPyrometer
         {  
             this.isReachedGo = true;
 
-            SerialPortManager.RemoveDataReceivedEventHandler_DanPianJi(this.serialPort_DanPianJi_DataReceived);
+            SerialPortManager.RemoveDataReceivedEventHandler_Slave(this.serialPort_Slave_DataReceived);
 
-            FormCalibration frmCalibration = new FormCalibration(this.serialPort_DanPianJi);
+            FormCalibration frmCalibration = new FormCalibration(SerialPortManager.SerialPort_Slave);
             frmCalibration.Revise = Setting.TxtRevise;
             DialogResult dlgResult = frmCalibration.ShowDialog();
 
@@ -1364,7 +1181,7 @@ namespace ResinSandPyrometer
                 this.isReachedGo = false;
             }
 
-            SerialPortManager.AddDataReceivedEventHandler_DanPianJi(this.serialPort_DanPianJi_DataReceived);
+            SerialPortManager.AddDataReceivedEventHandler_Slave(this.serialPort_Slave_DataReceived);
         }
 
         private void btnBackToZero_Click(object sender, EventArgs e)
@@ -1372,7 +1189,7 @@ namespace ResinSandPyrometer
             Command command_EndTest = CommandGenerator.Generate_EndTest();
             byte[] buffer = command_EndTest.Bytes;
 
-            this.serialPort_DanPianJi.Write(buffer, 0, buffer.Length);
+            SerialPortManager.SerialPort_Slave.Write(buffer, 0, buffer.Length);
         }
 
         private void selectTabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -1394,7 +1211,7 @@ namespace ResinSandPyrometer
                         numData = BitConverter.GetBytes(Convert.ToInt32(Setting.MotorIdlePath * 2500));
                         sendData[2] = numData[1];
                         sendData[3] = numData[0];
-                        this.serialPort_DanPianJi.Write(sendData, 0, 4);
+                        SerialPortManager.SerialPort_Slave.Write(sendData, 0, 4);
                         Thread.Sleep(300);
                         break;
                     case 1:
@@ -1405,7 +1222,7 @@ namespace ResinSandPyrometer
                         numData = BitConverter.GetBytes(Convert.ToInt32(Setting.MotorIdlePath * 2500));
                         sendData[2] = numData[1];
                         sendData[3] = numData[0];
-                        this.serialPort_DanPianJi.Write(sendData, 0, 4);
+                        SerialPortManager.SerialPort_Slave.Write(sendData, 0, 4);
                         Thread.Sleep(300);
                         break;
                     case 2:
@@ -1416,7 +1233,7 @@ namespace ResinSandPyrometer
                         numData = BitConverter.GetBytes(Convert.ToInt32(Setting.MotorIdlePath * 2500));
                         sendData[2] = numData[1];
                         sendData[3] = numData[0];
-                        this.serialPort_DanPianJi.Write(sendData, 0, 4);
+                        SerialPortManager.SerialPort_Slave.Write(sendData, 0, 4);
                         Thread.Sleep(300);
                         break;
                     case 3:
@@ -1427,7 +1244,7 @@ namespace ResinSandPyrometer
                         numData = BitConverter.GetBytes(Convert.ToInt32(Setting.DisplacementMotorIdlePath * 2500));
                         sendData[2] = numData[1];
                         sendData[3] = numData[0];
-                        this.serialPort_DanPianJi.Write(sendData, 0, 4);
+                        SerialPortManager.SerialPort_Slave.Write(sendData, 0, 4);
                         Thread.Sleep(300);
                         break;
                     default:
@@ -1440,87 +1257,124 @@ namespace ResinSandPyrometer
             }
         }
 
-        private int clickNumber;//定义温度设置按钮点击次数
+        /// <summary>
+        /// 设定目标炉温
+        /// </summary>
+        /// <param name="targetTemperature">目标炉温</param>
+        private void SetTargetTemperature(int targetTemperature)
+        {
+            SerialPortManager.OpenSerial_Temperature("COM3");
+
+            Command command = CommandGenerator.Generate_SetFurnaceTargetTemperature(targetTemperature);
+
+            CommandExecutor.Send(SerialPortManager.SerialPort_Temperature, command);
+
+            Setting.Save("SettingTemperature", this.txtTargetTemperature.Text);
+        }
+
         private void btnSettingFurnaceTemperature_Click(object sender, EventArgs e)
         {
-            if (this.clickNumber % 2 == 0)
+            try
             {
-                if (this.temperatureState.IsTemperatureReset)
+                int targetTemperature = int.Parse(this.txtTargetTemperature.Text.Trim());
+
+                if (targetTemperature < 500 || targetTemperature > 1200)
                 {
+                    MessageBox.Show("请输入介于500到1200的整数", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return;
                 }
-                //手动控制指令
-                byte[] handControllBuffer = new byte[]{0x81,0x81,0x43,0x18,0x00,0x00,0x44,0x18};
 
-                //手动控制输出值设置指令
-                byte[] handSetOutBufer = new byte[]{0x81,0x81,0x43,0x1A,0x00,0x00,0x44,0x1A};
+                this.SetTargetTemperature(targetTemperature);
 
-                if (!this.serialPort_WenKongYi.IsOpen)
-                {
-                    this.serialPort_WenKongYi.Open();
-                }
+                MessageBox.Show("目标炉温已设定", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                this.serialPort_WenKongYi.Write(handControllBuffer, 0, handControllBuffer.Length);
-                Thread.Sleep(500);
-
-                this.temperatureState.IsCanStartHeat = true;
-                this.temperatureState.IsTemperatureReset = true;
-                this.txtTargetTemperature.ReadOnly = false;
-                this.btnSettingFurnaceTemperature.Text = "确定";
-                this.txtTargetTemperature.ForeColor = Color.White;
-                this.serialPort_WenKongYi.Write(handSetOutBufer, 0, handSetOutBufer.Length);
-                Setting.Save("SettingTemperature", this.txtTargetTemperature.Text);
             }
-            else
+            catch (FormatException)
             {
-                //自动控制指令
-                byte[] autorunBuffer = new byte[]{0x81,0x81,0x43,0x18,0x01,0x00,0x45,0x18 };
-
-                if (!this.serialPort_WenKongYi.IsOpen)
-                {
-                    this.serialPort_WenKongYi.Open();
-                }
-
-                if (this.txtTargetTemperature.Text != null && Setting.SettingTemperature > 0 && Setting.SettingTemperature <= 1200)
-                {
-                    this.serialPort_WenKongYi.Write(NumberSystem.TemperatureToByte8(int.Parse(this.txtTargetTemperature.Text)), 0, 8);
-                    Thread.Sleep(500);
-
-                    this.temperatureState = new TemperatureState();
-                    this.isTemperatureReached = false;
-                    this.txtTargetTemperature.ReadOnly = true;//设定温度为只读
-                    this.btnSettingFurnaceTemperature.Text = "设置温度";
-
-                    this.serialPort_WenKongYi.Write(autorunBuffer, 0, autorunBuffer.Length);
-                    //cf.ReadConfig("SetTemperature");
-                    this.txtTargetTemperature.ForeColor = Color.Yellow;
-                    Setting.Save("SettingTemperature", this.txtTargetTemperature.Text);
-                    //this.btnStartHeat.Enabled = false ;
-
-                    //cf.SaveConfig("SetTemperature", this.testSample.SetTemperature.ToString());
-                }
-
-                else
-                {
-                    MessageBox.Show("请输入正确的数字");
-                    this.txtTargetTemperature.Text = "1000";
-                }
-                this.btnSettingFurnaceTemperature.Enabled = false;
+                MessageBox.Show("请输入介于500到1200的整数","异常提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            this.clickNumber++;
 
+            #region 废弃代码
+
+            //if (this.clickNumber % 2 == 0)
+            //{
+            //    if (this.temperatureState.IsTemperatureReset)
+            //    {
+            //        return;
+            //    }
+            //    //手动控制指令
+            //    byte[] handControllBuffer = new byte[]{0x81,0x81,0x43,0x18,0x00,0x00,0x44,0x18};
+
+            //    //手动控制输出值设置指令
+            //    byte[] handSetOutBufer = new byte[]{0x81,0x81,0x43,0x1A,0x00,0x00,0x44,0x1A};
+
+            //    if (!this.serialPort_Temperature.IsOpen)
+            //    {
+            //        this.serialPort_Temperature.Open();
+            //    }
+
+            //    this.serialPort_Temperature.Write(handControllBuffer, 0, handControllBuffer.Length);
+            //    Thread.Sleep(500);
+
+            //    this.temperatureState.IsCanStartHeat = true;
+            //    this.temperatureState.IsTemperatureReset = true;
+            //    this.txtTargetTemperature.ReadOnly = false;
+            //    this.btnSettingFurnaceTemperature.Text = "确定";
+            //    this.txtTargetTemperature.ForeColor = Color.White;
+            //    this.serialPort_Temperature.Write(handSetOutBufer, 0, handSetOutBufer.Length);
+            //    Setting.Save("SettingTemperature", this.txtTargetTemperature.Text);
+            //}
+            //else
+            //{
+            //    //自动控制指令
+            //    byte[] autorunBuffer = new byte[]{0x81,0x81,0x43,0x18,0x01,0x00,0x45,0x18 };
+
+            //    if (!this.serialPort_Temperature.IsOpen)
+            //    {
+            //        this.serialPort_Temperature.Open();
+            //    }
+
+            //    if (this.txtTargetTemperature.Text != null && Setting.SettingTemperature > 0 && Setting.SettingTemperature <= 1200)
+            //    {
+            //        this.serialPort_Temperature.Write(NumberSystem.TemperatureToByte8(int.Parse(this.txtTargetTemperature.Text)), 0, 8);
+            //        Thread.Sleep(500);
+
+            //        this.temperatureState = new TemperatureState();
+            //        this.isTemperatureReached = false;
+            //        this.txtTargetTemperature.ReadOnly = true;//设定温度为只读
+            //        this.btnSettingFurnaceTemperature.Text = "设置温度";
+
+            //        this.serialPort_Temperature.Write(autorunBuffer, 0, autorunBuffer.Length);
+            //        //cf.ReadConfig("SetTemperature");
+            //        this.txtTargetTemperature.ForeColor = Color.Yellow;
+            //        Setting.Save("SettingTemperature", this.txtTargetTemperature.Text);
+            //        //this.btnStartHeat.Enabled = false ;
+
+            //        //cf.SaveConfig("SetTemperature", this.testSample.SetTemperature.ToString());
+            //    }
+
+            //    else
+            //    {
+            //        MessageBox.Show("请输入正确的数字");
+            //        this.txtTargetTemperature.Text = "1000";
+            //    }
+            //    this.btnSettingFurnaceTemperature.Enabled = false;
+            //}
+            //this.clickNumber++;
+
+            #endregion
         }
 
         private void DisplacementWrite(object state)
         {
-            if (this.serialPort_WeiYi == null) return;
-            if (this.serialPort_WeiYi.IsOpen && isStartDisplacement)
+            if (SerialPortManager.SerialPort_Displacement == null) return;
+            if (SerialPortManager.SerialPort_Displacement.IsOpen && isStartDisplacement)
             {
                 try
                 {
                     Command command_GetDisplacement = CommandGenerator.Generate_GetDisplacement();
                     byte[] buffer = command_GetDisplacement.Bytes;
-                    this.serialPort_WeiYi.Write(buffer, 0, buffer.Length);
+                    SerialPortManager.SerialPort_Displacement.Write(buffer, 0, buffer.Length);
                 }
                 catch (Exception ex)
                 {

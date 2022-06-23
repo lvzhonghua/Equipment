@@ -52,7 +52,6 @@ namespace ResinSandPyrometer.Step
             set { this.isTimeReached = value; }
         }
 
-
         private float balanceTime = 0f;
 
         public float BalanceTime
@@ -90,6 +89,7 @@ namespace ResinSandPyrometer.Step
         private int changeCount = 0;
 
         private Queue<float> balancePressSudChangeQueue = new Queue<float>();
+
         //检查压力是否突变
         public void CheckBlancePressChange(float pressure, float setPress)
         {

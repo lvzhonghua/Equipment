@@ -162,21 +162,21 @@ namespace ResinSandPyrometer
                                         switch (this.testType)
                                         {
                                             case 0:
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 3));
-                                                this.myString[testCount] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 3));
+                                                this.myString[testCount] = cr.ResultValue.ToString();
                                                 break;
                                             case 1:
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                                this.myString[testCount] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                                this.myString[testCount] = cr.ResultValue.ToString();
                                                 break;
                                             case 2:
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                                this.myString[testCount] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                                this.myString[testCount] = cr.ResultValue.ToString();
                                                 break;
                                             case 3:
                                                 strLine = strLine.Substring(1);
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                                this.myString[testCount] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                                this.myString[testCount] = cr.ResultValue.ToString();
                                                 break;
                                         }
                                         break;
@@ -220,7 +220,7 @@ namespace ResinSandPyrometer
                                 str = strLine.Substring(strLine.IndexOf("Y") + 1);
                                 yPos = Convert.ToSingle(str);
                                 PointF point = new PointF(xPos, yPos);
-                                cr.linePoints.Add(point);
+                                cr.LinePoints.Add(point);
                                 //this.chart.Series[0].Points.AddXY(xPos, yPos);
                             }
                             else { }
@@ -274,21 +274,21 @@ namespace ResinSandPyrometer
                                         switch (this.testType)
                                         {
                                             case 0:
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 3));
-                                                this.myString[13] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 3));
+                                                this.myString[13] = cr.ResultValue.ToString();
                                                 break;
                                             case 1:
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                                this.myString[13] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                                this.myString[13] = cr.ResultValue.ToString();
                                                 break;
                                             case 2:
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                                this.myString[12] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                                this.myString[12] = cr.ResultValue.ToString();
                                                 break;
                                             case 3:
                                                 strLine = strLine.Substring(1);
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                                this.myString[12] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                                this.myString[12] = cr.ResultValue.ToString();
                                                 break;
                                         }
                                         break;
@@ -334,7 +334,7 @@ namespace ResinSandPyrometer
                                 str = strLine.Substring(strLine.IndexOf("Y") + 1);
                                 yPos = Convert.ToSingle(str);
                                 PointF point = new PointF(xPos, yPos);
-                                cr.linePoints.Add(point);
+                                cr.LinePoints.Add(point);
 
                             }
                             else { }
@@ -385,21 +385,21 @@ namespace ResinSandPyrometer
                                         switch (this.testType)
                                         {
                                             case 0:
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 3));
-                                                this.myString[17] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 3));
+                                                this.myString[17] = cr.ResultValue.ToString();
                                                 break;
                                             case 1:
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                                this.myString[17] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                                this.myString[17] = cr.ResultValue.ToString();
                                                 break;
                                             case 2:
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                                this.myString[15] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                                this.myString[15] = cr.ResultValue.ToString();
                                                 break;
                                             case 3:
                                                 strLine = strLine.Substring(1);
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                                this.myString[15] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                                this.myString[15] = cr.ResultValue.ToString();
                                                 break;
                                         }
                                         break;
@@ -446,7 +446,7 @@ namespace ResinSandPyrometer
                                 str = strLine.Substring(strLine.IndexOf("Y") + 1);
                                 yPos = Convert.ToSingle(str);
                                 PointF point = new PointF(xPos, yPos);
-                                cr.linePoints.Add(point);
+                                cr.LinePoints.Add(point);
 
                             }
                             else { }
@@ -497,21 +497,21 @@ namespace ResinSandPyrometer
                                         switch (this.testType)
                                         {
                                             case 0:
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 3));
-                                                this.myString[21] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 3));
+                                                this.myString[21] = cr.ResultValue.ToString();
                                                 break;
                                             case 1:
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                                this.myString[21] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                                this.myString[21] = cr.ResultValue.ToString();
                                                 break;
                                             case 2:
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                                this.myString[18] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                                this.myString[18] = cr.ResultValue.ToString();
                                                 break;
                                             case 3:
                                                 strLine = strLine.Substring(1);
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                                this.myString[18] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                                this.myString[18] = cr.ResultValue.ToString();
                                                 break;
                                         }
                                         
@@ -559,7 +559,7 @@ namespace ResinSandPyrometer
                                 str = strLine.Substring(strLine.IndexOf("Y") + 1);
                                 yPos = Convert.ToSingle(str);
                                 PointF point = new PointF(xPos, yPos);
-                                cr.linePoints.Add(point);
+                                cr.LinePoints.Add(point);
 
                             }
                             else { }
@@ -617,21 +617,21 @@ namespace ResinSandPyrometer
                                         switch (this.testType)
                                         {
                                             case 0:
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 3));
-                                                this.myString[25] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 3));
+                                                this.myString[25] = cr.ResultValue.ToString();
                                                 break;
                                             case 1:
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                                this.myString[25] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                                this.myString[25] = cr.ResultValue.ToString();
                                                 break;
                                             case 2:
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                                this.myString[21] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                                this.myString[21] = cr.ResultValue.ToString();
                                                 break;
                                             case 3:
                                                 strLine = strLine.Substring(1);
-                                                cr.resultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                                this.myString[21] = cr.resultValue.ToString();
+                                                cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                                this.myString[21] = cr.ResultValue.ToString();
                                                 break;
                                         }
                                        
@@ -679,7 +679,7 @@ namespace ResinSandPyrometer
                                 str = strLine.Substring(strLine.IndexOf("Y") + 1);
                                 yPos = Convert.ToSingle(str);
                                 PointF point = new PointF(xPos, yPos);
-                                cr.linePoints.Add(point);
+                                cr.LinePoints.Add(point);
 
                             }
                             else { }
@@ -698,9 +698,9 @@ namespace ResinSandPyrometer
 
                 foreach (ChartResult cr in chartResults)
                 {
-                    sum += cr.resultValue;
+                    sum += cr.ResultValue;
                     //this.infoListBox.Items.Add(cr.resultValue);
-                    results.Add(cr.resultValue);
+                    results.Add(cr.ResultValue);
                 }
                 results.Sort();
                 if (pathCount == 1)
@@ -708,9 +708,9 @@ namespace ResinSandPyrometer
 
                     foreach (ChartResult cr in chartResults)
                     {
-                        if (cr.resultValue == results[0])
+                        if (cr.ResultValue == results[0])
                         {
-                            foreach (PointF point in cr.linePoints)
+                            foreach (PointF point in cr.LinePoints)
                             {
                                 this.chart.Series[0].Points.AddXY(point.X, point.Y);
 
@@ -749,16 +749,16 @@ namespace ResinSandPyrometer
                     
                     foreach (ChartResult cr in chartResults)
                     {
-                        if (cr.resultValue == results[0])
+                        if (cr.ResultValue == results[0])
                         {
-                            foreach (PointF point in cr.linePoints)
+                            foreach (PointF point in cr.LinePoints)
                             {
                                 this.chart.Series[0].Points.AddXY(point.X, point.Y);
                             }
                         }
-                        if (cr.resultValue == results[1])
+                        if (cr.ResultValue == results[1])
                         {
-                            foreach (PointF point in cr.linePoints)
+                            foreach (PointF point in cr.LinePoints)
                             {
                                 this.chart.Series[1].Points.AddXY(point.X, point.Y);
                             }
@@ -794,25 +794,25 @@ namespace ResinSandPyrometer
                     
                     foreach (ChartResult cr in chartResults)
                     {
-                        if (cr.resultValue == results[0])
+                        if (cr.ResultValue == results[0])
                         {
-                            foreach (PointF point in cr.linePoints)
+                            foreach (PointF point in cr.LinePoints)
                             {
                                 this.chart.Series[0].Points.AddXY(point.X, point.Y);
                             }
                         }
 
-                        if (cr.resultValue == results[1])
+                        if (cr.ResultValue == results[1])
                         {
-                            foreach (PointF point in cr.linePoints)
+                            foreach (PointF point in cr.LinePoints)
                             {
                                 this.chart.Series[1].Points.AddXY(point.X, point.Y);
                             }
                         }
 
-                        if (cr.resultValue == results[2])
+                        if (cr.ResultValue == results[2])
                         {
-                            foreach (PointF point in cr.linePoints)
+                            foreach (PointF point in cr.LinePoints)
                             {
                                 this.chart.Series[2].Points.AddXY(point.X, point.Y);
                             }
@@ -846,17 +846,17 @@ namespace ResinSandPyrometer
                     
                     foreach (ChartResult cr in chartResults)
                     {
-                        if (cr.resultValue == results[1])
+                        if (cr.ResultValue == results[1])
                         {
-                            foreach (PointF point in cr.linePoints)
+                            foreach (PointF point in cr.LinePoints)
                             {
                                 this.chart.Series[0].Points.AddXY(point.X, point.Y);
                             }
                         }
 
-                        if (cr.resultValue == results[2])
+                        if (cr.ResultValue == results[2])
                         {
-                            foreach (PointF point in cr.linePoints)
+                            foreach (PointF point in cr.LinePoints)
                             {
                                 this.chart.Series[1].Points.AddXY(point.X, point.Y);
                             }
@@ -898,24 +898,24 @@ namespace ResinSandPyrometer
 
                     foreach (ChartResult cr in chartResults)
                     {
-                        if (cr.resultValue == results[1])
+                        if (cr.ResultValue == results[1])
                         {
-                            foreach (PointF point in cr.linePoints)
+                            foreach (PointF point in cr.LinePoints)
                             {
                                 this.chart.Series[0].Points.AddXY(point.X, point.Y);
                             }
                         }
 
-                        if (cr.resultValue == results[2])
+                        if (cr.ResultValue == results[2])
                         {
-                            foreach (PointF point in cr.linePoints)
+                            foreach (PointF point in cr.LinePoints)
                             {
                                 this.chart.Series[1].Points.AddXY(point.X, point.Y);
                             }
                         }
-                        if (cr.resultValue == results[3])
+                        if (cr.ResultValue == results[3])
                         {
-                            foreach (PointF point in cr.linePoints)
+                            foreach (PointF point in cr.LinePoints)
                             {
                                 this.chart.Series[2].Points.AddXY(point.X, point.Y);
                             }

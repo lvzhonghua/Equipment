@@ -9,13 +9,11 @@ namespace ResinSandPyrometer.Step
 {
     public class ChartResult
     {
-        public string Path = "";
+        public string Path { get; set; } = "";
 
-        public List<PointF> linePoints = new List<PointF>();
+        public List<PointF> LinePoints { get; set; } = new List<PointF>();
 
-        public float resultValue = 0f;
-
-
+        public float ResultValue { get; set; } = 0f;
 
         public ChartResult(string path, int i)
         {

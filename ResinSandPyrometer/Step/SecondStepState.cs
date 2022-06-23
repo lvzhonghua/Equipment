@@ -10,7 +10,6 @@ namespace ResinSandPyrometer.Step
 {
     public class SecondStepState
     {
-
         private SecondStep step = SecondStep.NONE;
 
         public SecondStep Step
@@ -18,6 +17,7 @@ namespace ResinSandPyrometer.Step
             get { return this.step; }
             set { this.step = value; }
         }
+
         //判断膨胀力是否到达预载荷值
         private bool isLiReached = false;
 
@@ -26,6 +26,7 @@ namespace ResinSandPyrometer.Step
             get { return this.isLiReached; }
             set { this.isLiReached = value; }
         }
+
         //定义零点值
         private float pressZero = 0f;
 

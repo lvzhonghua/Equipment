@@ -16,7 +16,7 @@ namespace ResinSandPyrometer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormDebug());
+            Application.Run(new FormMain());
         }
     }
 }

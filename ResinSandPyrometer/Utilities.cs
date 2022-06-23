@@ -1,9 +1,6 @@
-﻿using ResinSandPyrometer.Common;
+﻿using ResinSandPyrometer.CommandAndReply;
+using ResinSandPyrometer.Common;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ResinSandPyrometer
 {
@@ -25,7 +22,6 @@ namespace ResinSandPyrometer
             return result;
         }
 
-
         public static double GetForceFromVoltage(float voltage, float sensorMax, float sensorMV, float sensibility)
         {
             double result = voltage * sensorMax * (2500.0f / sensorMV) / (8388607.0f * 128.0f * sensibility) * 9.81f;
@@ -45,6 +41,13 @@ namespace ResinSandPyrometer
             long voltage = NumberSystem.BinaryToDecimal_Complement(bytes, 16);
 
             return Utilities.GetForceFromVoltage((float)voltage, Setting.SensorMax, Setting.SensorMV, Setting.SensorSys, Setting.TxtRevise);
+        }
+
+        public static float GetDisplacement(byte[] buffer)
+        {
+            Displacement_Reply reply = CommandAndReply.Displacement_ReplyAnalyzer.Analyse(buffer);
+
+            return reply.Displacement;
         }
     }
 }

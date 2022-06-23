@@ -18,6 +18,7 @@ namespace ResinSandPyrometer.Step
             get { return this.step; }
             set { this.step = value; }
         }
+
         //最大压强值
         private float maxPressure = 0;
 
@@ -36,7 +37,7 @@ namespace ResinSandPyrometer.Step
             set { this.maxPreesureTime = value; }
         }
 
-        public int countTime = 0;
+        public int CountTime { get; set; } = 0;
 
         private bool isTimeReached = false;
 
@@ -64,7 +65,6 @@ namespace ResinSandPyrometer.Step
                 this.isCommandReached = true;
                 this.commandCount = 0;
             }
-
         }
 
         //定义零点值
@@ -105,13 +105,13 @@ namespace ResinSandPyrometer.Step
         }
         public int TimeCount(int soakingTime)
         {
-            this.countTime++;
-            if (this.countTime == 5 * soakingTime)
+            this.CountTime++;
+            if (this.CountTime == 5 * soakingTime)
             {
                 this.isTimeReached = true;
-                this.countTime = 5 * soakingTime;
+                this.CountTime = 5 * soakingTime;
             }
-            return soakingTime - this.countTime / 5;
+            return soakingTime - this.CountTime / 5;
         }
 
         //得到最大压强值和对应的时间
@@ -144,14 +144,13 @@ namespace ResinSandPyrometer.Step
             {
                 this.isPressureSudChange = true;
             }
-
         }
 
         public void InitState()
         {
             this.commandCount = 0;
             this.isCommandReached = false;
-            this.countTime = 0;
+            this.CountTime = 0;
             this.isTimeReached = false;
             this.changeCount = 0;
             this.isPressureSudChange = false;

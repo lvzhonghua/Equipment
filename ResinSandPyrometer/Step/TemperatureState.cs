@@ -16,6 +16,7 @@ namespace ResinSandPyrometer.Step
             get { return isTemperatureReset; }
             set { isTemperatureReset = value; }
         }
+
         private bool isCountSend = false;
 
         public bool IsCountSend

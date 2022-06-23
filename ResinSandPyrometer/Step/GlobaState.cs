@@ -53,56 +53,54 @@ namespace ResinSandPyrometer.Step
             set { this.stepNum = value; }
         }
 
-
-
         //是否开始测试
-        private bool isStarttest = false;
+        private bool isStartTest = false;
 
-        public bool IsStarttest
+        public bool IsStartTest
         {
-            get { return this.isStarttest; }
-            set { this.isStarttest = value; }
+            get { return this.isStartTest; }
+            set { this.isStartTest = value; }
         }
 
         //结束测试
-        private bool isEndtest = false;
+        private bool isEndTest = false;
 
-        public bool IsEndtest
+        public bool IsEndTest
         {
-            get { return this.isEndtest; }
-            set { this.isEndtest = value; }
+            get { return this.isEndTest; }
+            set { this.isEndTest = value; }
         }
 
         //高温抗压强度
         public void GoToFirstStep()
         {
             this.stepNum = Common.Steps.FirstStep;
-            this.isStarttest = true;
-            this.isEndtest = false;
+            this.isStartTest = true;
+            this.isEndTest = false;
         }
 
         //高温膨胀力
         public void GoToSecondStep()
         {
             this.stepNum = Common.Steps.SecondStep;
-            this.isEndtest = false;
-            this.isStarttest = true;
+            this.isEndTest = false;
+            this.isStartTest = true;
         }
 
         //热稳定性
         public void GoToThreeStep()
         {
             this.stepNum = Common.Steps.ThirdStep;
-            this.isEndtest = false;
-            this.isStarttest = true;
+            this.isEndTest = false;
+            this.isStartTest = true;
         }
 
         //高温急热膨胀力
         public void GoToFourStep()
         {
             this.stepNum = Common.Steps.FourthStep;
-            this.isEndtest = false;
-            this.isStarttest = true;
+            this.isEndTest = false;
+            this.isStartTest = true;
         }
 
         private bool isTimeReached = false;
@@ -135,20 +133,20 @@ namespace ResinSandPyrometer.Step
             set { this.pressZero = value; }
         }
 
-        private Queue<float> PPressZeroQueue = new Queue<float>();
+        private Queue<float> pressZeroQueue = new Queue<float>();
 
         //取零点值最后十个数（去掉最大最小值，剩余的十个数平均值作为零点值）
         public void GetPressZero(float pressure)
         {
             if (pressure < 0.1f) return;
 
-            if (this.PPressZeroQueue.Count == 5)
+            if (this.pressZeroQueue.Count == 5)
             {
-                this.PPressZeroQueue.Dequeue();
+                this.pressZeroQueue.Dequeue();
             }
-            this.PPressZeroQueue.Enqueue(pressure);
+            this.pressZeroQueue.Enqueue(pressure);
 
-            float[] zeroArray = PPressZeroQueue.ToArray();
+            float[] zeroArray = pressZeroQueue.ToArray();
             float sum = 0;
             for (int i = 0; i < zeroArray.Length; i++)
             {
