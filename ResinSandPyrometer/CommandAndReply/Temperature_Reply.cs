@@ -12,7 +12,7 @@ namespace ResinSandPyrometer.CommandAndReply
     public class Temperature_Reply
     {  
         public float Temperature { get; set; }              //当前炉温
-        public float TargetTemperature { get; set; }     //目标炉温
+        public float SettingTemperature { get; set; }     //目标炉温设定值
 
         public int Output { get; set; }                        //输出值
 
@@ -23,7 +23,7 @@ namespace ResinSandPyrometer.CommandAndReply
 
         public override string ToString()
         {
-            return $"当前温度：{this.Temperature}，目标温度：{this.TargetTemperature}，状态：{this.Warning} 输出值：{this.Output} 原始数据：{this.Bytes_String}";
+            return $"当前温度：{this.Temperature}，目标温度：{this.SettingTemperature}，状态：{this.Warning} 输出值：{this.Output} 原始数据：{this.Bytes_String}";
         }
     }
 }

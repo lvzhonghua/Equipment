@@ -103,6 +103,7 @@ namespace ResinSandPyrometer.Step
             this.pressureZeroQueue.Clear();
             this.commandCount = 0;
         }
+
         public int TimeCount(int soakingTime)
         {
             this.CountTime++;

@@ -572,5 +572,12 @@ namespace ResinSandPyrometer
 
             serialPort.Close();
         }
+
+        private void FormDebug_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (this.serial_Slave != null && this.serial_Slave.IsOpen) this.serial_Slave.Close();
+            if (this.serial_Temperature != null && this.serial_Temperature.IsOpen) this.serial_Temperature.Close();
+            if (this.serial_Displacement != null && this.serial_Displacement.IsOpen) this.serial_Displacement.Close();
+        }
     }
 }

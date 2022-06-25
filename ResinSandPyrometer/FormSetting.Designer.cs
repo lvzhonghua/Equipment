@@ -294,7 +294,7 @@
             // txtMotorIdlePath
             // 
             this.txtMotorIdlePath.Location = new System.Drawing.Point(212, 30);
-            this.txtMotorIdlePath.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtMotorIdlePath.Margin = new System.Windows.Forms.Padding(2);
             this.txtMotorIdlePath.Name = "txtMotorIdlePath";
             this.txtMotorIdlePath.Size = new System.Drawing.Size(65, 26);
             this.txtMotorIdlePath.TabIndex = 37;
@@ -304,7 +304,7 @@
             // txtDisplacementMotorIdlePath
             // 
             this.txtDisplacementMotorIdlePath.Location = new System.Drawing.Point(212, 101);
-            this.txtDisplacementMotorIdlePath.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtDisplacementMotorIdlePath.Margin = new System.Windows.Forms.Padding(2);
             this.txtDisplacementMotorIdlePath.Name = "txtDisplacementMotorIdlePath";
             this.txtDisplacementMotorIdlePath.Size = new System.Drawing.Size(65, 26);
             this.txtDisplacementMotorIdlePath.TabIndex = 36;
@@ -384,7 +384,7 @@
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
-            // FormParameterSetting
+            // FormSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -397,10 +397,11 @@
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "FormParameterSetting";
+            this.Name = "FormSetting";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "参数设定";
             this.Load += new System.EventHandler(this.FormParameterSetting_Load);
             this.groupBox4.ResumeLayout(false);

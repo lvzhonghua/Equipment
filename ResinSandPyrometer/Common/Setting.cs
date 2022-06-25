@@ -22,7 +22,12 @@ namespace ResinSandPyrometer.Common
         public static string SpecimenName { get; set; }
 
         /// <summary>
-        /// 试样直径
+        /// 试样内径
+        /// </summary>
+        public static float InnerDiameter { get; set; }
+
+        /// <summary>
+        /// 试样外径
         /// </summary>
         public static float SpecimenDiameter { get; set; }
 
@@ -167,6 +172,7 @@ namespace ResinSandPyrometer.Common
             Dictionary<string, string> allSettings = SettingReaderAndWriter.GetAllSettings();
             SpecimenNum = allSettings["SpecimenNum"];
             SpecimenName = allSettings["SpecimenName"];
+            InnerDiameter = float.Parse(allSettings["InnerDiameter"]);
             SpecimenDiameter = float.Parse(allSettings["SpecimenDiameter"]);
             SpecimenHeight = float.Parse(allSettings["SpecimenHeight"]);
             ExperimentPerson = allSettings["ExperimentPerson"];
@@ -191,19 +197,20 @@ namespace ResinSandPyrometer.Common
             SettingReaderAndWriter.WriteAppSetting(key, value);
         }
 
-
         public static void SaveSpecimenSetting(string experimentPerson,
-                                               string experimentUnit,
-                                               string specimenNum,
-                                               string specimenName,
-                                               string specimenDiameter,
-                                               string specimenHeight,
-                                               string num)
+                                                               string experimentUnit,
+                                                               string specimenNum,
+                                                               string specimenName,
+                                                               string innerDiameter,
+                                                               string specimenDiameter,
+                                                               string specimenHeight,
+                                                               string num)
         {
             SettingReaderAndWriter.WriteAppSetting("ExperimentPerson", experimentPerson);
             SettingReaderAndWriter.WriteAppSetting("ExperimentUnit", experimentUnit);
             SettingReaderAndWriter.WriteAppSetting("SpecimenNum", specimenNum);
             SettingReaderAndWriter.WriteAppSetting("SpecimenName", specimenName);
+            SettingReaderAndWriter.WriteAppSetting("InnerDiameter", innerDiameter);
             SettingReaderAndWriter.WriteAppSetting("SpecimenDiameter", specimenDiameter);
             SettingReaderAndWriter.WriteAppSetting("SpecimenHeight", specimenHeight);
             RepeatTimes = int.Parse(num);
@@ -211,6 +218,7 @@ namespace ResinSandPyrometer.Common
             ExperimentUnit = experimentUnit;
             SpecimenNum = specimenNum;
             SpecimenName = specimenName;
+            InnerDiameter = float.Parse(innerDiameter);
             SpecimenDiameter = float.Parse(specimenDiameter);
             SpecimenHeight = float.Parse(specimenHeight);
         }

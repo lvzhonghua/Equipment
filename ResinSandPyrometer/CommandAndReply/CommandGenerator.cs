@@ -169,9 +169,10 @@ namespace ResinSandPyrometer.CommandAndReply
             command.Code_String = "#<";
             command.Code_Bytes = Encoding.ASCII.GetBytes(command.Code_String);
             command.Data_String = distanceValue.ToString();
-            command.Data = BitConverter.GetBytes(distanceValue);
+            byte[] bytes = BitConverter.GetBytes(distanceValue);
+            command.Data = new byte[] {bytes[1], bytes[0]};
 
-            command.Bytes = new byte[command.Code_Bytes.Length + command.Data.Length];
+           command.Bytes = new byte[command.Code_Bytes.Length + command.Data.Length];
             Buffer.BlockCopy(command.Code_Bytes, 0, command.Bytes, 0, 2);
             Buffer.BlockCopy(command.Data, 0, command.Bytes, 2, 2);
 

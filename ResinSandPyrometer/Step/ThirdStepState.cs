@@ -60,7 +60,7 @@ namespace ResinSandPyrometer.Step
             set { this.balanceTime = value; }
         }
 
-        public void getBalanceTime(float time)
+        public void GetBalanceTime(float time)
         {
             this.balanceTime = time;
         }

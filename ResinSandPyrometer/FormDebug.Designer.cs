@@ -35,7 +35,10 @@ namespace ResinSandPyrometer
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.txtCOM_Temperature = new System.Windows.Forms.ToolStripTextBox();
+            this.btnConnect_Temperature = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnDisconnect_Temperature = new System.Windows.Forms.ToolStripButton();
+            this.btnSend_Temperature = new System.Windows.Forms.ToolStripButton();
             this.cboCommand_Temperature = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -43,7 +46,10 @@ namespace ResinSandPyrometer
             this.tttt = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
             this.txtCOM_Displacement = new System.Windows.Forms.ToolStripTextBox();
+            this.btnConnect_Displacement = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnDisconnect_Displacement = new System.Windows.Forms.ToolStripButton();
+            this.btnSend_Displacement = new System.Windows.Forms.ToolStripButton();
             this.cboCommand_Displacement = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -51,25 +57,19 @@ namespace ResinSandPyrometer
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel5 = new System.Windows.Forms.ToolStripLabel();
             this.txtCOM_Slave = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.cboCommand_Slave = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripLabel6 = new System.Windows.Forms.ToolStripLabel();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.btnCalcForce = new System.Windows.Forms.Button();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnConnect_Temperature = new System.Windows.Forms.ToolStripButton();
-            this.btnDisconnect_Temperature = new System.Windows.Forms.ToolStripButton();
-            this.btnSend_Temperature = new System.Windows.Forms.ToolStripButton();
-            this.btnConnect_Displacement = new System.Windows.Forms.ToolStripButton();
-            this.btnDisconnect_Displacement = new System.Windows.Forms.ToolStripButton();
-            this.btnSend_Displacement = new System.Windows.Forms.ToolStripButton();
             this.btnConnect_Slave = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.btnDisconnect_Slave = new System.Windows.Forms.ToolStripButton();
             this.btnSend_Slave = new System.Windows.Forms.ToolStripButton();
+            this.cboCommand_Slave = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripLabel6 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.btnCalibrate = new System.Windows.Forms.ToolStripButton();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.btnCalcForce = new System.Windows.Forms.Button();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.btnAutoDetect = new System.Windows.Forms.Button();
             this.txtAutoDetect = new System.Windows.Forms.TextBox();
+            this.btnAutoDetect = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -148,10 +148,38 @@ namespace ResinSandPyrometer
             this.txtCOM_Temperature.Size = new System.Drawing.Size(60, 25);
             this.txtCOM_Temperature.Text = "COM3";
             // 
+            // btnConnect_Temperature
+            // 
+            this.btnConnect_Temperature.Image = global::ResinSandPyrometer.Properties.Resources.连接_红色_16;
+            this.btnConnect_Temperature.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnConnect_Temperature.Name = "btnConnect_Temperature";
+            this.btnConnect_Temperature.Size = new System.Drawing.Size(52, 22);
+            this.btnConnect_Temperature.Text = "连接";
+            this.btnConnect_Temperature.Click += new System.EventHandler(this.btnConnect_Temperature_Click);
+            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnDisconnect_Temperature
+            // 
+            this.btnDisconnect_Temperature.Image = global::ResinSandPyrometer.Properties.Resources.断开链接2_16;
+            this.btnDisconnect_Temperature.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDisconnect_Temperature.Name = "btnDisconnect_Temperature";
+            this.btnDisconnect_Temperature.Size = new System.Drawing.Size(52, 22);
+            this.btnDisconnect_Temperature.Text = "断开";
+            this.btnDisconnect_Temperature.Click += new System.EventHandler(this.btnDisconnect_Temperature_Click);
+            // 
+            // btnSend_Temperature
+            // 
+            this.btnSend_Temperature.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.btnSend_Temperature.Image = global::ResinSandPyrometer.Properties.Resources.发送_16;
+            this.btnSend_Temperature.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSend_Temperature.Name = "btnSend_Temperature";
+            this.btnSend_Temperature.Size = new System.Drawing.Size(52, 22);
+            this.btnSend_Temperature.Text = "发送";
+            this.btnSend_Temperature.Click += new System.EventHandler(this.btnSend_Temperature_Click);
             // 
             // cboCommand_Temperature
             // 
@@ -186,7 +214,7 @@ namespace ResinSandPyrometer
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1166, 698);
+            this.tabPage2.Size = new System.Drawing.Size(716, 393);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "位移传感器";
             // 
@@ -198,7 +226,7 @@ namespace ResinSandPyrometer
             this.txtLog_Displacement.Name = "txtLog_Displacement";
             this.txtLog_Displacement.ReadOnly = true;
             this.txtLog_Displacement.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog_Displacement.Size = new System.Drawing.Size(1160, 667);
+            this.txtLog_Displacement.Size = new System.Drawing.Size(710, 362);
             this.txtLog_Displacement.TabIndex = 3;
             // 
             // tttt
@@ -214,7 +242,7 @@ namespace ResinSandPyrometer
             this.toolStripLabel4});
             this.tttt.Location = new System.Drawing.Point(3, 3);
             this.tttt.Name = "tttt";
-            this.tttt.Size = new System.Drawing.Size(1160, 25);
+            this.tttt.Size = new System.Drawing.Size(710, 25);
             this.tttt.TabIndex = 2;
             this.tttt.Text = "toolStrip2";
             // 
@@ -231,10 +259,38 @@ namespace ResinSandPyrometer
             this.txtCOM_Displacement.Size = new System.Drawing.Size(60, 25);
             this.txtCOM_Displacement.Text = "COM3";
             // 
+            // btnConnect_Displacement
+            // 
+            this.btnConnect_Displacement.Image = global::ResinSandPyrometer.Properties.Resources.连接_红色_16;
+            this.btnConnect_Displacement.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnConnect_Displacement.Name = "btnConnect_Displacement";
+            this.btnConnect_Displacement.Size = new System.Drawing.Size(52, 22);
+            this.btnConnect_Displacement.Text = "连接";
+            this.btnConnect_Displacement.Click += new System.EventHandler(this.btnConnect_Displacement_Click);
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnDisconnect_Displacement
+            // 
+            this.btnDisconnect_Displacement.Image = global::ResinSandPyrometer.Properties.Resources.断开链接2_16;
+            this.btnDisconnect_Displacement.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDisconnect_Displacement.Name = "btnDisconnect_Displacement";
+            this.btnDisconnect_Displacement.Size = new System.Drawing.Size(52, 22);
+            this.btnDisconnect_Displacement.Text = "断开";
+            this.btnDisconnect_Displacement.Click += new System.EventHandler(this.btnDisconnect_Displacement_Click);
+            // 
+            // btnSend_Displacement
+            // 
+            this.btnSend_Displacement.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.btnSend_Displacement.Image = global::ResinSandPyrometer.Properties.Resources.发送_16;
+            this.btnSend_Displacement.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSend_Displacement.Name = "btnSend_Displacement";
+            this.btnSend_Displacement.Size = new System.Drawing.Size(52, 22);
+            this.btnSend_Displacement.Text = "发送";
+            this.btnSend_Displacement.Click += new System.EventHandler(this.btnSend_Displacement_Click);
             // 
             // cboCommand_Displacement
             // 
@@ -307,10 +363,38 @@ namespace ResinSandPyrometer
             this.txtCOM_Slave.Size = new System.Drawing.Size(60, 25);
             this.txtCOM_Slave.Text = "COM4";
             // 
+            // btnConnect_Slave
+            // 
+            this.btnConnect_Slave.Image = global::ResinSandPyrometer.Properties.Resources.连接_红色_16;
+            this.btnConnect_Slave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnConnect_Slave.Name = "btnConnect_Slave";
+            this.btnConnect_Slave.Size = new System.Drawing.Size(52, 22);
+            this.btnConnect_Slave.Text = "连接";
+            this.btnConnect_Slave.Click += new System.EventHandler(this.btnConnect_Slave_Click);
+            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnDisconnect_Slave
+            // 
+            this.btnDisconnect_Slave.Image = global::ResinSandPyrometer.Properties.Resources.断开链接2_16;
+            this.btnDisconnect_Slave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDisconnect_Slave.Name = "btnDisconnect_Slave";
+            this.btnDisconnect_Slave.Size = new System.Drawing.Size(52, 22);
+            this.btnDisconnect_Slave.Text = "断开";
+            this.btnDisconnect_Slave.Click += new System.EventHandler(this.btnDisconnect_Slave_Click);
+            // 
+            // btnSend_Slave
+            // 
+            this.btnSend_Slave.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.btnSend_Slave.Image = global::ResinSandPyrometer.Properties.Resources.发送_16;
+            this.btnSend_Slave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSend_Slave.Name = "btnSend_Slave";
+            this.btnSend_Slave.Size = new System.Drawing.Size(52, 22);
+            this.btnSend_Slave.Text = "发送";
+            this.btnSend_Slave.Click += new System.EventHandler(this.btnSend_Slave_Click);
             // 
             // cboCommand_Slave
             // 
@@ -363,6 +447,20 @@ namespace ResinSandPyrometer
             this.toolStripLabel6.Size = new System.Drawing.Size(32, 22);
             this.toolStripLabel6.Text = "指令";
             // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnCalibrate
+            // 
+            this.btnCalibrate.Image = global::ResinSandPyrometer.Properties.Resources.校准_red_16;
+            this.btnCalibrate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCalibrate.Name = "btnCalibrate";
+            this.btnCalibrate.Size = new System.Drawing.Size(52, 22);
+            this.btnCalibrate.Text = "校准";
+            this.btnCalibrate.Click += new System.EventHandler(this.btnCalibrate_Click);
+            // 
             // tabPage4
             // 
             this.tabPage4.BackColor = System.Drawing.SystemColors.Control;
@@ -384,104 +482,6 @@ namespace ResinSandPyrometer
             this.btnCalcForce.UseVisualStyleBackColor = true;
             this.btnCalcForce.Click += new System.EventHandler(this.btnCalcForce_Click);
             // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
-            // 
-            // btnConnect_Temperature
-            // 
-            this.btnConnect_Temperature.Image = global::ResinSandPyrometer.Properties.Resources.连接_红色_16;
-            this.btnConnect_Temperature.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnConnect_Temperature.Name = "btnConnect_Temperature";
-            this.btnConnect_Temperature.Size = new System.Drawing.Size(52, 22);
-            this.btnConnect_Temperature.Text = "连接";
-            this.btnConnect_Temperature.Click += new System.EventHandler(this.btnConnect_Temperature_Click);
-            // 
-            // btnDisconnect_Temperature
-            // 
-            this.btnDisconnect_Temperature.Image = global::ResinSandPyrometer.Properties.Resources.断开链接2_16;
-            this.btnDisconnect_Temperature.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnDisconnect_Temperature.Name = "btnDisconnect_Temperature";
-            this.btnDisconnect_Temperature.Size = new System.Drawing.Size(52, 22);
-            this.btnDisconnect_Temperature.Text = "断开";
-            this.btnDisconnect_Temperature.Click += new System.EventHandler(this.btnDisconnect_Temperature_Click);
-            // 
-            // btnSend_Temperature
-            // 
-            this.btnSend_Temperature.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.btnSend_Temperature.Image = global::ResinSandPyrometer.Properties.Resources.发送_16;
-            this.btnSend_Temperature.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnSend_Temperature.Name = "btnSend_Temperature";
-            this.btnSend_Temperature.Size = new System.Drawing.Size(52, 22);
-            this.btnSend_Temperature.Text = "发送";
-            this.btnSend_Temperature.Click += new System.EventHandler(this.btnSend_Temperature_Click);
-            // 
-            // btnConnect_Displacement
-            // 
-            this.btnConnect_Displacement.Image = global::ResinSandPyrometer.Properties.Resources.连接_红色_16;
-            this.btnConnect_Displacement.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnConnect_Displacement.Name = "btnConnect_Displacement";
-            this.btnConnect_Displacement.Size = new System.Drawing.Size(52, 22);
-            this.btnConnect_Displacement.Text = "连接";
-            this.btnConnect_Displacement.Click += new System.EventHandler(this.btnConnect_Displacement_Click);
-            // 
-            // btnDisconnect_Displacement
-            // 
-            this.btnDisconnect_Displacement.Image = global::ResinSandPyrometer.Properties.Resources.断开链接2_16;
-            this.btnDisconnect_Displacement.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnDisconnect_Displacement.Name = "btnDisconnect_Displacement";
-            this.btnDisconnect_Displacement.Size = new System.Drawing.Size(52, 22);
-            this.btnDisconnect_Displacement.Text = "断开";
-            this.btnDisconnect_Displacement.Click += new System.EventHandler(this.btnDisconnect_Displacement_Click);
-            // 
-            // btnSend_Displacement
-            // 
-            this.btnSend_Displacement.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.btnSend_Displacement.Image = global::ResinSandPyrometer.Properties.Resources.发送_16;
-            this.btnSend_Displacement.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnSend_Displacement.Name = "btnSend_Displacement";
-            this.btnSend_Displacement.Size = new System.Drawing.Size(52, 22);
-            this.btnSend_Displacement.Text = "发送";
-            this.btnSend_Displacement.Click += new System.EventHandler(this.btnSend_Displacement_Click);
-            // 
-            // btnConnect_Slave
-            // 
-            this.btnConnect_Slave.Image = global::ResinSandPyrometer.Properties.Resources.连接_红色_16;
-            this.btnConnect_Slave.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnConnect_Slave.Name = "btnConnect_Slave";
-            this.btnConnect_Slave.Size = new System.Drawing.Size(52, 22);
-            this.btnConnect_Slave.Text = "连接";
-            this.btnConnect_Slave.Click += new System.EventHandler(this.btnConnect_Slave_Click);
-            // 
-            // btnDisconnect_Slave
-            // 
-            this.btnDisconnect_Slave.Image = global::ResinSandPyrometer.Properties.Resources.断开链接2_16;
-            this.btnDisconnect_Slave.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnDisconnect_Slave.Name = "btnDisconnect_Slave";
-            this.btnDisconnect_Slave.Size = new System.Drawing.Size(52, 22);
-            this.btnDisconnect_Slave.Text = "断开";
-            this.btnDisconnect_Slave.Click += new System.EventHandler(this.btnDisconnect_Slave_Click);
-            // 
-            // btnSend_Slave
-            // 
-            this.btnSend_Slave.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.btnSend_Slave.Image = global::ResinSandPyrometer.Properties.Resources.发送_16;
-            this.btnSend_Slave.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnSend_Slave.Name = "btnSend_Slave";
-            this.btnSend_Slave.Size = new System.Drawing.Size(52, 22);
-            this.btnSend_Slave.Text = "发送";
-            this.btnSend_Slave.Click += new System.EventHandler(this.btnSend_Slave_Click);
-            // 
-            // btnCalibrate
-            // 
-            this.btnCalibrate.Image = global::ResinSandPyrometer.Properties.Resources.校准_red_16;
-            this.btnCalibrate.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnCalibrate.Name = "btnCalibrate";
-            this.btnCalibrate.Size = new System.Drawing.Size(52, 22);
-            this.btnCalibrate.Text = "校准";
-            this.btnCalibrate.Click += new System.EventHandler(this.btnCalibrate_Click);
-            // 
             // tabPage5
             // 
             this.tabPage5.BackColor = System.Drawing.SystemColors.Control;
@@ -493,16 +493,6 @@ namespace ResinSandPyrometer
             this.tabPage5.Size = new System.Drawing.Size(716, 393);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "串口自动匹配";
-            // 
-            // btnAutoDetect
-            // 
-            this.btnAutoDetect.Location = new System.Drawing.Point(6, 6);
-            this.btnAutoDetect.Name = "btnAutoDetect";
-            this.btnAutoDetect.Size = new System.Drawing.Size(75, 23);
-            this.btnAutoDetect.TabIndex = 0;
-            this.btnAutoDetect.Text = "自动匹配";
-            this.btnAutoDetect.UseVisualStyleBackColor = true;
-            this.btnAutoDetect.Click += new System.EventHandler(this.btnAutoDetect_Click);
             // 
             // txtAutoDetect
             // 
@@ -517,6 +507,16 @@ namespace ResinSandPyrometer
             this.txtAutoDetect.Size = new System.Drawing.Size(702, 350);
             this.txtAutoDetect.TabIndex = 2;
             // 
+            // btnAutoDetect
+            // 
+            this.btnAutoDetect.Location = new System.Drawing.Point(6, 6);
+            this.btnAutoDetect.Name = "btnAutoDetect";
+            this.btnAutoDetect.Size = new System.Drawing.Size(75, 23);
+            this.btnAutoDetect.TabIndex = 0;
+            this.btnAutoDetect.Text = "自动匹配";
+            this.btnAutoDetect.UseVisualStyleBackColor = true;
+            this.btnAutoDetect.Click += new System.EventHandler(this.btnAutoDetect_Click);
+            // 
             // FormDebug
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -525,6 +525,7 @@ namespace ResinSandPyrometer
             this.Controls.Add(this.tabControl1);
             this.Name = "FormDebug";
             this.Text = "调试工具";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormDebug_FormClosed);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();

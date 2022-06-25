@@ -26,19 +26,30 @@ namespace ResinSandPyrometer
             this.txtUnit.Text = Setting.ExperimentUnit;
             this.txtNum.Text = Setting.SpecimenNum;
             this.txtMat.Text = Setting.SpecimenName;
+            this.txtInnerDiameter.Text = Setting.InnerDiameter.ToString();
             this.txtSpecimenDiameter.Text = Setting.SpecimenDiameter.ToString();
-            this.txtSpecimenHeight.Text = Setting.SpecimenHeight.ToString();                                                                                                                                        
+            this.txtSpecimenHeight.Text = Setting.SpecimenHeight.ToString();                                                                                                                                         
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            float innerDiameter = float.Parse(this.txtInnerDiameter.Text);
+            float specimenDiameter = float.Parse(this.txtSpecimenDiameter.Text);
+
+            if (innerDiameter >= specimenDiameter)
+            {
+                MessageBox.Show("内径不能大等于外径", "提示",MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
             Setting.SaveSpecimenSetting(this.txtPersonName.Text,
-                                        this.txtUnit.Text,
-                                        this.txtNum.Text,
-                                        this.txtMat.Text,
-                                        this.txtSpecimenDiameter.Text,
-                                        this.txtSpecimenHeight.Text,
-                                        this.TxtReNum.Text);
+                                                     this.txtUnit.Text,
+                                                     this.txtNum.Text,
+                                                     this.txtMat.Text,
+                                                     this.txtInnerDiameter.Text,
+                                                     this.txtSpecimenDiameter.Text,
+                                                     this.txtSpecimenHeight.Text,
+                                                     this.TxtReNum.Text);
 
             this.DialogResult = DialogResult.OK;
         }

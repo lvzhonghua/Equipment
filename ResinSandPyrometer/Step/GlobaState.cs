@@ -74,7 +74,7 @@ namespace ResinSandPyrometer.Step
         //高温抗压强度
         public void GoToFirstStep()
         {
-            this.stepNum = Common.Steps.FirstStep;
+            this.stepNum = Steps.FirstStep;
             this.isStartTest = true;
             this.isEndTest = false;
         }
@@ -82,7 +82,7 @@ namespace ResinSandPyrometer.Step
         //高温膨胀力
         public void GoToSecondStep()
         {
-            this.stepNum = Common.Steps.SecondStep;
+            this.stepNum = Steps.SecondStep;
             this.isEndTest = false;
             this.isStartTest = true;
         }
@@ -90,7 +90,7 @@ namespace ResinSandPyrometer.Step
         //热稳定性
         public void GoToThreeStep()
         {
-            this.stepNum = Common.Steps.ThirdStep;
+            this.stepNum = Steps.ThirdStep;
             this.isEndTest = false;
             this.isStartTest = true;
         }
@@ -98,7 +98,7 @@ namespace ResinSandPyrometer.Step
         //高温急热膨胀力
         public void GoToFourStep()
         {
-            this.stepNum = Common.Steps.FourthStep;
+            this.stepNum = Steps.FourthStep;
             this.isEndTest = false;
             this.isStartTest = true;
         }
@@ -121,7 +121,6 @@ namespace ResinSandPyrometer.Step
                 this.isTimeReached = true;
                 this.countTime = 0;
             }
-
         }
 
         //定义零点值

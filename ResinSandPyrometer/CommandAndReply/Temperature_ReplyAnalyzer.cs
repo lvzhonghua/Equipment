@@ -30,8 +30,8 @@ namespace ResinSandPyrometer.CommandAndReply
             tempBuffer_2[0] = buffer[3];
             tempBuffer_2[1] = buffer[2];
 
-            reply.Temperature = 0.1f * Common.NumberSystem.BinaryToDecimal_Complement(tempBuffer_1, 16);
-            reply.TargetTemperature = 0.1f * Common.NumberSystem.BinaryToDecimal_Complement(tempBuffer_2, 16);
+            reply.Temperature = 0.1f * NumberSystem.BinaryToDecimal_Complement(tempBuffer_1, 16);
+            reply.SettingTemperature = 0.1f * NumberSystem.BinaryToDecimal_Complement(tempBuffer_2, 16);
             reply.Output = (int)buffer[4];
 
             byte warningByte = buffer[5];

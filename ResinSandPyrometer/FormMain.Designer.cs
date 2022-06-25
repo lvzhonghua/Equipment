@@ -147,6 +147,8 @@
             this.btnBackToZero = new System.Windows.Forms.Button();
             this.btnCalibration = new System.Windows.Forms.Button();
             this.tmCheckTemperature = new System.Windows.Forms.Timer(this.components);
+            this.txtInnerDiameter = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
             this.statusStrip1.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -414,7 +416,7 @@
             // btnSampleInfoSetting
             // 
             this.btnSampleInfoSetting.Font = new System.Drawing.Font("宋体", 12F);
-            this.btnSampleInfoSetting.Location = new System.Drawing.Point(31, 503);
+            this.btnSampleInfoSetting.Location = new System.Drawing.Point(24, 533);
             this.btnSampleInfoSetting.Name = "btnSampleInfoSetting";
             this.btnSampleInfoSetting.Size = new System.Drawing.Size(125, 42);
             this.btnSampleInfoSetting.TabIndex = 27;
@@ -425,7 +427,7 @@
             // btnSettings
             // 
             this.btnSettings.Font = new System.Drawing.Font("宋体", 12F);
-            this.btnSettings.Location = new System.Drawing.Point(190, 503);
+            this.btnSettings.Location = new System.Drawing.Point(183, 533);
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Size = new System.Drawing.Size(125, 42);
             this.btnSettings.TabIndex = 26;
@@ -437,11 +439,13 @@
             // 
             this.groupBox1.Controls.Add(this.label23);
             this.groupBox1.Controls.Add(this.txtSampleNo);
+            this.groupBox1.Controls.Add(this.label25);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label22);
             this.groupBox1.Controls.Add(this.txtRepeatNumber);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.label19);
+            this.groupBox1.Controls.Add(this.txtInnerDiameter);
             this.groupBox1.Controls.Add(this.txtCompany);
             this.groupBox1.Controls.Add(this.txtSpecimenDiameter);
             this.groupBox1.Controls.Add(this.txtSampeName);
@@ -454,7 +458,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Size = new System.Drawing.Size(299, 246);
+            this.groupBox1.Size = new System.Drawing.Size(299, 287);
             this.groupBox1.TabIndex = 25;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "试样信息";
@@ -492,11 +496,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label7.Location = new System.Drawing.Point(7, 87);
+            this.label7.Location = new System.Drawing.Point(7, 122);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(88, 16);
             this.label7.TabIndex = 18;
-            this.label7.Text = "试样直径：";
+            this.label7.Text = "试样外径：";
             // 
             // label22
             // 
@@ -517,7 +521,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtRepeatNumber.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtRepeatNumber.Location = new System.Drawing.Point(101, 204);
+            this.txtRepeatNumber.Location = new System.Drawing.Point(101, 239);
             this.txtRepeatNumber.Name = "txtRepeatNumber";
             this.txtRepeatNumber.ReadOnly = true;
             this.txtRepeatNumber.Size = new System.Drawing.Size(194, 26);
@@ -531,7 +535,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label11.Location = new System.Drawing.Point(8, 207);
+            this.label11.Location = new System.Drawing.Point(8, 242);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(88, 16);
             this.label11.TabIndex = 19;
@@ -544,7 +548,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label19.AutoSize = true;
             this.label19.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label19.Location = new System.Drawing.Point(8, 119);
+            this.label19.Location = new System.Drawing.Point(8, 154);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(88, 16);
             this.label19.TabIndex = 23;
@@ -556,7 +560,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtCompany.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtCompany.Location = new System.Drawing.Point(101, 175);
+            this.txtCompany.Location = new System.Drawing.Point(101, 210);
             this.txtCompany.Name = "txtCompany";
             this.txtCompany.ReadOnly = true;
             this.txtCompany.Size = new System.Drawing.Size(194, 26);
@@ -569,7 +573,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtSpecimenDiameter.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtSpecimenDiameter.Location = new System.Drawing.Point(102, 85);
+            this.txtSpecimenDiameter.Location = new System.Drawing.Point(102, 120);
             this.txtSpecimenDiameter.Name = "txtSpecimenDiameter";
             this.txtSpecimenDiameter.ReadOnly = true;
             this.txtSpecimenDiameter.Size = new System.Drawing.Size(193, 26);
@@ -595,7 +599,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtWorkerName.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtWorkerName.Location = new System.Drawing.Point(101, 145);
+            this.txtWorkerName.Location = new System.Drawing.Point(101, 180);
             this.txtWorkerName.Name = "txtWorkerName";
             this.txtWorkerName.ReadOnly = true;
             this.txtWorkerName.Size = new System.Drawing.Size(194, 26);
@@ -608,7 +612,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtSpecimenHeight.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtSpecimenHeight.Location = new System.Drawing.Point(102, 114);
+            this.txtSpecimenHeight.Location = new System.Drawing.Point(102, 149);
             this.txtSpecimenHeight.Name = "txtSpecimenHeight";
             this.txtSpecimenHeight.ReadOnly = true;
             this.txtSpecimenHeight.Size = new System.Drawing.Size(193, 26);
@@ -622,7 +626,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label13.Location = new System.Drawing.Point(8, 148);
+            this.label13.Location = new System.Drawing.Point(8, 183);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(88, 16);
             this.label13.TabIndex = 20;
@@ -635,7 +639,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label12.Location = new System.Drawing.Point(8, 177);
+            this.label12.Location = new System.Drawing.Point(8, 212);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(88, 16);
             this.label12.TabIndex = 21;
@@ -1422,6 +1426,32 @@
             this.tmCheckTemperature.Interval = 1000;
             this.tmCheckTemperature.Tick += new System.EventHandler(this.tmCheckTemperature_Tick);
             // 
+            // txtInnerDiameter
+            // 
+            this.txtInnerDiameter.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtInnerDiameter.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtInnerDiameter.Location = new System.Drawing.Point(102, 88);
+            this.txtInnerDiameter.Name = "txtInnerDiameter";
+            this.txtInnerDiameter.ReadOnly = true;
+            this.txtInnerDiameter.Size = new System.Drawing.Size(193, 26);
+            this.txtInnerDiameter.TabIndex = 14;
+            this.txtInnerDiameter.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label25
+            // 
+            this.label25.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label25.AutoSize = true;
+            this.label25.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label25.Location = new System.Drawing.Point(7, 90);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(88, 16);
+            this.label25.TabIndex = 18;
+            this.label25.Text = "试样内径：";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1584,6 +1614,8 @@
         private System.Windows.Forms.TextBox txtSpecimenDiameter;
         private System.Windows.Forms.ToolStripStatusLabel lblDebugInfo;
         private System.Windows.Forms.ToolStripButton btnDebug;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.TextBox txtInnerDiameter;
     }
 }
 

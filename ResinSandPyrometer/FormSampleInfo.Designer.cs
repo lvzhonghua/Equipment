@@ -44,6 +44,8 @@
             this.txtSpecimenHeight = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.txtSpecimenDiameter = new System.Windows.Forms.TextBox();
+            this.txtInnerDiameter = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.txtMat = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -67,7 +69,7 @@
             this.groupBox1.Location = new System.Drawing.Point(19, 19);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(318, 228);
-            this.groupBox1.TabIndex = 9;
+            this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "测试信息";
             // 
@@ -99,7 +101,7 @@
             this.txtPersonName.Location = new System.Drawing.Point(84, 35);
             this.txtPersonName.Name = "txtPersonName";
             this.txtPersonName.Size = new System.Drawing.Size(225, 26);
-            this.txtPersonName.TabIndex = 1;
+            this.txtPersonName.TabIndex = 0;
             this.txtPersonName.Tag = "ExperimentPerson";
             this.txtPersonName.Text = "张三";
             this.txtPersonName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -110,7 +112,7 @@
             this.txtUnit.Location = new System.Drawing.Point(84, 183);
             this.txtUnit.Name = "txtUnit";
             this.txtUnit.Size = new System.Drawing.Size(225, 26);
-            this.txtUnit.TabIndex = 1;
+            this.txtUnit.TabIndex = 3;
             this.txtUnit.Tag = "ExperimentUnit";
             this.txtUnit.Text = "无锡三峰";
             this.txtUnit.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -121,7 +123,7 @@
             this.TxtReNum.Location = new System.Drawing.Point(84, 141);
             this.TxtReNum.Name = "TxtReNum";
             this.TxtReNum.Size = new System.Drawing.Size(225, 26);
-            this.TxtReNum.TabIndex = 1;
+            this.TxtReNum.TabIndex = 2;
             this.TxtReNum.Text = "1";
             this.TxtReNum.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -131,7 +133,7 @@
             this.DateTime.Location = new System.Drawing.Point(84, 85);
             this.DateTime.Name = "DateTime";
             this.DateTime.Size = new System.Drawing.Size(225, 26);
-            this.DateTime.TabIndex = 2;
+            this.DateTime.TabIndex = 1;
             // 
             // label6
             // 
@@ -163,6 +165,8 @@
             this.groupBox2.Controls.Add(this.txtSpecimenHeight);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.txtSpecimenDiameter);
+            this.groupBox2.Controls.Add(this.txtInnerDiameter);
+            this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.txtMat);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -170,7 +174,7 @@
             this.groupBox2.Location = new System.Drawing.Point(356, 19);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(303, 227);
-            this.groupBox2.TabIndex = 10;
+            this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "型砂信息";
             // 
@@ -179,7 +183,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(6, 37);
+            this.label2.Location = new System.Drawing.Point(8, 37);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(72, 20);
             this.label2.TabIndex = 0;
@@ -188,10 +192,10 @@
             // txtNum
             // 
             this.txtNum.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtNum.Location = new System.Drawing.Point(84, 34);
+            this.txtNum.Location = new System.Drawing.Point(83, 34);
             this.txtNum.Name = "txtNum";
             this.txtNum.Size = new System.Drawing.Size(191, 26);
-            this.txtNum.TabIndex = 1;
+            this.txtNum.TabIndex = 0;
             this.txtNum.Tag = "SpecimenNum";
             this.txtNum.Text = "S00001";
             this.txtNum.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -201,19 +205,19 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(6, 141);
+            this.label3.Location = new System.Drawing.Point(6, 152);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(72, 20);
             this.label3.TabIndex = 0;
-            this.label3.Text = "直径：";
+            this.label3.Text = "外径：";
             // 
             // txtSpecimenHeight
             // 
             this.txtSpecimenHeight.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtSpecimenHeight.Location = new System.Drawing.Point(82, 188);
+            this.txtSpecimenHeight.Location = new System.Drawing.Point(83, 188);
             this.txtSpecimenHeight.Name = "txtSpecimenHeight";
             this.txtSpecimenHeight.Size = new System.Drawing.Size(191, 26);
-            this.txtSpecimenHeight.TabIndex = 1;
+            this.txtSpecimenHeight.TabIndex = 4;
             this.txtSpecimenHeight.Tag = "SpecimenName";
             this.txtSpecimenHeight.Text = "20";
             this.txtSpecimenHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -233,19 +237,41 @@
             // txtSpecimenDiameter
             // 
             this.txtSpecimenDiameter.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtSpecimenDiameter.Location = new System.Drawing.Point(84, 141);
+            this.txtSpecimenDiameter.Location = new System.Drawing.Point(83, 150);
             this.txtSpecimenDiameter.Name = "txtSpecimenDiameter";
             this.txtSpecimenDiameter.Size = new System.Drawing.Size(191, 26);
-            this.txtSpecimenDiameter.TabIndex = 1;
+            this.txtSpecimenDiameter.TabIndex = 3;
             this.txtSpecimenDiameter.Tag = "SpecimenName";
-            this.txtSpecimenDiameter.Text = "12";
+            this.txtSpecimenDiameter.Text = "20";
             this.txtSpecimenDiameter.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtSpecimenDiameter.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TxtBox_KeyPress);
+            // 
+            // txtInnerDiameter
+            // 
+            this.txtInnerDiameter.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtInnerDiameter.Location = new System.Drawing.Point(83, 111);
+            this.txtInnerDiameter.Name = "txtInnerDiameter";
+            this.txtInnerDiameter.Size = new System.Drawing.Size(191, 26);
+            this.txtInnerDiameter.TabIndex = 2;
+            this.txtInnerDiameter.Tag = "SpecimenName";
+            this.txtInnerDiameter.Text = "5";
+            this.txtInnerDiameter.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label7.ForeColor = System.Drawing.Color.Black;
+            this.label7.Location = new System.Drawing.Point(6, 115);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(72, 20);
+            this.label7.TabIndex = 0;
+            this.label7.Text = "内径：";
             // 
             // txtMat
             // 
             this.txtMat.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtMat.Location = new System.Drawing.Point(84, 88);
+            this.txtMat.Location = new System.Drawing.Point(83, 73);
             this.txtMat.Name = "txtMat";
             this.txtMat.Size = new System.Drawing.Size(191, 26);
             this.txtMat.TabIndex = 1;
@@ -258,7 +284,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(6, 89);
+            this.label1.Location = new System.Drawing.Point(6, 74);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 20);
             this.label1.TabIndex = 0;
@@ -270,7 +296,7 @@
             this.btnCancel.Location = new System.Drawing.Point(549, 261);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(110, 38);
-            this.btnCancel.TabIndex = 7;
+            this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "取消";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -281,7 +307,7 @@
             this.btnOK.Location = new System.Drawing.Point(434, 261);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(110, 38);
-            this.btnOK.TabIndex = 8;
+            this.btnOK.TabIndex = 2;
             this.btnOK.Text = "确定";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -299,6 +325,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormSampleInfo";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "试样信息";
             this.Load += new System.EventHandler(this.FormSpecimenSetting_Load);
             this.groupBox1.ResumeLayout(false);
@@ -330,5 +357,7 @@
         public System.Windows.Forms.TextBox txtSpecimenHeight;
         private System.Windows.Forms.Label label4;
         public System.Windows.Forms.TextBox txtSpecimenDiameter;
+        public System.Windows.Forms.TextBox txtInnerDiameter;
+        private System.Windows.Forms.Label label7;
     }
 }

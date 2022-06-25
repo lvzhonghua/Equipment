@@ -18,6 +18,7 @@ namespace ResinSandPyrometer.Common
 
         public static void OpenSerial_Slave(string portName)
         {
+            if (SerialPort_Slave != null && SerialPort_Slave.IsOpen) return;
             try
             {
                 SerialPort_Slave = new SerialPort();
@@ -40,21 +41,25 @@ namespace ResinSandPyrometer.Common
 
         public static void AddDataReceivedEventHandler_Slave(SerialDataReceivedEventHandler eventHandler)
         {
+            if (SerialPort_Slave == null) return;
             SerialPort_Slave.DataReceived += eventHandler;
         }
 
         public static void RemoveDataReceivedEventHandler_Slave(SerialDataReceivedEventHandler eventHandler)
         {
+            if (SerialPort_Slave == null) return;
             SerialPort_Slave.DataReceived -= eventHandler;
         }
 
         public static void AddErrorReceivedEventHandler_Slave(SerialErrorReceivedEventHandler eventHandler)
         {
+            if (SerialPort_Slave == null) return;
             SerialPort_Slave.ErrorReceived += eventHandler;
         }
 
         public static void RemoveErrorReceivedEventHandler_Slave(SerialErrorReceivedEventHandler eventHandler)
         {
+            if (SerialPort_Slave == null) return;
             SerialPort_Slave.ErrorReceived -= eventHandler;
         }
 
@@ -73,6 +78,8 @@ namespace ResinSandPyrometer.Common
                 SampleLoggerOnTextFile.Log($"OpenSerial_Temperature方法 关闭位移传感器串口 出现异常：{ex.Message}");
             }
 
+            if (SerialPort_Temperature != null && SerialPort_Temperature.IsOpen) return;
+
             try
             {
                 SerialPort_Temperature = new SerialPort();
@@ -88,7 +95,6 @@ namespace ResinSandPyrometer.Common
             {
                 SampleLoggerOnTextFile.Log($"OpenSerial_Temperature方法 打开温控仪串口 出现异常：{ex.Message}");
             }
-
         }
 
         public static void OpenSerial_Displacement(string portName) 
@@ -106,6 +112,8 @@ namespace ResinSandPyrometer.Common
             {
                 SampleLoggerOnTextFile.Log($"OpenSerial_Displacement方法 关闭温控仪串口 出现异常：{ex.Message}");
             }
+
+            if (SerialPortManager.SerialPort_Displacement != null && SerialPortManager.SerialPort_Displacement.IsOpen) return;
 
             try
             {
@@ -130,56 +138,67 @@ namespace ResinSandPyrometer.Common
 
         public static void AddDataReceivedEventHandler_Temperature(SerialDataReceivedEventHandler eventHandler)
         {
+            if (SerialPort_Temperature == null) return;
             SerialPort_Temperature.DataReceived += eventHandler;
         }
 
         public static void RemoveDataReceivedEventHandler_Temperature(SerialDataReceivedEventHandler eventHandler)
         {
+            if (SerialPort_Temperature == null) return;
             SerialPort_Temperature.DataReceived -= eventHandler;
         }
 
         public static void AddErrorReceivedEventHandler_Temperature(SerialErrorReceivedEventHandler eventHandler)
         {
+            if (SerialPort_Temperature == null) return;
             SerialPort_Temperature.ErrorReceived += eventHandler;
         }
 
         public static void RemoveErrorReceivedEventHandler_Temperature(SerialErrorReceivedEventHandler eventHandler)
         {
+            if (SerialPort_Temperature == null) return;
             SerialPort_Temperature.ErrorReceived -= eventHandler;
         }
 
         public static void AddDataReceivedEventHandler_Displacement(SerialDataReceivedEventHandler eventHandler)
         {
+            if (SerialPort_Displacement == null) return;
             SerialPort_Displacement.DataReceived += eventHandler;
         }
 
         public static void RemoveDataReceivedEventHandler_Displacement(SerialDataReceivedEventHandler eventHandler)
         {
+            if (SerialPort_Displacement == null) return;
             SerialPort_Displacement.DataReceived -= eventHandler;
         }
 
         public static void AddErrorReceivedEventHandler_Displacement(SerialErrorReceivedEventHandler eventHandler)
         {
+            if (SerialPort_Displacement == null) return;
             SerialPort_Displacement.ErrorReceived += eventHandler;
         }
 
         public static void RemoveErrorReceivedEventHandler_Displacement(SerialErrorReceivedEventHandler eventHandler)
         {
+            if (SerialPort_Displacement == null) return;
             SerialPort_Displacement.ErrorReceived -= eventHandler;
         }
 
         public static void CloseSlave()
         {
+            if (SerialPort_Slave == null) return;
             SerialPort_Slave.Close();
         }
 
         public static void CloseTemperature()
         {
+            if (SerialPort_Temperature == null) return;
             SerialPort_Temperature.Close();
         }
 
         public static void CloseDisplacement()
         {
+            if (SerialPort_Displacement == null) return;
             SerialPort_Displacement.Close();
         }
 
