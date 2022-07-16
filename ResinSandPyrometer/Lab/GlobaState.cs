@@ -5,52 +5,52 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ResinSandPyrometer.Step
+namespace ResinSandPyrometer.Lab
 {
     public class GlobaState
     {
         //第一步变量状态
-        private FirstStepState firstStepState = new FirstStepState();
+        private FirstLabState firstLabState = new FirstLabState();
 
-        public FirstStepState FirstStepState
+        public FirstLabState FirstLabState
         {
-            get { return this.firstStepState; }
-            set { this.firstStepState = value; }
+            get { return this.firstLabState; }
+            set { this.firstLabState = value; }
         }
 
         //第二步变量状态
-        private SecondStepState secondStepState = new SecondStepState();
+        private SecondLabState secondLabState = new SecondLabState();
 
-        public SecondStepState SecondStepState
+        public SecondLabState SecondStepState
         {
-            get { return this.secondStepState; }
-            set { this.secondStepState = value; }
+            get { return this.secondLabState; }
+            set { this.secondLabState = value; }
         }
 
         //第三步变量状态
-        private ThirdStepState thirdStepState = new ThirdStepState();
+        private ThirdLabState thirdLabState = new ThirdLabState();
 
-        public ThirdStepState ThirdStepState
+        public ThirdLabState ThirdLabState
         {
-            get { return this.thirdStepState; }
-            set { this.thirdStepState = value; }
+            get { return this.thirdLabState; }
+            set { this.thirdLabState = value; }
         }
 
-        private FourthStepState fouthStepState = new FourthStepState();
+        private FourthLabState fouthLabState = new FourthLabState();
 
-        public FourthStepState FouthStepState
+        public FourthLabState FouthLabState
         {
-            get { return this.fouthStepState; }
-            set { this.fouthStepState = value; }
+            get { return this.fouthLabState; }
+            set { this.fouthLabState = value; }
         }
 
         //测试枚举
-        private Steps stepNum = Steps.None;
+        private Labs labNum = Labs.None;
 
-        public Steps StepNum
+        public Labs LabNum
         {
-            get { return this.stepNum; }
-            set { this.stepNum = value; }
+            get { return this.labNum; }
+            set { this.labNum = value; }
         }
 
         //是否开始测试
@@ -72,17 +72,17 @@ namespace ResinSandPyrometer.Step
         }
 
         //高温抗压强度
-        public void GoToFirstStep()
+        public void GoToFirstLab()
         {
-            this.stepNum = Steps.FirstStep;
+            this.labNum = Labs.FirstLab;
             this.isStartTest = true;
             this.isEndTest = false;
         }
 
         //高温膨胀力
-        public void GoToSecondStep()
+        public void GoToSecondLab()
         {
-            this.stepNum = Steps.SecondStep;
+            this.labNum = Labs.SecondLab;
             this.isEndTest = false;
             this.isStartTest = true;
         }
@@ -90,7 +90,7 @@ namespace ResinSandPyrometer.Step
         //热稳定性
         public void GoToThreeStep()
         {
-            this.stepNum = Steps.ThirdStep;
+            this.labNum = Labs.ThirdLab;
             this.isEndTest = false;
             this.isStartTest = true;
         }
@@ -98,7 +98,7 @@ namespace ResinSandPyrometer.Step
         //高温急热膨胀力
         public void GoToFourStep()
         {
-            this.stepNum = Steps.FourthStep;
+            this.labNum = Labs.FourthLab;
             this.isEndTest = false;
             this.isStartTest = true;
         }

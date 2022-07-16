@@ -435,7 +435,9 @@ namespace ResinSandPyrometer
             "开始测试",
             "结束测试",
             "禁止/允许发送传感器零点数据",
-            "炉温到达设定温度"});
+            "炉温到达设定温度",
+            "托盘上升2mm",
+            "托盘下降2mm"});
             this.cboCommand_Slave.Name = "cboCommand_Slave";
             this.cboCommand_Slave.Size = new System.Drawing.Size(221, 25);
             this.cboCommand_Slave.Text = "查询";

@@ -101,7 +101,6 @@ namespace ResinSandPyrometer.CommandAndReply
             switch (testType)
             {
                 case MotorTestType.加载电机下降:
-                default:
                     testType_String = "0";
                     break;
                 case MotorTestType.加载电机上升:
@@ -114,11 +113,14 @@ namespace ResinSandPyrometer.CommandAndReply
                     testType_String = "3";
                     break;
             }
-
-            //return CommandHandler.CreateCommand(CommandCode.CheckEquipment, testType_String);
             return CommandHandler.CreateCommand(CommandCode.MotorTest, testType_String);
         }
 
+        /// <summary>
+        /// 创建点击电机运动指令
+        /// </summary>
+        /// <param name="upOrDown">上升或下降</param>
+        /// <returns>命令</returns>
         public static Command Generate_MotorStep(MotorUpOrDown upOrDown) 
         {
             string data_String = "0";
@@ -132,11 +134,22 @@ namespace ResinSandPyrometer.CommandAndReply
                 case MotorUpOrDown.上升:
                     data_String = "1";
                     break;
+                case MotorUpOrDown.下降一毫米:
+                    data_String = "2";
+                    break;
+                case MotorUpOrDown.下降半毫米:
+                    data_String = "3";
+                    break;
             }
 
             return CommandHandler.CreateCommand(CommandCode.MotorStep, data_String);
         }
 
+        /// <summary>
+        /// 创建电机运行或停止指令
+        /// </summary>
+        /// <param name="runOrStop"></param>
+        /// <returns></returns>
         public static Command Generate_MotorRunOrStop(MotorRunOrStop runOrStop)
         {
             string data_String = "0";

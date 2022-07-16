@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ResinSandPyrometer.Step
+namespace ResinSandPyrometer.Lab
 {
-    public class FourthStepState
+    public class FourthLabState
     {
-        private FourthStep step = FourthStep.NONE;
+        private FourthLabStep step = FourthLabStep.NONE;
 
-        public FourthStep Step
+        public FourthLabStep Step
         {
             get { return this.step; }
             set { this.step = value; }

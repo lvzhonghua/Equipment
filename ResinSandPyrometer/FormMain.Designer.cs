@@ -77,11 +77,13 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label23 = new System.Windows.Forms.Label();
             this.txtSampleNo = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.txtRepeatNumber = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
+            this.txtInnerDiameter = new System.Windows.Forms.TextBox();
             this.txtCompany = new System.Windows.Forms.TextBox();
             this.txtSpecimenDiameter = new System.Windows.Forms.TextBox();
             this.txtSampeName = new System.Windows.Forms.TextBox();
@@ -147,8 +149,6 @@
             this.btnBackToZero = new System.Windows.Forms.Button();
             this.btnCalibration = new System.Windows.Forms.Button();
             this.tmCheckTemperature = new System.Windows.Forms.Timer(this.components);
-            this.txtInnerDiameter = new System.Windows.Forms.TextBox();
-            this.label25 = new System.Windows.Forms.Label();
             this.statusStrip1.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -259,7 +259,7 @@
             // 
             this.lblDebugInfo.AutoSize = false;
             this.lblDebugInfo.Name = "lblDebugInfo";
-            this.lblDebugInfo.Size = new System.Drawing.Size(300, 26);
+            this.lblDebugInfo.Size = new System.Drawing.Size(700, 26);
             // 
             // toolStrip
             // 
@@ -489,6 +489,19 @@
             this.txtSampleNo.TabIndex = 15;
             this.txtSampleNo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // label25
+            // 
+            this.label25.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label25.AutoSize = true;
+            this.label25.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label25.Location = new System.Drawing.Point(7, 90);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(88, 16);
+            this.label25.TabIndex = 18;
+            this.label25.Text = "试样内径：";
+            // 
             // label7
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -553,6 +566,19 @@
             this.label19.Size = new System.Drawing.Size(88, 16);
             this.label19.TabIndex = 23;
             this.label19.Text = "试样高度：";
+            // 
+            // txtInnerDiameter
+            // 
+            this.txtInnerDiameter.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtInnerDiameter.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtInnerDiameter.Location = new System.Drawing.Point(102, 88);
+            this.txtInnerDiameter.Name = "txtInnerDiameter";
+            this.txtInnerDiameter.ReadOnly = true;
+            this.txtInnerDiameter.Size = new System.Drawing.Size(193, 26);
+            this.txtInnerDiameter.TabIndex = 14;
+            this.txtInnerDiameter.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // txtCompany
             // 
@@ -1425,32 +1451,6 @@
             // 
             this.tmCheckTemperature.Interval = 1000;
             this.tmCheckTemperature.Tick += new System.EventHandler(this.tmCheckTemperature_Tick);
-            // 
-            // txtInnerDiameter
-            // 
-            this.txtInnerDiameter.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtInnerDiameter.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtInnerDiameter.Location = new System.Drawing.Point(102, 88);
-            this.txtInnerDiameter.Name = "txtInnerDiameter";
-            this.txtInnerDiameter.ReadOnly = true;
-            this.txtInnerDiameter.Size = new System.Drawing.Size(193, 26);
-            this.txtInnerDiameter.TabIndex = 14;
-            this.txtInnerDiameter.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label25
-            // 
-            this.label25.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label25.AutoSize = true;
-            this.label25.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label25.Location = new System.Drawing.Point(7, 90);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(88, 16);
-            this.label25.TabIndex = 18;
-            this.label25.Text = "试样内径：";
             // 
             // FormMain
             // 

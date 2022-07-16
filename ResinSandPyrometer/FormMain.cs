@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ResinSandPyrometer.CommandAndReply;
 using ResinSandPyrometer.Common;
-using ResinSandPyrometer.Step;
+using ResinSandPyrometer.Lab;
 
 namespace ResinSandPyrometer
 {
@@ -38,16 +38,15 @@ namespace ResinSandPyrometer
 
         public float displacementResult = 0f;
 
-        private Steps stepOfSelected = Steps.FirstStep;
+        private Labs labOfSelected = Labs.FirstLab;
 
         private bool isStartDisplacement = false;
 
         private bool isReset = false;
 
-        private bool isFirstReceivedP00 = false; //第一次收到P00信号，已经到空载行程
-        private float forceToSub = 0;   //托盘皮重
-
         private System.Threading.Timer timerDisplacement = null;
+
+        private string fileNameForFirstLab = string.Empty;
 
         public FormMain()
         {
@@ -73,7 +72,11 @@ namespace ResinSandPyrometer
             {
                 this.SendLocation();
                 Thread.Sleep(500);
-                SerialPortManager.SerialPort_Slave.Write("#5");//复位
+
+                //复位
+                Command command = CommandGenerator.Generate_EnableSendZeroData();
+                CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
                 this.isReset = true;
 
                 //窗台打开时，获取当前的炉温，并显示
@@ -101,6 +104,9 @@ namespace ResinSandPyrometer
             this.txtRepeatNumber.Text = Setting.RepeatTimes.ToString();
         }
 
+        /// <summary>
+        /// 采集当前炉温
+        /// </summary>
         private void CheckCurrentTemperature()
         {
             SerialPortManager.OpenSerial_Temperature($"COM{this.portID_Temperature}");
@@ -116,8 +122,8 @@ namespace ResinSandPyrometer
 
             this.tlblPort_Temperature.Text = this.portID_Temperature.ToString();
             this.tlblPort_Temperature.ForeColor = Color.Green;
-            ////让温控仪开始检查数据
-
+            
+            //让温控仪开始检查数据
             this.tmCheckTemperature.Enabled = true;
             this.WindowState = FormWindowState.Maximized;
 
@@ -179,16 +185,16 @@ namespace ResinSandPyrometer
                     switch (Setting.TestType)
                     {
                         case 0:
-                            this.globaState.FirstStepState.InitState();
+                            this.globaState.FirstLabState.InitState();
                             break;
                         case 1:
                             this.globaState.SecondStepState.InitState();
                             break;
                         case 2:
-                            this.globaState.ThirdStepState.InitState();
+                            this.globaState.ThirdLabState.InitState();
                             break;
                         case 3:
-                            this.globaState.FouthStepState.InitState();
+                            this.globaState.FouthLabState.InitState();
                             break;
                         default:
                             break;
@@ -206,38 +212,30 @@ namespace ResinSandPyrometer
                 case Slave_ReplyCode.F:
                     float force = (float)reply.Data_Double;
 
-                    if (this.isFirstReceivedP00 == true) 
-                    {
-                        this.forceToSub = force;
-                        this.isFirstReceivedP00 = false;
-                    }
-
-                    float forceTrue = force - this.forceToSub;
-
-                    this.Invoke(new Action(delegate() { this.lblReceivedInfo.Text = $"重量：{forceTrue}牛"; }));
-                    if (forceTrue > Setting.SensorMax)
+                    this.Invoke(new Action(delegate() { this.lblReceivedInfo.Text = $"重量：{force}公斤"; }));
+                    if (force > Setting.SensorMax)
                     {
                         this.Reset();
                         this.Invoke(new Action(delegate () { this.lblStatusTip.Text = "超过力传感器的极限值！！！"; }));
                         return;
                     }
 
-                    if (forceTrue < -3.1f || forceTrue == 0) return;
+                    if (force < -3.1f || force == 0) return;
 
-                    if (this.stepOfSelected == Steps.FourthStep) break;
+                    if (this.labOfSelected == Labs.FourthLab) break;
 
                     if (this.globaState.IsStartTest && !this.globaState.IsEndTest)
                     {
-                        switch (this.stepOfSelected)
+                        switch (this.labOfSelected)
                         {
-                            case Steps.FirstStep:
-                                this.ExecuteFirstStep(point, forceTrue);
+                            case Labs.FirstLab:
+                                this.ExecuteFirstLab(point, force);
                                 break;
-                            case Steps.SecondStep:
-                                this.ExecuteSecondStep(point, forceTrue);
+                            case Labs.SecondLab:
+                                this.ExecuteSecondLab(point, force);
                                 break;
-                            case Steps.ThirdStep:
-                                this.ExecuteThirdStep(point, forceTrue);
+                            case Labs.ThirdLab:
+                                this.ExecuteThirdLab(point, force);
                                 break;
                             default:
                                 break;
@@ -266,31 +264,29 @@ namespace ResinSandPyrometer
                 case Slave_ReplyCode.P: //加载电机到达预设行程
                     this.Invoke(new Action(delegate () { this.lblStatusTip.Text = reply.Answer_Content; }));
 
-                    this.isFirstReceivedP00 = true;
-
                     if (this.isReachedGo == false) return;
 
-                    switch (stepOfSelected)
+                    switch (labOfSelected)
                     {
-                        case Steps.FirstStep:
+                        case Labs.FirstLab:
                             Setting.TestType = 0;
-                            this.globaState.GoToFirstStep();
-                            this.globaState.FirstStepState.Step = FirstStep.加热炉按行程下降;
+                            this.globaState.GoToFirstLab();
+                            this.globaState.FirstLabState.Step = FirstLabStep.加热炉按行程下降;
                             break;
-                        case Steps.SecondStep:
+                        case Labs.SecondLab:
                             Setting.TestType = 1;
-                            this.globaState.GoToSecondStep();
-                            this.globaState.SecondStepState.Step = SecondStep.开始调试并发送指令;
+                            this.globaState.GoToSecondLab();
+                            this.globaState.SecondStepState.Step = SecondLabStep.开始调试并发送指令;
                             break;
-                        case Steps.ThirdStep:
+                        case Labs.ThirdLab:
                             Setting.TestType = 2;
                             this.globaState.GoToThreeStep();
-                            this.globaState.ThirdStepState.Step = ThirdStep.开始测试并发送指令;
+                            this.globaState.ThirdLabState.Step = ThirdLabStep.开始测试并发送指令;
                             break;
-                        case Steps.FourthStep:
+                        case Labs.FourthLab:
                             Setting.TestType = 3;
                             isStartDisplacement = true;
-                            this.globaState.FouthStepState.Step = FourthStep.取预置零点值;
+                            this.globaState.FouthLabState.Step = FourthLabStep.取预置零点值;
                             break;
                         default:
                             break;
@@ -300,24 +296,24 @@ namespace ResinSandPyrometer
                 case Slave_ReplyCode.G:  //加热炉到达预设行程
                     this.Invoke(new Action(delegate () { this.lblReceivedInfo.Text = reply.Code + "  " + reply.Answer_Content; }));
 
-                    switch (this.stepOfSelected)
+                    switch (this.labOfSelected)
                     {
-                        case Steps.FirstStep:
-                            this.globaState.FirstStepState.Step = FirstStep.取预置零点值;
+                        case Labs.FirstLab:
+                            this.globaState.FirstLabState.Step = FirstLabStep.取预置零点值;
                             break;
-                        case Steps.SecondStep:
-                            this.globaState.SecondStepState.Step = SecondStep.采集数据并绘制膨胀力和时间曲线及膨胀力是否突变;
+                        case Labs.SecondLab:
+                            this.globaState.SecondStepState.Step = SecondLabStep.采集数据并绘制膨胀力和时间曲线及膨胀力是否突变;
                             this.startTime = DateTime.Now;
                             break;
-                        case Steps.ThirdStep:
-                            this.globaState.ThirdStepState.Step = ThirdStep.采样数据并绘制压强时间曲线及判断压强值是否突变;
+                        case Labs.ThirdLab:
+                            this.globaState.ThirdLabState.Step = ThirdLabStep.采样数据并绘制压强时间曲线及判断压强值是否突变;
                             this.startTime = DateTime.Now;
                             break;
-                        case Steps.FourthStep:
-                            if (this.globaState.FouthStepState.IsWaitOver) return;
+                        case Labs.FourthLab:
+                            if (this.globaState.FouthLabState.IsWaitOver) return;
                            
-                            this.globaState.FouthStepState.Step = FourthStep.更新零点值;
-                            this.globaState.FouthStepState.IsWaitOver = false;
+                            this.globaState.FouthLabState.Step = FourthLabStep.更新零点值;
+                            this.globaState.FouthLabState.IsWaitOver = false;
 
                             break;
                     }
@@ -327,124 +323,139 @@ namespace ResinSandPyrometer
         }
 
         //条件热稳定性
-        private void ExecuteThirdStep(PointF point,float result)
+        private void ExecuteThirdLab(PointF point,float result)
         {
-            switch (this.globaState.ThirdStepState.Step)
+            Command command = null;
+            switch (this.globaState.ThirdLabState.Step)
             {
-                case ThirdStep.开始测试并发送指令:
+                case ThirdLabStep.开始测试并发送指令:
                     this.globaState.TimeCount(2);//2s
                     this.globaState.GetPressZero(result);//零点值
                     if (this.globaState.IsTimeReached)
                     {
-                        SerialPortManager.SerialPort_Slave.Write("#:1");
+                        command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.运行);
+                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
                         this.isMotorZero = false;
-                        this.globaState.ThirdStepState.Step = ThirdStep.读取传感器采样值并判断预载荷是否达到预定值;
+                        this.globaState.ThirdLabState.Step = ThirdLabStep.读取传感器采样值并判断预载荷是否达到预定值;
                         this.globaState.IsTimeReached = false;
                     }
 
                     this.btnSettingFurnaceTemperature.Enabled = false;
 
                     break;
-                case ThirdStep.读取传感器采样值并判断预载荷是否达到预定值:
+                case ThirdLabStep.读取传感器采样值并判断预载荷是否达到预定值:
                     point.Y = (result - this.globaState.PressZero) / Setting.GetArea();
-                    this.Invoke((EventHandler)delegate
-                    {
-                        this.lblPrePressure.Text = Setting.PreloadedPressure.ToString();
-                    });
+                    this.Invoke(new Action(()=> { this.lblPrePressure.Text = Setting.PreloadedPressure.ToString();}));
+
                     if (point.Y > Setting.PreloadedPressure - 0.005f)
                     {
-                        SerialPortManager.SerialPort_Slave.Write("#:0");
-                        this.globaState.ThirdStepState.Step = ThirdStep.继续采样并保证在一定范围内;
+                        command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.停止);
+                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
+                        this.globaState.ThirdLabState.Step = ThirdLabStep.继续采样并保证在一定范围内;
 
                     }
                     break;
-                case ThirdStep.继续采样并保证在一定范围内:
+                case ThirdLabStep.继续采样并保证在一定范围内:
                     point.Y = (result - this.globaState.PressZero) / Setting.GetArea();
 
                     if (point.Y > Setting.PreloadedPressure + 0.005f)
                     {
-                        SerialPortManager.SerialPort_Slave.Write("#90");
+                        command = CommandGenerator.Generate_MotorStep(MotorUpOrDown.下降);
+                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
                     }
                     else if (point.Y < Setting.PreloadedPressure - 0.005f)
                     {
-                        SerialPortManager.SerialPort_Slave.Write("#91");
+                        command = CommandGenerator.Generate_MotorStep(MotorUpOrDown.上升);
+                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
                     }
                     else
                     {
                         this.Invoke(new Action(() => {this.lblPrePressure.Text = point.Y.ToString();}));
 
-                        if (!this.globaState.ThirdStepState.IsBPGet)
+                        if (!this.globaState.ThirdLabState.IsBPGet)
                         {
-                            this.globaState.ThirdStepState.BalancePress = point.Y;
-                            this.globaState.ThirdStepState.IsBPGet = true;
+                            this.globaState.ThirdLabState.BalancePress = point.Y;
+                            this.globaState.ThirdLabState.IsBPGet = true;
                         }
-                        if (!this.globaState.ThirdStepState.IsTimeReached)
+                        if (!this.globaState.ThirdLabState.IsTimeReached)
                         {
-                            this.globaState.ThirdStepState.TimeCount(2);//2s
+                            this.globaState.ThirdLabState.TimeCount(2);//2s
                         }
                         else
                         {
-                            this.globaState.ThirdStepState.Step = ThirdStep.加热炉下降;
+                            this.globaState.ThirdLabState.Step = ThirdLabStep.加热炉下降;
                         }
                     }
                     break;
-                case ThirdStep.加热炉下降:
-                    string message = "#>" + (Setting.FurnaceLiftingSpeed / 10 - 1).ToString() + ((Setting.FurnaceFallingDistance - 150) / 2).ToString();
-                    SampleLoggerOnTextFile.Log($"ThreeStep.加热炉下降，指令内容：{message}");
+                case ThirdLabStep.加热炉下降:
+                    string desendSpeed = $"_{Setting.FurnaceLiftingSpeed / 10 - 1}";
+                    string desendDistance = $"_{(Setting.FurnaceFallingDistance - 150) / 2}";
 
-                    SerialPortManager.SerialPort_Slave.Write(message);
+                    command = CommandGenerator.Generate_FurnaceDesend((FurnaceDesendSpeed)Enum.Parse(typeof(FurnaceDesendSpeed), desendSpeed),
+                                                                                                     (FurnaceDesendDistance)Enum.Parse(typeof(FurnaceDesendDistance), desendDistance));
+                    CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
+                    SampleLoggerOnTextFile.Log($"ThreeLab.加热炉下降");
+
                     this.isFurnaceZero = false;
-                    this.globaState.ThirdStepState.Step = ThirdStep.NONE;
+                    this.globaState.ThirdLabState.Step = ThirdLabStep.NONE;
                     break;
-                case ThirdStep.采样数据并绘制压强时间曲线及判断压强值是否突变:
+                case ThirdLabStep.采样数据并绘制压强时间曲线及判断压强值是否突变:
                     point.Y = (result - this.globaState.PressZero) / Setting.GetArea();
                     point.X = (int)(DateTime.Now - this.startTime).TotalSeconds;
 
-                    this.globaState.ThirdStepState.GetBalanceTime(point.X);
+                    this.globaState.ThirdLabState.GetBalanceTime(point.X);
                     Setting.Points.Add(point);
 
-                    this.globaState.ThirdStepState.CheckBlancePressChange(point.Y, Setting.PreloadedPressure);//检查抗压强度是否突变
-                    if (this.globaState.ThirdStepState.IsBalancePressSudChange)
+                    this.globaState.ThirdLabState.CheckBlancePressChange(point.Y, Setting.PreloadedPressure);//检查抗压强度是否突变
+                    if (this.globaState.ThirdLabState.IsBalancePressSudChange)
                     {
-                        this.globaState.ThirdStepState.BalanceTime = point.X;
-                        this.globaState.ThirdStepState.Step = ThirdStep.突变并返回;
+                        this.globaState.ThirdLabState.BalanceTime = point.X;
+                        this.globaState.ThirdLabState.Step = ThirdLabStep.突变并返回;
                     }
                     if (point.Y > Setting.PreloadedPressure + 0.005f)
                     {
-                        SerialPortManager.SerialPort_Slave.Write("#90");
+                        command = CommandGenerator.Generate_MotorStep(MotorUpOrDown.下降);
+                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
                     }
                     else if (point.Y < Setting.PreloadedPressure - 0.005f)
                     {
-                        SerialPortManager.SerialPort_Slave.Write("#91");
+                        command = CommandGenerator.Generate_MotorStep(MotorUpOrDown.上升);
+                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
                     }
                     else
                     {
-                        this.Invoke((EventHandler)delegate
-                        {
-
-                            this.lblPrePressure.Text = point.Y.ToString();
-                        });
+                        this.Invoke(new Action(()=> { this.lblPrePressure.Text = point.Y.ToString(); }));
                     }
-                    this.Invoke((EventHandler)delegate
+                    
+                    this.Invoke(new Action(() =>
                     {
-                        this.txtBalancePressureTime.Text = BytesOperator.GetOneVaule(this.globaState.ThirdStepState.BalanceTime).ToString();
-                        this.chartBalancePress.Series[0].Points.AddXY(point.X, point.Y);//讲点添加到预压强--时间曲线中去
-                    });
+                        this.txtBalancePressureTime.Text = BytesOperator.GetOneVaule(this.globaState.ThirdLabState.BalanceTime).ToString();
+                        
+                        //将点添加到预压强--时间曲线中去
+                        this.chartBalancePress.Series[0].Points.AddXY(point.X, point.Y); 
+                    }));
+
                     break;
-                case ThirdStep.突变并返回:
-                    this.globaState.ThirdStepState.Step = ThirdStep.测试结束;
+                case ThirdLabStep.突变并返回:
+                    this.globaState.ThirdLabState.Step = ThirdLabStep.测试结束;
                     break;
-                case ThirdStep.测试结束:
-                    SerialPortManager.SerialPort_Slave.Write("#4");
+                case ThirdLabStep.测试结束:
+                    command = CommandGenerator.Generate_EndTest();
+                    CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
                     this.globaState.IsEndTest = true;
-                    this.globaState.ThirdStepState.InitState();
+                    this.globaState.ThirdLabState.InitState();
                     this.globaState.PressZero = 0;
-                    this.Invoke((EventHandler)delegate
+                    this.Invoke(new Action(()=>
                     {
                         this.btnSettingFurnaceTemperature.Enabled = true;
                         this.btnSaveData.Enabled = true;
                         this.lblStatusTip.Text = "测试结束，请保存数据";
-                    });
+                    }));
+
                     break;
                 default:
                     break;
@@ -452,46 +463,48 @@ namespace ResinSandPyrometer
         }
 
         //高温膨胀力
-        private void ExecuteSecondStep(PointF point,float result)
+        private void ExecuteSecondLab(PointF point,float result)
         {
+            Command command = null;
             switch (this.globaState.SecondStepState.Step)
             {
-
-                case SecondStep.开始调试并发送指令:
+                case SecondLabStep.开始调试并发送指令:
                     this.globaState.TimeCount(2);//2s
                     this.globaState.GetPressZero(result);//零点值
                     if (this.globaState.IsTimeReached)
                     {
-                        SerialPortManager.SerialPort_Slave.Write("#:1");
-                        this.isMotorZero = false;
-                        this.globaState.SecondStepState.Step = SecondStep.检测预载荷是否为10主机发送指令加载电机停止;
-                    }
-                    this.Invoke((EventHandler)delegate
-                    {
-                        this.btnSettingFurnaceTemperature.Enabled = false;
-                    });
+                        command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.运行);
+                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
 
-                    //this.lblZeroGl.Text = this.globaState.PressZero.ToString();
+                        this.isMotorZero = false;
+                        this.globaState.SecondStepState.Step = SecondLabStep.检测预载荷是否为10主机发送指令加载电机停止;
+                    }
+                    this.Invoke(new Action(() => { this.btnSettingFurnaceTemperature.Enabled = false; }));
+
                     break;
-                case SecondStep.检测预载荷是否为10主机发送指令加载电机停止:
+                case SecondLabStep.检测预载荷是否为10主机发送指令加载电机停止:
                     point.Y = result - this.globaState.PressZero;
 
                     if (point.Y > Setting.PreloadedForce - 0.5)
                     {
-                        SerialPortManager.SerialPort_Slave.Write("#:0");
-                        this.globaState.SecondStepState.Step = SecondStep.检测载荷是否为9到11并调节预载荷;
+                        command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.停止);
+                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
+                        this.globaState.SecondStepState.Step = SecondLabStep.检测载荷是否为9到11并调节预载荷;
                     }
                     break;
 
-                case SecondStep.检测载荷是否为9到11并调节预载荷:
+                case SecondLabStep.检测载荷是否为9到11并调节预载荷:
                     point.Y = result - this.globaState.PressZero;
                     if (point.Y > Setting.PreloadedForce + 0.5)
                     {
-                        SerialPortManager.SerialPort_Slave.Write("#90");
+                        command = CommandGenerator.Generate_MotorStep(MotorUpOrDown.下降);
+                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
                     }
                     else if (point.Y < Setting.PreloadedForce - 0.5)
                     {
-                        SerialPortManager.SerialPort_Slave.Write("#91");
+                        command = CommandGenerator.Generate_MotorStep(MotorUpOrDown.上升);
+                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
                     }
                     else
                     {
@@ -499,27 +512,28 @@ namespace ResinSandPyrometer
                         this.globaState.SecondStepState.GetPressZero(result);//零点值
                         if (this.globaState.SecondStepState.IsTimeReached)
                         {
-                            this.globaState.SecondStepState.Step = SecondStep.加热炉下降;
+                            this.globaState.SecondStepState.Step = SecondLabStep.加热炉下降;
                         }
-                        this.Invoke((EventHandler)delegate
-                        {
-                            this.lblPrePress.Text = point.Y.ToString();
-                        });
 
-                        //this.lblpzero.Text = this.globaState.TwoState.PressZero.ToString();
+                        this.Invoke(new Action(() => { this.lblPrePress.Text = point.Y.ToString(); }));
                     }
 
                     break;
 
-                case SecondStep.加热炉下降:
-                    string message = "#>" + (Setting.FurnaceLiftingSpeed / 10 - 1).ToString() + ((Setting.FurnaceFallingDistance - 150) / 2).ToString();
-                    SampleLoggerOnTextFile.Log($"TwoStep.加热炉下降，指令内容：{message}");
+                case SecondLabStep.加热炉下降:
+                    string desendSpeed = $"_{Setting.FurnaceLiftingSpeed / 10 - 1}";
+                    string desendDistance = $"_{(Setting.FurnaceFallingDistance - 150) / 2}";
 
-                    SerialPortManager.SerialPort_Slave.Write(message);
+                    command = CommandGenerator.Generate_FurnaceDesend((FurnaceDesendSpeed)Enum.Parse(typeof(FurnaceDesendSpeed), desendSpeed),
+                                                                                                     (FurnaceDesendDistance)Enum.Parse(typeof(FurnaceDesendDistance), desendDistance));
+                    CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
+                    SampleLoggerOnTextFile.Log($"SecondLab.加热炉下降");
+
                     this.isFurnaceZero = false;
-                    this.globaState.SecondStepState.Step = SecondStep.NONE;
+                    this.globaState.SecondStepState.Step = SecondLabStep.NONE;
                     break;
-                case SecondStep.采集数据并绘制膨胀力和时间曲线及膨胀力是否突变:
+                case SecondLabStep.采集数据并绘制膨胀力和时间曲线及膨胀力是否突变:
                     point.X = (int)(DateTime.Now - this.startTime).TotalSeconds;
                     point.Y = (result - this.globaState.SecondStepState.PressZero);
                     Setting.Points.Add(point);
@@ -527,29 +541,32 @@ namespace ResinSandPyrometer
                     this.globaState.SecondStepState.CheckPressSudChange(point.Y);//检查膨胀力是否突变
                     if (this.globaState.SecondStepState.IsPressSudChange)
                     {
-                        this.globaState.SecondStepState.Step = SecondStep.结束测试;
+                        this.globaState.SecondStepState.Step = SecondLabStep.结束测试;
                     }
 
-                    this.Invoke((EventHandler)delegate
+                    this.Invoke(new Action(() => 
                     {
                         this.txtPengZhangPower.Text = BytesOperator.GetThreeValue(this.globaState.SecondStepState.MaxPress);
                         this.txtPengZhangTime.Text = BytesOperator.GetThreeValue(this.globaState.SecondStepState.MaxPress_Time);
                         this.chartPengZhang.Series[0].Points.AddXY(point.X, point.Y);//讲点添加到膨胀力--时间曲线中去
-                    });
+                    }));
 
                     break;
-                case SecondStep.结束测试:
-                    SerialPortManager.SerialPort_Slave.Write("#4");
+                case SecondLabStep.结束测试:
+                    command = CommandGenerator.Generate_EndTest();
+                    CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
                     this.globaState.IsEndTest = true;
                     this.globaState.IsTimeReached = false;
                     this.globaState.SecondStepState.InitState();
-                    this.Invoke((EventHandler)delegate
+
+                    this.Invoke(new Action(() =>
                     {
                         this.btnSettingFurnaceTemperature.Enabled = true;
                         this.btnSaveData.Enabled = true;
 
                         this.lblStatusTip.Text = "测试结束，请保存数据";
-                    });
+                    }));
                     break;
                 default:
                     break;
@@ -557,138 +574,151 @@ namespace ResinSandPyrometer
         }
 
         // 测试高温抗压强度
-        private void ExecuteFirstStep(PointF point,float result)
+        private void ExecuteFirstLab(PointF point,float force)
         {
-            switch (this.globaState.FirstStepState.Step)
+            Command command = null;
+            switch (this.globaState.FirstLabState.Step)
             {
-                case FirstStep.加热炉按行程下降:
-
+                case FirstLabStep.加热炉按行程下降:
                     string desendSpeed = $"_{Setting.FurnaceLiftingSpeed / 10 - 1}";
                     string desendDistance = $"_{(Setting.FurnaceFallingDistance - 150) / 2}";
 
-                    string message = "#>" + (Setting.FurnaceLiftingSpeed / 10 - 1).ToString() + ((Setting.FurnaceFallingDistance - 150) / 2).ToString();
-
-                    Command command = CommandGenerator.Generate_FurnaceDesend((FurnaceDesendSpeed)Enum.Parse(typeof(FurnaceDesendSpeed), desendSpeed),
-                                                                                                                    (FurnaceDesendDistance)Enum.Parse(typeof(FurnaceDesendDistance), desendDistance));
+                    command = CommandGenerator.Generate_FurnaceDesend((FurnaceDesendSpeed)Enum.Parse(typeof(FurnaceDesendSpeed), desendSpeed),
+                                                                                                     (FurnaceDesendDistance)Enum.Parse(typeof(FurnaceDesendDistance), desendDistance));
                     CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
 
-                    SampleLoggerOnTextFile.Log($"FirstStep.加热炉按行程下降，指令内容：{message}");
-                    SerialPortManager.SerialPort_Slave.Write(message);//加热炉按行程下降
+                    SampleLoggerOnTextFile.Log($"FirstStep.加热炉按行程下降");
 
                     this.isFurnaceZero = false;
-                    this.globaState.FirstStepState.Step = FirstStep.NONE;
-                    break;
-                case FirstStep.取预置零点值:
-                    this.globaState.FirstStepState.CommandCount(1);
-                    this.globaState.FirstStepState.GetPressureZero(result);//零点值
+                    this.globaState.FirstLabState.Step = FirstLabStep.NONE;
 
-                    if (this.globaState.FirstStepState.IsCommandReached)
+                    break;
+
+                case FirstLabStep.取预置零点值:
+                    this.globaState.FirstLabState.CommandCount(1);
+                    this.globaState.FirstLabState.GetPressureZero(force);//零点值
+
+                    if (this.globaState.FirstLabState.IsCommandReached)
                     {
-                        SerialPortManager.SerialPort_Slave.Write("#:1");
-                        this.globaState.FirstStepState.Step = FirstStep.电机上升;
+                        command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.运行);
+                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+                        this.globaState.FirstLabState.Step = FirstLabStep.电机上升;
                     }
-                    this.Invoke((EventHandler)delegate
-                    {
-                        this.lblTimeCount.Text = this.globaState.FirstStepState.TimeCount(Setting.SoakingTime).ToString();//保温时间和延时
-                    });
-                    break;
-                case FirstStep.电机上升:
-                    this.Invoke(new Action(delegate () { this.lblDebugInfo.Text = $"压力：{Math.Abs(this.globaState.FirstStepState.PressureZero - result)}"; }));
-                    SampleLoggerOnTextFile.Log($"压力：{ Math.Abs(this.globaState.FirstStepState.PressureZero - result)}");
+                    this.Invoke(new Action(() => { this.lblTimeCount.Text = this.globaState.FirstLabState.TimeCount(Setting.SoakingTime).ToString(); })); //保温时间和延时
 
-                    if (Math.Abs(this.globaState.FirstStepState.PressureZero - result) >= 1)
+                    break;
+
+                case FirstLabStep.电机上升:
+                    this.Invoke(new Action(delegate () { this.lblDebugInfo.Text = $"上一次皮重：{this.globaState.FirstLabState.PressureZero_Old}, 皮重:{this.globaState.FirstLabState.PressureZero}，原始值:{force}，压力：{Math.Abs(this.globaState.FirstLabState.PressureZero - force)}"; }));
+                    SampleLoggerOnTextFile.Log($"上一次皮重：{this.globaState.FirstLabState.PressureZero_Old}, 皮重:{this.globaState.FirstLabState.PressureZero}，原始值:{force}，压力：{Math.Abs(this.globaState.FirstLabState.PressureZero - force)}");
+
+                    if (Math.Abs(this.globaState.FirstLabState.PressureZero - force) >= 0.2f)
                     {
-                        SerialPortManager.SerialPort_Slave.Write("#:0");
+                        command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.停止);
+                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
                         SampleLoggerOnTextFile.Log("接触，电机停止上升");
 
-                        this.globaState.FirstStepState.PressureZeroClear();
-                        this.globaState.FirstStepState.Step = FirstStep.电机下降;
-                        this.globaState.FirstStepState.IsCommandReached = false;
+                        this.globaState.FirstLabState.ClearPressureZero();
+                        this.globaState.FirstLabState.Step = FirstLabStep.电机下降;
+                        this.globaState.FirstLabState.IsCommandReached = false;
                     }
 
-                    this.Invoke((EventHandler)delegate
-                    {
-                        this.lblTimeCount.Text = this.globaState.FirstStepState.TimeCount(Setting.SoakingTime).ToString();//保温时间和延时
-                    });
+                    this.Invoke(new Action(() => { this.lblTimeCount.Text = this.globaState.FirstLabState.TimeCount(Setting.SoakingTime).ToString(); })); //保温时间和延时
                     break;
-                case FirstStep.电机下降:
-                    SerialPortManager.SerialPort_Slave.Write("#93");
-                    this.globaState.FirstStepState.Step = FirstStep.抗压试样保温时间计时并更新零点值;
-                    break;
-                case FirstStep.抗压试样保温时间计时并更新零点值:
-                    if (this.globaState.FirstStepState.CountTime < 10)
-                    {
-                        this.globaState.FirstStepState.CommandCount(1);
-                        this.globaState.FirstStepState.GetPressureZero(result);//零点值
-                    }
-                    
-                    this.Invoke((EventHandler)delegate
-                    {
-                        this.lblTimeCount.Text = this.globaState.FirstStepState.TimeCount(Setting.SoakingTime).ToString();//保温时间和延时
-                    });
 
-                    if (this.globaState.FirstStepState.IsTimeReached)
+                case FirstLabStep.电机下降:
+                    command = CommandGenerator.Generate_MotorStep(MotorUpOrDown.下降半毫米);     //使样品与顶杆脱离接触
+                    CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
+                    this.globaState.FirstLabState.ClearPressureZero();
+
+                    this.globaState.FirstLabState.Step = FirstLabStep.抗压试样保温时间计时并更新零点值;
+                    break;
+
+                case FirstLabStep.抗压试样保温时间计时并更新零点值:
+                    if (this.globaState.FirstLabState.CountTime < 10)
                     {
-                        SerialPortManager.SerialPort_Slave.Write("#:1");
+                        this.globaState.FirstLabState.CommandCount(1);
+                        this.globaState.FirstLabState.GetPressureZero(force);//零点值
+                    }
+
+                    this.Invoke(new Action(() => { this.lblTimeCount.Text = this.globaState.FirstLabState.TimeCount(Setting.SoakingTime).ToString(); })); //保温时间和延时
+
+                    if (this.globaState.FirstLabState.IsTimeReached)
+                    {
+                        command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.运行);
+                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
                         this.isMotorZero = false;
                         this.startTime = DateTime.Now;
-                        this.globaState.FirstStepState.Step = FirstStep.采集数据压力是否突变;
-                        this.globaState.FirstStepState.IsTimeReached = false;
+                        this.globaState.FirstLabState.Step = FirstLabStep.采集数据压力是否突变;
+                        this.globaState.FirstLabState.IsTimeReached = false;
                     }
 
+                    this.Invoke(new Action(()=> 
+                    {
+                        this.Invoke(new Action(delegate () { this.lblDebugInfo.Text = $"上一次皮重：{this.globaState.FirstLabState.PressureZero_Old}, 皮重:{this.globaState.FirstLabState.PressureZero}，原始值:{force}，压力：{Math.Abs(this.globaState.FirstLabState.PressureZero - force)}"; }));
+                        SampleLoggerOnTextFile.Log($"上一次皮重：{this.globaState.FirstLabState.PressureZero_Old}, 皮重:{this.globaState.FirstLabState.PressureZero}，原始值:{force}，压力：{Math.Abs(this.globaState.FirstLabState.PressureZero - force)}");
+                    }));
+
                     break;
-                case FirstStep.采集数据压力是否突变:
+
+                case FirstLabStep.采集数据压力是否突变:
                     point.X = (int)(DateTime.Now - this.startTime).TotalSeconds;
-                    point.Y = Convert.ToSingle((result - this.globaState.FirstStepState.PressureZero) / (Setting.GetArea() * 0.001));
+                    point.Y = (force - this.globaState.FirstLabState.PressureZero) / Setting.GetArea() * Setting.PresureRate;
                     Setting.Points.Add(point);
 
-                    this.globaState.FirstStepState.GetMaxPressure(point);//得到最大压力值和对应的时间
-                    this.globaState.FirstStepState.CheckPressureSubChange(point.Y);//检查抗压强强值是否过大
+                    this.globaState.FirstLabState.GetMaxPressure(point);//得到最大压力值和对应的时间
+                    this.globaState.FirstLabState.CheckPressureSubChange(point.Y);//检查抗压强强值是否过大
 
-                    if (this.globaState.FirstStepState.IsPressureSudChange)//抗压强度值是否突变
+                    if (this.globaState.FirstLabState.IsPressureSudChange)//抗压强度值是否突变
                     {
-                        SerialPortManager.SerialPort_Slave.Write("#:0");
-                        this.globaState.FirstStepState.Step = Common.FirstStep.测试结束;
+                        command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.停止);
+                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+                        this.globaState.FirstLabState.Step = FirstLabStep.测试结束;
                     }
 
-                    this.Invoke((EventHandler)delegate
+                    this.Invoke(new Action(() =>
                     {
-                        this.lblPressure.Text = BytesOperator.GetOneVaule((this.globaState.FirstStepState.MaxPressure)).ToString();
-                        this.lblPressureTime.Text = BytesOperator.GetOneVaule(this.globaState.FirstStepState.MaxPreesureTime).ToString();
+                        this.lblPressure.Text = BytesOperator.GetOneVaule((this.globaState.FirstLabState.MaxPressure)).ToString();
+                        this.lblPressureTime.Text = BytesOperator.GetOneVaule(this.globaState.FirstLabState.MaxPreesureTime).ToString();
 
                         this.chartPressure.Series[0].Points.AddXY(point.X, point.Y);//将点添加到压强--时间曲线中去
-                    });
+
+                        this.Invoke(new Action(delegate () { this.lblDebugInfo.Text = $"上一次皮重：{this.globaState.FirstLabState.PressureZero_Old}, 皮重:{this.globaState.FirstLabState.PressureZero}，原始值:{force}，压力：{Math.Abs(this.globaState.FirstLabState.PressureZero - force)}"; }));
+                        SampleLoggerOnTextFile.Log($"上一次皮重：{this.globaState.FirstLabState.PressureZero_Old}, 皮重:{this.globaState.FirstLabState.PressureZero}，原始值:{force}，压力：{Math.Abs(this.globaState.FirstLabState.PressureZero - force)}");
+                    }));
                     break;
-                case FirstStep.测试结束:
-                    SerialPortManager.SerialPort_Slave.Write("#4");
+
+                case FirstLabStep.测试结束:
+                    command = CommandGenerator.Generate_EndTest();
+                    CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
                     this.globaState.IsEndTest = true;
 
-                    this.globaState.FirstStepState.InitState();
-                    this.Invoke((EventHandler)delegate
+                    this.globaState.FirstLabState.InitState();
+                    this.Invoke(new Action(() =>
                     {
-                        this.btnSettingFurnaceTemperature.Enabled = true;
-                        this.btnSaveData.Enabled = true;
+                            this.btnSettingFurnaceTemperature.Enabled = true;
+                            this.btnSaveData.Enabled = true;
 
-                        this.lblStatusTip.Text = "测试结束，请保存数据";
-                    });
+                            this.lblStatusTip.Text = "测试结束，请保存数据";
+                    }));
+
                     break;
-                default:
-                    break;
+            }
+
+            if (this.globaState.FirstLabState.Step != FirstLabStep.测试结束)
+            {
+                //////////////////////
+                ForceLogger.WriteForceForFirstLab(this.fileNameForFirstLab, force, this.globaState.FirstLabState.PressureZero, force - this.globaState.FirstLabState.PressureZero);
+                //////////////////////
             }
         }
         #endregion
 
         #region 温控仪
-        private void InitSerialPort_Temperature(int portID)
-        {
-            SerialPortManager.OpenSerial_Temperature($"COM{portID}");
-
-            //串口数据接收事件
-            SerialPortManager.AddDataReceivedEventHandler_Temperature(new SerialDataReceivedEventHandler(serialPort_Temperature_DataReceived));
-            //串口出错事件处理
-            SerialPortManager.AddErrorReceivedEventHandler_Temperature(new SerialErrorReceivedEventHandler(serialPort_Temperature_ErrorReceived));
-        }
-
         private void serialPort_Temperature_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
         {
             MessageBox.Show("温控仪串口出错，错误类型：" + e.EventType.ToString(), "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -724,18 +754,20 @@ namespace ResinSandPyrometer
             {
                 //温度达到是绿色
                 this.lblCurrentTemperature.ForeColor = Color.Green;
-                //this.btnStart.Enabled = false;
 
-                if (!this.temperatureState.IsCountSend)
+                if (this.temperatureState.IsCountSend == false)
                 {
-                    SerialPortManager.SerialPort_Slave.Write("#6");
+                    Command command = CommandGenerator.Generate_TemperatureReached();
+                    CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
                     this.temperatureState.IsCountSend = true;
                 }
 
                 this.isTemperatureReached = this.temperatureState.CountTime(temperature, Setting.SettingTemperature);
             }
             else
-            {    //温度没达到是红色
+            {   
+                //温度没达到是红色
                 if (this.isTemperatureReached == false) this.lblCurrentTemperature.ForeColor = Color.Red;
 
                 this.isTemperatureReached = this.temperatureState.CountTime(temperature, Setting.SettingTemperature);
@@ -787,105 +819,119 @@ namespace ResinSandPyrometer
             if (CRC.ToModbusCRC16(buffer) != "0000") return;
             PointF point = new PointF(0f, 0f);
             displacementResult = Utilities.GetDisplacement(buffer);
-            this.Invoke((EventHandler)delegate
-            {
-                this.lblDisplacement.Text = displacementResult.ToString();
-            });
-            this.ExecuteFouthStep(point);
+            this.Invoke(new Action(() => { this.lblDisplacement.Text = displacementResult.ToString(); }));
+            this.ExecuteFouthLab(point);
         }
 
-        private void ExecuteFouthStep(PointF point)
+        private void ExecuteFouthLab(PointF point)
         {
-            switch (this.globaState.FouthStepState.Step)
+            Command command = null;
+            switch (this.globaState.FouthLabState.Step)
             {
-                case FourthStep.NONE:
+                case FourthLabStep.NONE:
                     break;
-                case FourthStep.取预置零点值:
-                    this.globaState.FouthStepState.TimeCount(1);
-                    this.globaState.FouthStepState.GetDisplacementZero(displacementResult);//零点值
-                    if (this.globaState.FouthStepState.IsTimeReached == true)
+                case FourthLabStep.取预置零点值:
+                    this.globaState.FouthLabState.TimeCount(1);
+                    this.globaState.FouthLabState.GetDisplacementZero(displacementResult);//零点值
+                    if (this.globaState.FouthLabState.IsTimeReached == true)
                     {
-                        SerialPortManager.SerialPort_Slave.Write("#:1");
-                        this.globaState.FouthStepState.Step = FourthStep.电机上升;
-                    }
-                    break;
-                case FourthStep.电机上升:
+                        command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.运行);
+                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
 
-                    if (Math.Abs(this.globaState.FouthStepState.DisplacementZero - displacementResult) >= 2)
-                    {
-                        SerialPortManager.SerialPort_Slave.Write("#:0");
-                        this.globaState.FouthStepState.DisplacementZeroClear();
-                        this.globaState.FouthStepState.Step = FourthStep.电机下降;
-                        this.globaState.FouthStepState.IsTimeReached = false;
+                        this.globaState.FouthLabState.Step = FourthLabStep.电机上升;
                     }
                     break;
-                case FourthStep.电机下降:
-                    SerialPortManager.SerialPort_Slave.Write("#92");
-                    this.globaState.FouthStepState.Step = FourthStep.加热炉下降;
-                    break;
-                case FourthStep.加热炉下降:
-                    this.globaState.FouthStepState.Sleep();
-                    if (this.globaState.FouthStepState.IsOK)
+                case FourthLabStep.电机上升:
+
+                    if (Math.Abs(this.globaState.FouthLabState.DisplacementZero - displacementResult) >= 2)
                     {
-                        string message = "#>" + (Setting.FurnaceLiftingSpeed / 10 - 1).ToString() + ((Setting.FurnaceFallingDistance - 150) / 2).ToString();
-                        SampleLoggerOnTextFile.Log($"FourStep.加热炉下降，指令内容：{message}");
-                        SerialPortManager.SerialPort_Slave.Write(message);
+                        command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.停止);
+                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
+                        this.globaState.FouthLabState.DisplacementZeroClear();
+                        this.globaState.FouthLabState.Step = FourthLabStep.电机下降;
+                        this.globaState.FouthLabState.IsTimeReached = false;
+                    }
+                    break;
+                case FourthLabStep.电机下降:
+                    command = CommandGenerator.Generate_MotorStep(MotorUpOrDown.下降一毫米);
+                    CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
+                    this.globaState.FouthLabState.Step = FourthLabStep.加热炉下降;
+                    break;
+                case FourthLabStep.加热炉下降:
+                    this.globaState.FouthLabState.Sleep();
+                    if (this.globaState.FouthLabState.IsOK)
+                    {
+                        string desendSpeed = $"_{Setting.FurnaceLiftingSpeed / 10 - 1}";
+                        string desendDistance = $"_{(Setting.FurnaceFallingDistance - 150) / 2}";
+
+                        command = CommandGenerator.Generate_FurnaceDesend((FurnaceDesendSpeed)Enum.Parse(typeof(FurnaceDesendSpeed), desendSpeed),
+                                                                                                         (FurnaceDesendDistance)Enum.Parse(typeof(FurnaceDesendDistance), desendDistance));
+                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
+                        SampleLoggerOnTextFile.Log($"FourStep.加热炉下降");
 
                         this.isFurnaceZero = false;
 
-                        this.globaState.FouthStepState.Step = FourthStep.等待加热炉下降;
+                        this.globaState.FouthLabState.Step = FourthLabStep.等待加热炉下降;
                     }
                     break;
-                case FourthStep.等待加热炉下降:
-                    this.globaState.FouthStepState.Wait();
-                    if (this.globaState.FouthStepState.IsWaitOver)
+                case FourthLabStep.等待加热炉下降:
+                    this.globaState.FouthLabState.Wait();
+                    if (this.globaState.FouthLabState.IsWaitOver)
                     {
-                        this.globaState.FouthStepState.Step = FourthStep.更新零点值;
+                        this.globaState.FouthLabState.Step = FourthLabStep.更新零点值;
                     }
                     break;
-                case FourthStep.更新零点值:
-                    this.globaState.FouthStepState.TimeCount(2);
-                    this.globaState.FouthStepState.GetDisplacementZero(displacementResult);//零点值
-                    if (this.globaState.FouthStepState.IsTimeReached)
+
+                case FourthLabStep.更新零点值:
+                    this.globaState.FouthLabState.TimeCount(2);
+                    this.globaState.FouthLabState.GetDisplacementZero(displacementResult);//零点值
+                    if (this.globaState.FouthLabState.IsTimeReached)
                     {
                         this.startTime = DateTime.Now;
-                        this.globaState.FouthStepState.Step = FourthStep.采集位移数据并绘制曲线以及判断是否突变;
-                        this.globaState.FouthStepState.IsTimeReached = false;
+                        this.globaState.FouthLabState.Step = FourthLabStep.采集位移数据并绘制曲线以及判断是否突变;
+                        this.globaState.FouthLabState.IsTimeReached = false;
                     }
                     break;
-                case FourthStep.采集位移数据并绘制曲线以及判断是否突变:
+
+                case FourthLabStep.采集位移数据并绘制曲线以及判断是否突变:
                     point.X = (int)(DateTime.Now - this.startTime).TotalSeconds;
-                    point.Y = (float)Math.Round((displacementResult - this.globaState.FouthStepState.DisplacementZero) / Setting.SpecimenHeight * 100, 2);
+                    point.Y = (float)Math.Round((displacementResult - this.globaState.FouthLabState.DisplacementZero) / Setting.SpecimenHeight * 100, 2);
                     Setting.Points.Add(point);
 
-                    this.globaState.FouthStepState.GetMaxDisplacement(point);//得到最大压力值和对应的时间
-                    this.globaState.FouthStepState.CheckDisplacementSubChange(point);
-                    this.Invoke((EventHandler)delegate
+                    this.globaState.FouthLabState.GetMaxDisplacement(point);//得到最大压力值和对应的时间
+                    this.globaState.FouthLabState.CheckDisplacementSubChange(point);
+
+                    this.Invoke(new Action(()=>
                     {
-                        this.lblMaxExpansionRate.Text = this.globaState.FouthStepState.MaxDisplacement.ToString();
-                        this.lblMaxExpansionRateTime.Text = BytesOperator.GetOneVaule(this.globaState.FouthStepState.MaxDisplacementTime).ToString();
+                        this.lblMaxExpansionRate.Text = this.globaState.FouthLabState.MaxDisplacement.ToString();
+                        this.lblMaxExpansionRateTime.Text = BytesOperator.GetOneVaule(this.globaState.FouthLabState.MaxDisplacementTime).ToString();
 
                         this.chartExpansionRate.Series[0].Points.AddXY(point.X, point.Y);//讲点添加到膨胀率--时间曲线中去
-                    });
-                    if (this.globaState.FouthStepState.IsDisplacementSudChange)//抗压强度值是否突变
+                    }));
+
+                    if (this.globaState.FouthLabState.IsDisplacementSudChange)//抗压强度值是否突变
                     {
-                        SerialPortManager.SerialPort_Slave.Write("#4");
-                        this.globaState.FouthStepState.Step = FourthStep.测试结束;
+                        command = CommandGenerator.Generate_EndTest();
+                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
+                        this.globaState.FouthLabState.Step = FourthLabStep.测试结束;
                     }
                     break;
-                case FourthStep.测试结束:
+
+                case FourthLabStep.测试结束:
                     this.globaState.IsEndTest = true;
-                    this.globaState.FouthStepState.IsTimeReached = false;
-                    this.globaState.FouthStepState.InitState();
-                    this.Invoke((EventHandler)delegate
+                    this.globaState.FouthLabState.IsTimeReached = false;
+                    this.globaState.FouthLabState.InitState();
+                    this.Invoke(new Action(() =>
                     {
-                        //this.tmDisplacement.Stop();
-                        //this.tmDisplacement.Enabled = false;
                         isStartDisplacement = false;
                         this.btnSettingFurnaceTemperature.Enabled = true;
                         this.btnSaveData.Enabled = true;
                         this.lblStatusTip.Text = "测试结束，请保存数据";
-                    });
+                    }));
                     break;
             }
         }
@@ -909,7 +955,9 @@ namespace ResinSandPyrometer
             this.btnStartTest.Enabled = true;
             if (isReset)
             {
-                SerialPortManager.SerialPort_Slave.Write("#4");
+                Command command = CommandGenerator.Generate_EndTest();
+                CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
                 isReset = false;
             }
         }
@@ -971,6 +1019,8 @@ namespace ResinSandPyrometer
             Command command = CommandGenerator.Generate_BeginTest();
             CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
 
+            this.fileNameForFirstLab = ForceLogger.CreateLogFileForFirsLab();
+
             this.StartTest();
         }
 
@@ -985,18 +1035,18 @@ namespace ResinSandPyrometer
             switch (this.tabLabs.SelectedIndex)
             {
                 case 0:
-                    this.globaState.GoToFirstStep();
-                    this.globaState.FirstStepState.Step = FirstStep.NONE;
+                    this.globaState.GoToFirstLab();
+                    this.globaState.FirstLabState.Step = FirstLabStep.NONE;
                     //this.globaState.FirstStepState.Step = FirstStep.加热炉按行程下降;
                     break;
                 case 1:
-                    this.globaState.GoToSecondStep();
+                    this.globaState.GoToSecondLab();
 
-                    this.globaState.SecondStepState.Step = SecondStep.开始调试并发送指令;
+                    this.globaState.SecondStepState.Step = SecondLabStep.开始调试并发送指令;
                     break;
                 case 2:
                     this.globaState.GoToThreeStep();
-                    this.globaState.ThirdStepState.Step = ThirdStep.开始测试并发送指令;
+                    this.globaState.ThirdLabState.Step = ThirdLabStep.开始测试并发送指令;
                     break;
                 case 3:
                     this.globaState.GoToFourStep();
@@ -1029,16 +1079,16 @@ namespace ResinSandPyrometer
             switch (Setting.TestType)
             {
                 case 0:
-                    this.globaState.FirstStepState.InitState();
+                    this.globaState.FirstLabState.InitState();
                     break;
                 case 1:
                     this.globaState.SecondStepState.InitState();
                     break;
                 case 2:
-                    this.globaState.ThirdStepState.InitState();
+                    this.globaState.ThirdLabState.InitState();
                     break;
                 case 3:
-                    this.globaState.FouthStepState.InitState();
+                    this.globaState.FouthLabState.InitState();
                     break;
                 default:
                     break;
@@ -1052,8 +1102,6 @@ namespace ResinSandPyrometer
                 this.txtPengZhangTime.Text = "0";
 
                 this.txtBalancePressureTime.Text = "0";
-                //this.lblPrePress.Text = "";
-                //this.lblPrePressure.Text = "";
                 this.lblMaxExpansionRateTime.Text = "0";
                 this.lblMaxExpansionRate.Text = "0";
 
@@ -1063,7 +1111,6 @@ namespace ResinSandPyrometer
                 this.chartExpansionRate.Series[0].Points.Clear();
 
                 this.lblTimeCount.Text = Setting.SoakingTime.ToString();
-                //this.lblPressZero.Text = "0";
                 this.lblPrePress.Text = Setting.PreloadedForce.ToString();
                 this.lblPrePressure.Text = Setting.PreloadedPressure.ToString();
 
@@ -1222,8 +1269,6 @@ namespace ResinSandPyrometer
             frmCalibration.Revise = Setting.TxtRevise;
             DialogResult dlgResult = frmCalibration.ShowDialog();
 
-            this.globaState.TimeCount(2);
-
             if (dlgResult == DialogResult.OK)
             {
                 Setting.Save("TxtRevise", frmCalibration.Revise.ToString());
@@ -1248,7 +1293,7 @@ namespace ResinSandPyrometer
                 switch (this.tabLabs.SelectedIndex)
                 {
                     case 0:
-                        this.stepOfSelected = Steps.FirstStep;
+                        this.labOfSelected = Labs.FirstLab;
                         this.isReachedGo = false;
                         Setting.RepeatTimes = 1;
                         this.txtRepeatNumber.Text = "1";
@@ -1257,7 +1302,7 @@ namespace ResinSandPyrometer
                         Thread.Sleep(300);
                         break;
                     case 1:
-                        this.stepOfSelected = Steps.SecondStep;
+                        this.labOfSelected = Labs.SecondLab;
                         this.isReachedGo = false;
                         Setting.RepeatTimes = 1;
                         this.txtRepeatNumber.Text = "1";
@@ -1266,7 +1311,7 @@ namespace ResinSandPyrometer
                         Thread.Sleep(300);
                         break;
                     case 2:
-                        this.stepOfSelected = Steps.ThirdStep;
+                        this.labOfSelected = Labs.ThirdLab;
                         this.isReachedGo = false;
                         Setting.RepeatTimes = 1;
                         this.txtRepeatNumber.Text = "1";
@@ -1275,7 +1320,7 @@ namespace ResinSandPyrometer
                         Thread.Sleep(300);
                         break;
                     case 3:
-                        this.stepOfSelected = Steps.FourthStep;
+                        this.labOfSelected = Labs.FourthLab;
                         this.isReachedGo = false;
                         Setting.RepeatTimes = 1;
                         this.txtRepeatNumber.Text = "1";
@@ -1331,75 +1376,6 @@ namespace ResinSandPyrometer
                 MessageBox.Show("请输入介于500到1200的整数","异常提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            #region 废弃代码
-
-            //if (this.clickNumber % 2 == 0)
-            //{
-            //    if (this.temperatureState.IsTemperatureReset)
-            //    {
-            //        return;
-            //    }
-            //    //手动控制指令
-            //    byte[] handControllBuffer = new byte[]{0x81,0x81,0x43,0x18,0x00,0x00,0x44,0x18};
-
-            //    //手动控制输出值设置指令
-            //    byte[] handSetOutBufer = new byte[]{0x81,0x81,0x43,0x1A,0x00,0x00,0x44,0x1A};
-
-            //    if (!this.serialPort_Temperature.IsOpen)
-            //    {
-            //        this.serialPort_Temperature.Open();
-            //    }
-
-            //    this.serialPort_Temperature.Write(handControllBuffer, 0, handControllBuffer.Length);
-            //    Thread.Sleep(500);
-
-            //    this.temperatureState.IsCanStartHeat = true;
-            //    this.temperatureState.IsTemperatureReset = true;
-            //    this.txtTargetTemperature.ReadOnly = false;
-            //    this.btnSettingFurnaceTemperature.Text = "确定";
-            //    this.txtTargetTemperature.ForeColor = Color.White;
-            //    this.serialPort_Temperature.Write(handSetOutBufer, 0, handSetOutBufer.Length);
-            //    Setting.Save("SettingTemperature", this.txtTargetTemperature.Text);
-            //}
-            //else
-            //{
-            //    //自动控制指令
-            //    byte[] autorunBuffer = new byte[]{0x81,0x81,0x43,0x18,0x01,0x00,0x45,0x18 };
-
-            //    if (!this.serialPort_Temperature.IsOpen)
-            //    {
-            //        this.serialPort_Temperature.Open();
-            //    }
-
-            //    if (this.txtTargetTemperature.Text != null && Setting.SettingTemperature > 0 && Setting.SettingTemperature <= 1200)
-            //    {
-            //        this.serialPort_Temperature.Write(NumberSystem.TemperatureToByte8(int.Parse(this.txtTargetTemperature.Text)), 0, 8);
-            //        Thread.Sleep(500);
-
-            //        this.temperatureState = new TemperatureState();
-            //        this.isTemperatureReached = false;
-            //        this.txtTargetTemperature.ReadOnly = true;//设定温度为只读
-            //        this.btnSettingFurnaceTemperature.Text = "设置温度";
-
-            //        this.serialPort_Temperature.Write(autorunBuffer, 0, autorunBuffer.Length);
-            //        //cf.ReadConfig("SetTemperature");
-            //        this.txtTargetTemperature.ForeColor = Color.Yellow;
-            //        Setting.Save("SettingTemperature", this.txtTargetTemperature.Text);
-            //        //this.btnStartHeat.Enabled = false ;
-
-            //        //cf.SaveConfig("SetTemperature", this.testSample.SetTemperature.ToString());
-            //    }
-
-            //    else
-            //    {
-            //        MessageBox.Show("请输入正确的数字");
-            //        this.txtTargetTemperature.Text = "1000";
-            //    }
-            //    this.btnSettingFurnaceTemperature.Enabled = false;
-            //}
-            //this.clickNumber++;
-
-            #endregion
         }
 
         private void DisplacementWrite(object state)

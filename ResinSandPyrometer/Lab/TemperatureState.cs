@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ResinSandPyrometer.Step
+namespace ResinSandPyrometer.Lab
 {
     public class TemperatureState
     {

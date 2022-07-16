@@ -10,6 +10,12 @@ namespace ResinSandPyrometer.Common
 {
     public class Setting
     {
+        public static float PresureRate = 101.325f;
+
+        /// <summary>
+        /// 地球重力系数
+        /// </summary>
+        public static float G {get;set;} = 9.81f;
       
         /// <summary>
         /// 试样编号
@@ -165,7 +171,7 @@ namespace ResinSandPyrometer.Common
 
         public static float GetArea()
         {
-            return (float)(Math.PI * Math.Pow(SpecimenDiameter / 2, 2));
+            return (float)(Math.PI * (Math.Pow(SpecimenDiameter / 2, 2) - Math.Pow(InnerDiameter / 2, 2)));
         }
         public static void Load()
         {

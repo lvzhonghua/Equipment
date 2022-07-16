@@ -10,6 +10,9 @@ using System.Windows.Forms;
 using System.IO.Ports;
 using System.Threading;
 
+using ResinSandPyrometer.Common;
+using ResinSandPyrometer.CommandAndReply;
+
 namespace ResinSandPyrometer
 {
     public partial class FormCalibration : Form
@@ -146,25 +149,25 @@ namespace ResinSandPyrometer
 
         private void FormCalibration_Load(object sender, EventArgs e)
         {
-            Common.Setting.Load();
+            Setting.Load();
 
-            this.Revise = Common.Setting.TxtRevise;
+            this.Revise = Setting.TxtRevise;
 
             //下位机复位指令
-            CommandAndReply.Command command_Reset = CommandAndReply.CommandGenerator.Generate_Reset();
-            CommandAndReply.CommandExecutor.Send(this.serialPort, command_Reset);
+            Command command_Reset = CommandGenerator.Generate_Reset();
+            CommandExecutor.Send(this.serialPort, command_Reset);
 
             Thread.Sleep(2000);
 
             //设置空载行程（默认2.5毫米）
-            CommandAndReply.Command command_MotorDistanceSetting = CommandAndReply.CommandGenerator.Generate_MotorDistanceSetting(2.5f);
-            CommandAndReply.CommandExecutor.Send(this.serialPort, command_MotorDistanceSetting);
+            //Command command_MotorDistanceSetting = CommandGenerator.Generate_MotorDistanceSetting(2.5f);
+            //CommandExecutor.Send(this.serialPort, command_MotorDistanceSetting);
 
-            Thread.Sleep(50);
+            //Thread.Sleep(500);
 
             //发送开始测试指令
-            CommandAndReply.Command command_BeginTest = CommandAndReply.CommandGenerator.Generate_BeginTest();
-            CommandAndReply.CommandExecutor.Send(this.serialPort, command_BeginTest);
+            Command command_BeginTest = CommandGenerator.Generate_BeginTest();
+            CommandExecutor.Send(this.serialPort, command_BeginTest);
         }
 
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -190,53 +193,52 @@ namespace ResinSandPyrometer
 
             try
             {
-                CommandAndReply.Slave_Reply reply = CommandAndReply.Slave_ReplyAnalyzer.Analyse(buffer);
+                Slave_Reply reply = Slave_ReplyAnalyzer.Analyse(buffer);
 
                 switch (reply.Code)
                 {
-                    case CommandAndReply.Slave_ReplyCode.Answer:
-                    case CommandAndReply.Slave_ReplyCode.R:
-                    case CommandAndReply.Slave_ReplyCode.C:
-                    case CommandAndReply.Slave_ReplyCode.O: //力传感器通道正常
-                    case CommandAndReply.Slave_ReplyCode.K: //加载电机到下限位
-                    case CommandAndReply.Slave_ReplyCode.L:  //加载电机到下限位（零位）
-                    case CommandAndReply.Slave_ReplyCode.P: //加载电机到达预设行程
-                    case CommandAndReply.Slave_ReplyCode.G:  //加热炉到达预设行程
+                    case Slave_ReplyCode.Answer:
+                    case Slave_ReplyCode.R:
+                    case Slave_ReplyCode.C:
+                    case Slave_ReplyCode.O: //力传感器通道正常
+                    case Slave_ReplyCode.K: //加载电机到下限位
+                    case Slave_ReplyCode.L:  //加载电机到下限位（零位）
+                    case Slave_ReplyCode.P: //加载电机到达预设行程
+                    case Slave_ReplyCode.G:  //加热炉到达预设行程
                         break;
-                    case CommandAndReply.Slave_ReplyCode.F:
-                        long longTemp = Common.NumberSystem.BinaryToDecimal_Complement(reply.Data);
+                    case Slave_ReplyCode.F:
+                        long longTemp = NumberSystem.BinaryToDecimal_Complement(reply.Data);
 
                         float force = (float)Utilities.GetForceFromVoltage((float)longTemp,
-                                                                                             Common.Setting.SensorMax,
-                                                                                             Common.Setting.SensorMV,
-                                                                                             Common.Setting.SensorSys);
+                                                                                             Setting.SensorMax,
+                                                                                             Setting.SensorMV,
+                                                                                             Setting.SensorSys);
 
                         switch (this.work)
                         {
-                            default:
                             case "计算皮重":
                                 if (this.pressZeroQueue.Count >= 10)
                                 {
                                     this.pressZeroQueue.Dequeue();
                                 }
-                                this.pressZeroQueue.Enqueue(force / 9.8f);
+                                this.pressZeroQueue.Enqueue(force);
                                 break;
                             case "砝码称重":
                                 if (this.weightQueue.Count >= 10)
                                 {
                                     this.weightQueue.Dequeue();
                                 }
-                                this.weightQueue.Enqueue(force / 9.8f - this.pressZero);
+                                this.weightQueue.Enqueue(force - this.pressZero);
                                 break;
                         }
 
                         this.Invoke(new Action(() =>
                         {
-                            this.lblMessage.Text = $"{DateTime.Now.ToLongTimeString()}：数据：{BitConverter.ToString(reply.Data)}，重量：{force:0.000}牛，{force / 9.8f:0.000}公斤\r\n";
+                            this.lblMessage.Text = $"{DateTime.Now.ToLongTimeString()}：数据：{BitConverter.ToString(reply.Data)}，重量：{force:0.000}公斤\r\n";
                         }));
 
                         break;
-                    case CommandAndReply.Slave_ReplyCode.E:   //力传感器通道错误
+                    case Slave_ReplyCode.E:   //力传感器通道错误
                         this.Invoke(new Action(() =>
                         {
                             this.lblMessage.Text = $"{DateTime.Now.ToLongTimeString()}：传感器数据连接中断\r\n";
@@ -260,9 +262,9 @@ namespace ResinSandPyrometer
 
             this.Revise = standardWeight / this.weight;
 
-            Common.Setting.TxtRevise = this.revise;
+            Setting.TxtRevise = this.revise;
 
-            Common.Setting.Save("TxtRevise", this.revise.ToString());
+            Setting.Save("TxtRevise", this.revise.ToString());
         }
 
         private void FormCalibration_FormClosing(object sender, FormClosingEventArgs e)
@@ -270,8 +272,8 @@ namespace ResinSandPyrometer
             this.serialPort.DataReceived -= this.SerialPort_DataReceived;
 
             //实验结束指令
-            CommandAndReply.Command command_EndTest = CommandAndReply.CommandGenerator.Generate_EndTest();
-            CommandAndReply.CommandExecutor.Send(this.serialPort, command_EndTest);
+            Command command_EndTest = CommandGenerator.Generate_EndTest();
+            CommandExecutor.Send(this.serialPort, command_EndTest);
         }
     }
 }

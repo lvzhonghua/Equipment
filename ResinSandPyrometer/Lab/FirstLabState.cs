@@ -6,14 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ResinSandPyrometer.Step
+namespace ResinSandPyrometer.Lab
 {
-    public class FirstStepState
+    public class FirstLabState
     {
+        private FirstLabStep step = FirstLabStep.NONE;
 
-        private FirstStep step = FirstStep.NONE;
-
-        public FirstStep Step
+        public FirstLabStep Step
         {
             get { return this.step; }
             set { this.step = value; }
@@ -67,7 +66,7 @@ namespace ResinSandPyrometer.Step
             }
         }
 
-        //定义零点值
+        //皮重
         private float pressureZero = 0f;
 
         public float PressureZero
@@ -76,29 +75,38 @@ namespace ResinSandPyrometer.Step
             set { this.pressureZero = value; }
         }
 
+        //上一次皮重
+        private float pressureZero_Old = 0f;
+        public float PressureZero_Old { get { return this.pressureZero_Old; } }
+
         private Queue<float> pressureZeroQueue = new Queue<float>();
 
-        //取零点值最后十个数（去掉最大最小值，剩余的十个数平均值作为零点值）
+        //取零点值最后十个数（去掉最大最小值，剩余的五个数平均值作为零点值）
         public void GetPressureZero(float pressure)
         {
             if (pressure < 0.1f) return;
 
-            if (this.pressureZeroQueue.Count == 5)
+            if (this.pressureZeroQueue.Count >= 10)
             {
                 this.pressureZeroQueue.Dequeue();
             }
             this.pressureZeroQueue.Enqueue(pressure);
 
             float[] zeroArray = this.pressureZeroQueue.ToArray();
+
+            //if (zeroArray.Length < 10) return;
+            
             float sum = 0;
             for (int i = 0; i < zeroArray.Length; i++)
             {
                 sum += zeroArray[i];
             }
-            this.pressureZero = sum / 5;
+            this.pressureZero = sum / zeroArray.Length;
+
+            if (this.pressureZero_Old == 0) this.pressureZero_Old = this.pressureZero;
         }
 
-        public void PressureZeroClear()
+        public void ClearPressureZero()
         {
             this.pressureZeroQueue.Clear();
             this.commandCount = 0;
@@ -157,6 +165,8 @@ namespace ResinSandPyrometer.Step
             this.isPressureSudChange = false;
             this.maxPressure = 0;
             this.maxPreesureTime = 0;
+            this.pressureZero = 0;
+            this.pressureZero_Old = 0;
         }
     }
 }

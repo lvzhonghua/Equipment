@@ -71,6 +71,7 @@
     <Compile Include="CommandAndReply\Command.cs" />
     <Compile Include="CommandAndReply\CommandCode.cs" />
     <Compile Include="CommandAndReply\CommandGenerator.cs" />
+    <Compile Include="Common\ForceLogger.cs" />
     <Compile Include="Common\NumberSystem.cs" />
     <Compile Include="Common\CRC.cs" />
     <Compile Include="Common\Enums.cs" />
@@ -122,13 +123,13 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Step\ChartResult.cs" />
-    <Compile Include="Step\GlobaState.cs" />
-    <Compile Include="Step\FourthStepState.cs" />
-    <Compile Include="Step\FirstStepState.cs" />
-    <Compile Include="Step\ThirdStepState.cs" />
-    <Compile Include="Step\SecondStepState.cs" />
-    <Compile Include="Step\TemperatureState.cs" />
+    <Compile Include="Lab\ChartResult.cs" />
+    <Compile Include="Lab\GlobaState.cs" />
+    <Compile Include="Lab\FourthLabState.cs" />
+    <Compile Include="Lab\FirstLabState.cs" />
+    <Compile Include="Lab\ThirdLabState.cs" />
+    <Compile Include="Lab\SecondLabState.cs" />
+    <Compile Include="Lab\TemperatureState.cs" />
     <Compile Include="Utilities.cs" />
     <EmbeddedResource Include="FormCalcForce.resx">
       <DependentUpon>FormCalcForce.cs</DependentUpon>

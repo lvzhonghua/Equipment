@@ -17,14 +17,14 @@ namespace ResinSandPyrometer
         /// <returns>力（单位：牛顿）</returns>
         public static double GetForceFromVoltage(float voltage, float sensorMax, float sensorMV, float sensibility, float revise)
         {
-            double result = voltage * revise * sensorMax *(2500.0f / sensorMV) / (8388607.0f * 128.0f * sensibility) * 9.81f;
+            double result = voltage * revise * sensorMax *(2500.0f / sensorMV) / (8388607.0f * 128.0f * sensibility);
 
             return result;
         }
 
         public static double GetForceFromVoltage(float voltage, float sensorMax, float sensorMV, float sensibility)
         {
-            double result = voltage * sensorMax * (2500.0f / sensorMV) / (8388607.0f * 128.0f * sensibility) * 9.81f;
+            double result = voltage * sensorMax * (2500.0f / sensorMV) / (8388607.0f * 128.0f * sensibility);
 
             return result;
         }

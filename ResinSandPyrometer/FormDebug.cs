@@ -432,6 +432,12 @@ namespace ResinSandPyrometer
                 case "炉温到达设定温度":
                     command = CommandAndReply.CommandGenerator.Generate_TemperatureReached();
                     break;
+                case "托盘上升2mm":
+                    command = CommandAndReply.CommandGenerator.Generate_MotorTest(CommandAndReply.MotorTestType.加载电机上升);
+                    break;
+                case "托盘下降2mm":
+                    command = CommandAndReply.CommandGenerator.Generate_MotorTest(CommandAndReply.MotorTestType.加载电机下降);
+                    break;
             }
 
             CommandAndReply.CommandExecutor.Send(this.serial_Slave, command);

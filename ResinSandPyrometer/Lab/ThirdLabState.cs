@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ResinSandPyrometer.Step
+namespace ResinSandPyrometer.Lab
 {
-    public class ThirdStepState
+    public class ThirdLabState
     {
 
-        private ThirdStep step = ThirdStep.NONE;
+        private ThirdLabStep step = ThirdLabStep.NONE;
 
-        public ThirdStep Step
+        public ThirdLabStep Step
         {
             get { return this.step; }
             set { this.step = value; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ResinSandPyrometer.Common
 {
-    public enum FirstStep
+    public enum FirstLabStep
     {
         NONE,
         加热炉按行程下降,
@@ -19,7 +19,7 @@ namespace ResinSandPyrometer.Common
 
     }
 
-    public enum SecondStep
+    public enum SecondLabStep
     {
         NONE,
         开始调试并发送指令,
@@ -33,7 +33,7 @@ namespace ResinSandPyrometer.Common
 
     }
 
-    public enum ThirdStep
+    public enum ThirdLabStep
     {
         NONE,
         开始测试并发送指令,
@@ -45,7 +45,7 @@ namespace ResinSandPyrometer.Common
         测试结束
     }
 
-    public enum FourthStep
+    public enum FourthLabStep
     {
         NONE,
         取预置零点值,
@@ -58,13 +58,13 @@ namespace ResinSandPyrometer.Common
         测试结束
     }
 
-    public enum Steps
+    public enum Labs
     {
         None = 0,
-        FirstStep = 1,//高温抗压强度
-        SecondStep = 2,//高温膨胀力
-        ThirdStep = 3,//热稳定性
-        FourthStep = 4 //位移传感器
+        FirstLab = 1,//高温抗压强度
+        SecondLab = 2,//高温膨胀力
+        ThirdLab = 3,//热稳定性
+        FourthLab = 4 //位移传感器
     }
 
     public enum StateOfSetParameter
