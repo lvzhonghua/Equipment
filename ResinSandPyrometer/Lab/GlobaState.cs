@@ -9,7 +9,7 @@ namespace ResinSandPyrometer.Lab
 {
     public class GlobaState
     {
-        //第一步变量状态
+        //第一个实验（高温抗压强度）变量状态
         private FirstLabState firstLabState = new FirstLabState();
 
         public FirstLabState FirstLabState
@@ -18,7 +18,7 @@ namespace ResinSandPyrometer.Lab
             set { this.firstLabState = value; }
         }
 
-        //第二步变量状态
+        //第二个实验（膨胀力）变量状态
         private SecondLabState secondLabState = new SecondLabState();
 
         public SecondLabState SecondStepState
@@ -27,7 +27,7 @@ namespace ResinSandPyrometer.Lab
             set { this.secondLabState = value; }
         }
 
-        //第三步变量状态
+        //第三个实验（耐高温时间）变量状态
         private ThirdLabState thirdLabState = new ThirdLabState();
 
         public ThirdLabState ThirdLabState
@@ -36,6 +36,7 @@ namespace ResinSandPyrometer.Lab
             set { this.thirdLabState = value; }
         }
 
+        //第四个实验（高温急热膨胀率）变量状态
         private FourthLabState fouthLabState = new FourthLabState();
 
         public FourthLabState FouthLabState
@@ -87,7 +88,7 @@ namespace ResinSandPyrometer.Lab
             this.isStartTest = true;
         }
 
-        //热稳定性
+        //耐高温时间
         public void GoToThreeStep()
         {
             this.labNum = Labs.ThirdLab;

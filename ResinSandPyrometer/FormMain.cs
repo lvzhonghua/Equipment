@@ -153,7 +153,7 @@ namespace ResinSandPyrometer
             byte[] buffer = new byte[5];
             try
             {
-                if (!SerialPortManager.SerialPort_Slave.IsOpen) return;
+                if (SerialPortManager.SerialPort_Slave.IsOpen == false) return;
                 SerialPortManager.SerialPort_Slave.Read(buffer, 0, buffer.Length);
             }
             catch (Exception ex)
@@ -171,13 +171,15 @@ namespace ResinSandPyrometer
                 case Slave_ReplyCode.Answer:
                     this.Invoke(new Action(delegate () { this.lblReceivedInfo.Text = reply.Code + "  " + reply.Answer_Content; }));
                     break;
+
                 case Slave_ReplyCode.R:
                     this.Invoke(new Action(delegate ()
                     {
-                        this.StartTest();
+                        //this.StartTest();
                         this.lblReceivedInfo.Text = reply.Code + "  " + reply.Answer_Content;
                     }));
                     break;
+
                 case Slave_ReplyCode.C:
                     this.Invoke(new Action(delegate () {this.lblReceivedInfo.Text = reply.Code + "  " + reply.Answer_Content;}));
 
@@ -213,6 +215,7 @@ namespace ResinSandPyrometer
                     float force = (float)reply.Data_Double;
 
                     this.Invoke(new Action(delegate() { this.lblReceivedInfo.Text = $"重量：{force}公斤"; }));
+
                     if (force > Setting.SensorMax)
                     {
                         this.Reset();
@@ -241,12 +244,16 @@ namespace ResinSandPyrometer
                                 break;
                         }
                     }
+                    break;
 
-                    break;
                 case Slave_ReplyCode.E:   //力传感器通道错误
-                    this.Invoke(new Action(delegate() { this.lblReceivedInfo.Text = reply.Code + "  " + reply.Answer_Content;}));
-                    this.lblStatusTip.Text = "传感器数据连接中断";
+                    this.Invoke(new Action(delegate() 
+                    { 
+                        this.lblReceivedInfo.Text = reply.Code + "  " + reply.Answer_Content;
+                        this.lblStatusTip.Text = "传感器数据连接中断";
+                    }));
                     break;
+
                 case Slave_ReplyCode.O: //力传感器通道正常
                     this.Invoke(new Action(delegate () { this.lblReceivedInfo.Text = reply.Code + "  " + reply.Answer_Content;}));
                     break;
@@ -288,8 +295,6 @@ namespace ResinSandPyrometer
                             isStartDisplacement = true;
                             this.globaState.FouthLabState.Step = FourthLabStep.取预置零点值;
                             break;
-                        default:
-                            break;
                     }
                     break;
 
@@ -317,7 +322,6 @@ namespace ResinSandPyrometer
 
                             break;
                     }
-
                     break;
             }
         }
@@ -596,72 +600,57 @@ namespace ResinSandPyrometer
 
                 case FirstLabStep.取预置零点值:
                     this.globaState.FirstLabState.CommandCount(1);
-                    this.globaState.FirstLabState.GetPressureZero(force);//零点值
+                    this.globaState.FirstLabState.GetPressureZero(force);
 
                     if (this.globaState.FirstLabState.IsCommandReached)
                     {
-                        command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.运行);
-                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
-                        this.globaState.FirstLabState.Step = FirstLabStep.电机上升;
+                        //command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.运行);
+                        //CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+                        this.globaState.FirstLabState.Step = FirstLabStep.抗压试样保温时间计时;
                     }
                     this.Invoke(new Action(() => { this.lblTimeCount.Text = this.globaState.FirstLabState.TimeCount(Setting.SoakingTime).ToString(); })); //保温时间和延时
 
                     break;
 
-                case FirstLabStep.电机上升:
-                    this.Invoke(new Action(delegate () { this.lblDebugInfo.Text = $"上一次皮重：{this.globaState.FirstLabState.PressureZero_Old}, 皮重:{this.globaState.FirstLabState.PressureZero}，原始值:{force}，压力：{Math.Abs(this.globaState.FirstLabState.PressureZero - force)}"; }));
-                    SampleLoggerOnTextFile.Log($"上一次皮重：{this.globaState.FirstLabState.PressureZero_Old}, 皮重:{this.globaState.FirstLabState.PressureZero}，原始值:{force}，压力：{Math.Abs(this.globaState.FirstLabState.PressureZero - force)}");
-
-                    if (Math.Abs(this.globaState.FirstLabState.PressureZero - force) >= 0.2f)
-                    {
-                        command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.停止);
-                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
-
-                        SampleLoggerOnTextFile.Log("接触，电机停止上升");
-
-                        this.globaState.FirstLabState.ClearPressureZero();
-                        this.globaState.FirstLabState.Step = FirstLabStep.电机下降;
-                        this.globaState.FirstLabState.IsCommandReached = false;
-                    }
-
-                    this.Invoke(new Action(() => { this.lblTimeCount.Text = this.globaState.FirstLabState.TimeCount(Setting.SoakingTime).ToString(); })); //保温时间和延时
-                    break;
-
-                case FirstLabStep.电机下降:
-                    command = CommandGenerator.Generate_MotorStep(MotorUpOrDown.下降半毫米);     //使样品与顶杆脱离接触
-                    CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
-
-                    this.globaState.FirstLabState.ClearPressureZero();
-
-                    this.globaState.FirstLabState.Step = FirstLabStep.抗压试样保温时间计时并更新零点值;
-                    break;
-
-                case FirstLabStep.抗压试样保温时间计时并更新零点值:
-                    if (this.globaState.FirstLabState.CountTime < 10)
-                    {
-                        this.globaState.FirstLabState.CommandCount(1);
-                        this.globaState.FirstLabState.GetPressureZero(force);//零点值
-                    }
-
+                case FirstLabStep.抗压试样保温时间计时:
                     this.Invoke(new Action(() => { this.lblTimeCount.Text = this.globaState.FirstLabState.TimeCount(Setting.SoakingTime).ToString(); })); //保温时间和延时
 
                     if (this.globaState.FirstLabState.IsTimeReached)
                     {
-                        command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.运行);
-                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+                        //command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.运行);
+                        //CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
 
                         this.isMotorZero = false;
                         this.startTime = DateTime.Now;
-                        this.globaState.FirstLabState.Step = FirstLabStep.采集数据压力是否突变;
+                        this.globaState.FirstLabState.Step = FirstLabStep.托盘快速上升2mm;
                         this.globaState.FirstLabState.IsTimeReached = false;
                     }
 
-                    this.Invoke(new Action(()=> 
+                    this.Invoke(new Action(() =>
                     {
-                        this.Invoke(new Action(delegate () { this.lblDebugInfo.Text = $"上一次皮重：{this.globaState.FirstLabState.PressureZero_Old}, 皮重:{this.globaState.FirstLabState.PressureZero}，原始值:{force}，压力：{Math.Abs(this.globaState.FirstLabState.PressureZero - force)}"; }));
-                        SampleLoggerOnTextFile.Log($"上一次皮重：{this.globaState.FirstLabState.PressureZero_Old}, 皮重:{this.globaState.FirstLabState.PressureZero}，原始值:{force}，压力：{Math.Abs(this.globaState.FirstLabState.PressureZero - force)}");
+                        this.Invoke(new Action(delegate () { this.lblDebugInfo.Text = $"皮重:{this.globaState.FirstLabState.PressureZero}，原始值:{force}，压力：{Math.Abs(this.globaState.FirstLabState.PressureZero - force)}"; }));
+                        SampleLoggerOnTextFile.Log($"皮重:{this.globaState.FirstLabState.PressureZero}，原始值:{force}，压力：{Math.Abs(this.globaState.FirstLabState.PressureZero - force)}");
                     }));
 
+                    break;
+
+                case FirstLabStep.托盘快速上升2mm:
+                    this.Invoke(new Action(delegate () { this.lblDebugInfo.Text = $"皮重:{this.globaState.FirstLabState.PressureZero}，原始值:{force}，压力：{Math.Abs(this.globaState.FirstLabState.PressureZero - force)}"; }));
+                    SampleLoggerOnTextFile.Log($"皮重:{this.globaState.FirstLabState.PressureZero}，原始值:{force}，压力：{Math.Abs(this.globaState.FirstLabState.PressureZero - force)}");
+
+                    command = CommandAndReply.CommandGenerator.Generate_MotorTest(CommandAndReply.MotorTestType.加载电机上升);
+                    CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
+                    this.globaState.FirstLabState.Step = FirstLabStep.托盘缓慢上升;
+
+                    this.Invoke(new Action(() => { this.lblTimeCount.Text = this.globaState.FirstLabState.TimeCount(Setting.SoakingTime).ToString(); })); //保温时间和延时
+                    break;
+
+                case FirstLabStep.托盘缓慢上升:
+                    command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.运行);
+                    CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
+                    this.globaState.FirstLabState.Step = FirstLabStep.采集数据压力是否突变;
                     break;
 
                 case FirstLabStep.采集数据压力是否突变:
@@ -686,8 +675,8 @@ namespace ResinSandPyrometer
 
                         this.chartPressure.Series[0].Points.AddXY(point.X, point.Y);//将点添加到压强--时间曲线中去
 
-                        this.Invoke(new Action(delegate () { this.lblDebugInfo.Text = $"上一次皮重：{this.globaState.FirstLabState.PressureZero_Old}, 皮重:{this.globaState.FirstLabState.PressureZero}，原始值:{force}，压力：{Math.Abs(this.globaState.FirstLabState.PressureZero - force)}"; }));
-                        SampleLoggerOnTextFile.Log($"上一次皮重：{this.globaState.FirstLabState.PressureZero_Old}, 皮重:{this.globaState.FirstLabState.PressureZero}，原始值:{force}，压力：{Math.Abs(this.globaState.FirstLabState.PressureZero - force)}");
+                        this.lblDebugInfo.Text = $"皮重:{this.globaState.FirstLabState.PressureZero}，原始值:{force}，压力：{Math.Abs(this.globaState.FirstLabState.PressureZero - force)}";
+                        SampleLoggerOnTextFile.Log($"皮重:{this.globaState.FirstLabState.PressureZero}，原始值:{force}，压力：{Math.Abs(this.globaState.FirstLabState.PressureZero - force)}");
                     }));
                     break;
 
@@ -953,12 +942,12 @@ namespace ResinSandPyrometer
             this.txtCompany.Text = Setting.ExperimentUnit;
             this.txtRepeatNumber.Text = Setting.RepeatTimes.ToString();
             this.btnStartTest.Enabled = true;
-            if (isReset)
+            if (this.isReset)
             {
                 Command command = CommandGenerator.Generate_EndTest();
                 CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
 
-                isReset = false;
+                this.isReset = false;
             }
         }
 
@@ -1031,13 +1020,13 @@ namespace ResinSandPyrometer
             this.btnSettings.Enabled = false;
             this.btnSampleInfoSetting.Enabled = false;
             this.isReachedGo = true;
+            this.lblTimeCount.Text = Setting.SoakingTime.ToString();
 
             switch (this.tabLabs.SelectedIndex)
             {
                 case 0:
                     this.globaState.GoToFirstLab();
                     this.globaState.FirstLabState.Step = FirstLabStep.NONE;
-                    //this.globaState.FirstStepState.Step = FirstStep.加热炉按行程下降;
                     break;
                 case 1:
                     this.globaState.GoToSecondLab();
@@ -1239,7 +1228,6 @@ namespace ResinSandPyrometer
             }
             this.lblTimeCount.Text = Setting.SoakingTime.ToString();
 
-            this.lblTimeCount.Text = "0";
             this.lblPressure.Text = "0";
             this.lblPressureTime.Text = "0";
 

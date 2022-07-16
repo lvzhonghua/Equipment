@@ -36,7 +36,7 @@ namespace ResinSandPyrometer.Lab
             set { this.maxPreesureTime = value; }
         }
 
-        public int CountTime { get; set; } = 0;
+        public int countTime  = 0;
 
         private bool isTimeReached = false;
 
@@ -75,10 +75,6 @@ namespace ResinSandPyrometer.Lab
             set { this.pressureZero = value; }
         }
 
-        //上一次皮重
-        private float pressureZero_Old = 0f;
-        public float PressureZero_Old { get { return this.pressureZero_Old; } }
-
         private Queue<float> pressureZeroQueue = new Queue<float>();
 
         //取零点值最后十个数（去掉最大最小值，剩余的五个数平均值作为零点值）
@@ -102,8 +98,6 @@ namespace ResinSandPyrometer.Lab
                 sum += zeroArray[i];
             }
             this.pressureZero = sum / zeroArray.Length;
-
-            if (this.pressureZero_Old == 0) this.pressureZero_Old = this.pressureZero;
         }
 
         public void ClearPressureZero()
@@ -114,13 +108,13 @@ namespace ResinSandPyrometer.Lab
 
         public int TimeCount(int soakingTime)
         {
-            this.CountTime++;
-            if (this.CountTime == 5 * soakingTime)
+            this.countTime++;
+            if (this.countTime == 5 * soakingTime)
             {
                 this.isTimeReached = true;
-                this.CountTime = 5 * soakingTime;
+                this.countTime = 5 * soakingTime;
             }
-            return soakingTime - this.CountTime / 5;
+            return soakingTime - this.countTime / 5;
         }
 
         //得到最大压强值和对应的时间
@@ -159,14 +153,13 @@ namespace ResinSandPyrometer.Lab
         {
             this.commandCount = 0;
             this.isCommandReached = false;
-            this.CountTime = 0;
+            this.countTime = 0;
             this.isTimeReached = false;
             this.changeCount = 0;
             this.isPressureSudChange = false;
             this.maxPressure = 0;
             this.maxPreesureTime = 0;
             this.pressureZero = 0;
-            this.pressureZero_Old = 0;
         }
     }
 }

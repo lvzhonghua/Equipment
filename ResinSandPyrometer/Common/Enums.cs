@@ -9,11 +9,12 @@ namespace ResinSandPyrometer.Common
     public enum FirstLabStep
     {
         NONE,
+        托盘按空载行程上升,
         加热炉按行程下降,
         取预置零点值,
-        电机上升,
-        电机下降,
-        抗压试样保温时间计时并更新零点值,
+        抗压试样保温时间计时,
+        托盘快速上升2mm,
+        托盘缓慢上升,
         采集数据压力是否突变,
         测试结束
 
@@ -61,10 +62,26 @@ namespace ResinSandPyrometer.Common
     public enum Labs
     {
         None = 0,
-        FirstLab = 1,//高温抗压强度
-        SecondLab = 2,//高温膨胀力
-        ThirdLab = 3,//热稳定性
-        FourthLab = 4 //位移传感器
+
+        /// <summary>
+        /// 高温抗压强度
+        /// </summary>
+        FirstLab = 1,
+
+        /// <summary>
+        /// 膨胀力
+        /// </summary>
+        SecondLab = 2,
+
+        /// <summary>
+        /// 耐高温时间
+        /// </summary>
+        ThirdLab = 3,
+
+        /// <summary>
+        /// 高温急热膨胀率
+        /// </summary>
+        FourthLab = 4
     }
 
     public enum StateOfSetParameter
