@@ -1,6 +1,7 @@
-﻿using ResinSandPyrometer.CommandAndReply;
+﻿using System;
+
+using ResinSandPyrometer.CommandAndReply;
 using ResinSandPyrometer.Common;
-using System;
 
 namespace ResinSandPyrometer
 {
@@ -29,18 +30,11 @@ namespace ResinSandPyrometer
             return result;
         }
 
-        public static double GetForceFromVoltage(byte[] bytes, float sensorMax, float sensorMV, float sensibility, float revise)
-        {
-            long voltage = NumberSystem.BinaryToDecimal_Complement(bytes, 16);
-
-            return Utilities.GetForceFromVoltage((float)voltage,sensorMax, sensorMV, sensibility, revise);
-        }
-
         public static double GetForceFromVoltage(byte[] bytes)
         {
             long voltage = NumberSystem.BinaryToDecimal_Complement(bytes, 16);
 
-            return Utilities.GetForceFromVoltage((float)voltage, Setting.SensorMax, Setting.SensorMV, Setting.SensorSys, Setting.TxtRevise);
+            return GetForceFromVoltage((float)voltage, Setting.SensorMax, Setting.SensorMV, Setting.SensorSys, Setting.TxtRevise);
         }
 
         public static float GetDisplacement(byte[] buffer)

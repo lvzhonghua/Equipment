@@ -10,7 +10,7 @@ namespace ResinSandPyrometer.Common
 {
     public class Setting
     {
-        public static float PresureRate = 101.325f;
+        public static float PresureRate = 1000f;
 
         /// <summary>
         /// 地球重力系数
@@ -100,7 +100,7 @@ namespace ResinSandPyrometer.Common
         /// <summary>
         /// 传感器最大量程
         /// </summary>
-        public static int SensorMax { get; set; } = 20;
+        public static int SensorMax { get; set; } = 200;
 
         /// <summary>
         /// 传感器灵敏度系数

@@ -21,7 +21,7 @@ namespace ResinSandPyrometer
 
         private SerialPort serialPort;
 
-        private Queue<float> pressZeroQueue = new Queue<float>();
+        private Queue<float> pressureZeroQueue = new Queue<float>();
 
         private Queue<float> weightQueue = new Queue<float>();
 
@@ -36,12 +36,12 @@ namespace ResinSandPyrometer
             }
         }
         //皮重
-        private float pressZero = 0f;
+        private float pressureZero = 0f;
 
-        public float PressZero
+        public float PressureZero
         {
-            get { return this.pressZero; }
-            set { this.pressZero = value; }
+            get { return this.pressureZero; }
+            set { this.pressureZero = value; }
         }
 
         private float weight = 0;
@@ -65,11 +65,11 @@ namespace ResinSandPyrometer
         {
             this.work = "计算皮重";
 
-            if (this.pressZeroQueue.Count < 10) return;
+            if (this.pressureZeroQueue.Count < 10) return;
 
-            float[] array = this.pressZeroQueue.ToArray();
+            float[] array = this.pressureZeroQueue.ToArray();
 
-            this.CountPressZero();
+            this.CountPressureZero();
 
             this.lstInfo.Items.Clear();
             foreach (var item in array)
@@ -77,13 +77,13 @@ namespace ResinSandPyrometer
                 this.lstInfo.Items.Add($"{item:0.000}");
             }
 
-            this.lblPressZero.Text = $"空载重量：{this.pressZero:0.000} Kg";
+            this.lblPressZero.Text = $"空载重量：{this.pressureZero:0.000} Kg";
         }
 
         //取十个值做平均值
-        public void CountPressZero()
+        public void CountPressureZero()
         {
-            float[] zeroArray = this.pressZeroQueue.ToArray();
+            float[] zeroArray = this.pressureZeroQueue.ToArray();
 
             float sum = 0;
 
@@ -92,7 +92,7 @@ namespace ResinSandPyrometer
                 sum += zeroArray[i];
             }
 
-            this.pressZero = sum / zeroArray.Length;
+            this.pressureZero = sum / zeroArray.Length;
         }
 
         //取十个值做平均值
@@ -213,22 +213,23 @@ namespace ResinSandPyrometer
                                                                                              Setting.SensorMax,
                                                                                              Setting.SensorMV,
                                                                                              Setting.SensorSys);
+                        force = force / Setting.G;
 
                         switch (this.work)
                         {
                             case "计算皮重":
-                                if (this.pressZeroQueue.Count >= 10)
+                                if (this.pressureZeroQueue.Count >= 10)
                                 {
-                                    this.pressZeroQueue.Dequeue();
+                                    this.pressureZeroQueue.Dequeue();
                                 }
-                                this.pressZeroQueue.Enqueue(force);
+                                this.pressureZeroQueue.Enqueue(force);
                                 break;
                             case "砝码称重":
                                 if (this.weightQueue.Count >= 10)
                                 {
                                     this.weightQueue.Dequeue();
                                 }
-                                this.weightQueue.Enqueue(force - this.pressZero);
+                                this.weightQueue.Enqueue(force - this.pressureZero);
                                 break;
                         }
 
@@ -254,7 +255,7 @@ namespace ResinSandPyrometer
 
         private void btnCalibrate_Click(object sender, EventArgs e)
         {
-            if (this.pressZero == 0) return;
+            if (this.pressureZero == 0) return;
             if (this.weight == 0) return;
 
             float standardWeight = float.Parse(this.txtStandardWeigth.Text.Trim());

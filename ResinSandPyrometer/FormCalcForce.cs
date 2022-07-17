@@ -36,8 +36,8 @@ namespace ResinSandPyrometer
                                                                             float.Parse(this.txtSensibility.Text),
                                                                             float.Parse(this.txtRevise.Text));
 
-            this.txtForce.Text = (force * Setting.G).ToString();
-            this.txtWeight.Text = force.ToString();
+            this.txtForce.Text = force.ToString();
+            this.txtWeight.Text = (force / Setting.G).ToString();
         }
     }
 }

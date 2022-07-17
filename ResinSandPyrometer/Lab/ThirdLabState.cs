@@ -78,40 +78,40 @@ namespace ResinSandPyrometer.Lab
         }
 
         //判断压力是否突变
-        private bool isBalancePressSudChange = false;
+        private bool isBalancePressureSudChange = false;
 
-        public bool IsBalancePressSudChange
+        public bool IsBalancePressureSudChange
         {
-            get { return this.isBalancePressSudChange; }
-            set { this.isBalancePressSudChange = value; }
+            get { return this.isBalancePressureSudChange; }
+            set { this.isBalancePressureSudChange = value; }
         }
 
         private int changeCount = 0;
 
-        private Queue<float> balancePressSudChangeQueue = new Queue<float>();
+        private Queue<float> balancePressureSudChangeQueue = new Queue<float>();
 
         //检查压力是否突变
-        public void CheckBlancePressChange(float pressure, float setPress)
+        public void CheckBlancePressureChange(float pressure, float setPress)
         {
-            if (this.balancePressSudChangeQueue.Count == 50)
+            if (this.balancePressureSudChangeQueue.Count == 50)
             {
-                this.balancePressSudChangeQueue.Dequeue();
+                this.balancePressureSudChangeQueue.Dequeue();
             }
-            this.balancePressSudChangeQueue.Enqueue(pressure);
+            this.balancePressureSudChangeQueue.Enqueue(pressure);
 
             this.changeCount++;
             if (this.changeCount < 300) return;
 
             int sum = 0;
-            if (this.balancePressSudChangeQueue.Count == 50)
+            if (this.balancePressureSudChangeQueue.Count == 50)
             {
-                float[] array = this.balancePressSudChangeQueue.ToArray();
+                float[] array = this.balancePressureSudChangeQueue.ToArray();
                 for (int index = 0; index < array.Length; index++)
                 {
                     if (array[index] > setPress - 0.005f) sum++;
                 }
 
-                if (sum == 0 || changeCount > 1250)  this.isBalancePressSudChange = true;
+                if (sum == 0 || changeCount > 1250)  this.isBalancePressureSudChange = true;
             }
         }
 
@@ -120,9 +120,9 @@ namespace ResinSandPyrometer.Lab
             this.balancePress = 0;
             this.endTime = 0;
             this.isBPGet = false;
-            this.isBalancePressSudChange = false;
+            this.isBalancePressureSudChange = false;
             this.changeCount = 0;
-            this.balancePressSudChangeQueue.Clear();
+            this.balancePressureSudChangeQueue.Clear();
             this.isTimeReached = false;
         }
     }

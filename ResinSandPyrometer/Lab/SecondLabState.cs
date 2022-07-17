@@ -28,18 +28,18 @@ namespace ResinSandPyrometer.Lab
         }
 
         //定义零点值
-        private float pressZero = 0f;
+        private float pressureZero = 0f;
 
-        public float PressZero
+        public float PressureZero
         {
-            get { return this.pressZero; }
-            set { this.pressZero = value; }
+            get { return this.pressureZero; }
+            set { this.pressureZero = value; }
         }
 
         private Queue<float> pressZeroQueue = new Queue<float>();
 
         //取零点值最后十个数（去掉最大最小值，剩余的十个数平均值作为零点值）
-        public void GetPressZero(float pressure)
+        public void GetPressureZero(float pressure)
         {
             if (pressure < 0.1f) return;
 
@@ -55,7 +55,7 @@ namespace ResinSandPyrometer.Lab
             {
                 sum += zeroArray[index];
             }
-            this.pressZero = sum / 5;
+            this.pressureZero = sum / 5;
         }
 
         private bool isTimeReached = false;
@@ -76,7 +76,6 @@ namespace ResinSandPyrometer.Lab
                 this.isTimeReached = true;
                 this.countTime = 0;
             }
-
         }
 
         //最大膨胀力
@@ -108,33 +107,33 @@ namespace ResinSandPyrometer.Lab
         }
 
         //判断膨胀力是否突变
-        private bool isPressSudChange = false;
+        private bool isPressureSudChange = false;
 
-        public bool IsPressSudChange
+        public bool IsPressureSudChange
         {
-            get { return this.isPressSudChange; }
-            set { this.isPressSudChange = value; }
+            get { return this.isPressureSudChange; }
+            set { this.isPressureSudChange = value; }
         }
 
         private int changeCount = 0;
 
-        private Queue<float> pressSudChangeQueue = new Queue<float>();
+        private Queue<float> pressureSudChangeQueue = new Queue<float>();
         //检查膨胀力是否突变
-        public void CheckPressSudChange(float pressure)
+        public void CheckPressureSudChange(float pressure)
         {
-            if (this.pressSudChangeQueue.Count == 10)
+            if (this.pressureSudChangeQueue.Count == 10)
             {
-                this.pressSudChangeQueue.Dequeue();
+                this.pressureSudChangeQueue.Dequeue();
             }
-            this.pressSudChangeQueue.Enqueue(pressure);
+            this.pressureSudChangeQueue.Enqueue(pressure);
 
             this.changeCount++;
             if (this.changeCount < 75) return;
 
             int sum = 0;
-            if (this.pressSudChangeQueue.Count == 10)
+            if (this.pressureSudChangeQueue.Count == 10)
             {
-                float[] array = this.pressSudChangeQueue.ToArray();
+                float[] array = this.pressureSudChangeQueue.ToArray();
                 for (int index = 0; index < array.Length; index++)
                 {
                     if (1.5f * array[index] > this.maxPress)
@@ -145,7 +144,7 @@ namespace ResinSandPyrometer.Lab
 
                 if (sum == 0 || this.changeCount > 450)
                 {
-                    this.isPressSudChange = true;
+                    this.isPressureSudChange = true;
                 }
             }
         }
@@ -155,9 +154,9 @@ namespace ResinSandPyrometer.Lab
             this.maxPress = 0;
             this.maxPress_Time = 0;
             this.changeCount = 0;
-            this.pressSudChangeQueue.Clear();
-            this.isPressSudChange = false;
-            this.pressZero = 0;
+            this.pressureSudChangeQueue.Clear();
+            this.isPressureSudChange = false;
+            this.pressureZero = 0;
         }
 
     }

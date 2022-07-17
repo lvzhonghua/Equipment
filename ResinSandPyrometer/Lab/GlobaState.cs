@@ -125,34 +125,34 @@ namespace ResinSandPyrometer.Lab
         }
 
         //定义零点值
-        private float pressZero = 0f;
+        private float pressureZero = 0f;
 
-        public float PressZero
+        public float PressureZero
         {
-            get { return this.pressZero; }
-            set { this.pressZero = value; }
+            get { return this.pressureZero; }
+            set { this.pressureZero = value; }
         }
 
-        private Queue<float> pressZeroQueue = new Queue<float>();
+        private Queue<float> pressureZeroQueue = new Queue<float>();
 
         //取零点值最后十个数（去掉最大最小值，剩余的十个数平均值作为零点值）
-        public void GetPressZero(float pressure)
+        public void GetPressureZero(float pressure)
         {
             if (pressure < 0.1f) return;
 
-            if (this.pressZeroQueue.Count == 5)
+            if (this.pressureZeroQueue.Count == 5)
             {
-                this.pressZeroQueue.Dequeue();
+                this.pressureZeroQueue.Dequeue();
             }
-            this.pressZeroQueue.Enqueue(pressure);
+            this.pressureZeroQueue.Enqueue(pressure);
 
-            float[] zeroArray = pressZeroQueue.ToArray();
+            float[] zeroArray = pressureZeroQueue.ToArray();
             float sum = 0;
             for (int i = 0; i < zeroArray.Length; i++)
             {
                 sum += zeroArray[i];
             }
-            this.PressZero = sum / 5;
+            this.pressureZero = sum / 5;
         }
 
     }
