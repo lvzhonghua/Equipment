@@ -138,6 +138,7 @@ namespace ResinSandPyrometer
         private void btnConnect_Displacement_Click(object sender, EventArgs e)
         {
             string portName = this.txtCOM_Displacement.Text.Trim();
+
             this.serial_Displacement = new SerialPort();
             this.serial_Displacement.PortName = portName;                //COM口
             this.serial_Displacement.BaudRate = 9600;                       //波特率

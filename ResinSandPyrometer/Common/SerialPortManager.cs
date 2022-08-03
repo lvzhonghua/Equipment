@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO.Ports;
 
+using ResinSandPyrometer.Common;
+
 namespace ResinSandPyrometer.Common
 {
     /// <summary>
@@ -12,23 +14,38 @@ namespace ResinSandPyrometer.Common
     /// </summary>
     public class SerialPortManager
     {
+        /// <summary>
+        /// 单片机串口名称
+        /// </summary>
+        public static string Slave_COM { get { return SettingReaderAndWriter.ReadAppSetting("Slave_COM"); }  }
+
+        /// <summary>
+        /// 温控仪串口名称
+        /// </summary>
+        public static string Temperature_COM { get { return SettingReaderAndWriter.ReadAppSetting("Temperature_COM"); } }
+
+        /// <summary>
+        /// 位移传感器串口名称
+        /// </summary>
+        public static string Displacement_COM { get { return SettingReaderAndWriter.ReadAppSetting("Displacement_COM"); } }
+
         public static SerialPort SerialPort_Slave;              //单片机串口
         public static SerialPort SerialPort_Temperature;    //温控仪串口
         public static SerialPort SerialPort_Displacement;   //温控仪串口
 
-        public static void OpenSerial_Slave(string portName)
+        public static void OpenSerial_Slave()
         {
             if (SerialPort_Slave != null && SerialPort_Slave.IsOpen) return;
             try
             {
                 SerialPort_Slave = new SerialPort();
-                SerialPort_Slave.PortName = portName;//串口端口
-                SerialPort_Slave.BaudRate = 115200;//波特率
-                SerialPort_Slave.Parity = (Parity)Enum.Parse(typeof(Parity), (string)"None");//奇偶校验
-                SerialPort_Slave.DataBits = 8;//数据位
-                SerialPort_Slave.StopBits = (StopBits)Enum.Parse(typeof(StopBits), (string)"One");//停止位 
-                SerialPort_Slave.Handshake = (Handshake)Enum.Parse(typeof(Handshake), (string)"None");//握手协议即流控制方式
-                SerialPort_Slave.ReadTimeout = 2000; //超时读取异常
+                SerialPort_Slave.PortName = Slave_COM;             //串口端口
+                SerialPort_Slave.BaudRate = 115200;                  //波特率
+                SerialPort_Slave.Parity = Parity.None;                  //奇偶校验
+                SerialPort_Slave.DataBits = 8;                            //数据位
+                SerialPort_Slave.StopBits = StopBits.One;            //停止位 
+                SerialPort_Slave.Handshake = Handshake.None;    //握手协议即流控制方式
+                SerialPort_Slave.ReadTimeout = 2000;                 //超时读取异常
 
                 SerialPort_Slave.Open();
             }
@@ -63,9 +80,9 @@ namespace ResinSandPyrometer.Common
             SerialPort_Slave.ErrorReceived -= eventHandler;
         }
 
-        public static void OpenSerial_Temperature(string portName)
+        public static void OpenSerial_Temperature()
         {
-            //由于温控仪与位移传感器共用一个串口，所以必须必须关闭一个，才能打开另一个
+            //由于温控仪与位移传感器共用一个串口，所以必须关闭一个，才能打开另一个
             try
             {
                 if (SerialPort_Displacement != null && SerialPort_Displacement.IsOpen == true)
@@ -83,7 +100,7 @@ namespace ResinSandPyrometer.Common
             try
             {
                 SerialPort_Temperature = new SerialPort();
-                SerialPort_Temperature.PortName = portName;                //COM口
+                SerialPort_Temperature.PortName = Temperature_COM;     //COM口
                 SerialPort_Temperature.BaudRate = 19200;                     //波特率
                 SerialPort_Temperature.Parity = Parity.None;                   //校验位
                 SerialPort_Temperature.DataBits = 8;                             //数据位
@@ -97,9 +114,9 @@ namespace ResinSandPyrometer.Common
             }
         }
 
-        public static void OpenSerial_Displacement(string portName) 
+        public static void OpenSerial_Displacement() 
         {
-            //由于温控仪与位移传感器共用一个串口，所以必须必须关闭一个，才能打开另一个
+            //由于温控仪与位移传感器共用一个串口，所以必须关闭一个，才能打开另一个
 
             try
             {
@@ -118,13 +135,11 @@ namespace ResinSandPyrometer.Common
             try
             {
                 SerialPort_Displacement = new SerialPort();
-                SerialPort_Displacement.PortName = portName; //串口
-                SerialPort_Displacement.BaudRate = 9600;//波特率
-                SerialPort_Displacement.Parity = Parity.None;//奇偶校验
-                SerialPort_Displacement.DataBits = 8;//数据位
-                SerialPort_Displacement.StopBits = (StopBits)Enum.Parse(typeof(StopBits), (string)"One");//停止位 
-                SerialPort_Displacement.Handshake = (Handshake)Enum.Parse(typeof(Handshake), (string)"None");//握手协议即流控制方式
-                SerialPort_Displacement.ReadTimeout = 2000;//超时读取异常
+                SerialPort_Displacement.PortName = Displacement_COM;     //串口
+                SerialPort_Displacement.BaudRate = 9600;                         //波特率
+                SerialPort_Displacement.Parity = Parity.None;                     //奇偶校验
+                SerialPort_Displacement.DataBits = 8;                               //数据位
+                SerialPort_Displacement.StopBits = StopBits.One;                //停止位 
 
                 SerialPort_Displacement.Open();
 
@@ -188,66 +203,21 @@ namespace ResinSandPyrometer.Common
         {
             if (SerialPort_Slave == null) return;
             SerialPort_Slave.Close();
+            SerialPort_Slave = null;
         }
 
         public static void CloseTemperature()
         {
             if (SerialPort_Temperature == null) return;
             SerialPort_Temperature.Close();
+            SerialPort_Temperature = null;
         }
 
         public static void CloseDisplacement()
         {
             if (SerialPort_Displacement == null) return;
             SerialPort_Displacement.Close();
-        }
-
-        public static bool Write_Slave(byte[] bytes)
-        {
-            bool success = false;
-            try
-            {
-                SerialPort_Slave.Write(bytes,0, bytes.Length);
-                success = true;
-            }
-            catch (Exception ex)
-            {
-                SampleLoggerOnTextFile.Log($"向单片机串口写数据 出现异常：{ex.Message}");
-            }
-
-            return success;
-        }
-
-        public static bool Write_Temperature(byte[] bytes)
-        {
-            bool success = false;
-            try
-            {
-                SerialPort_Temperature.Write(bytes, 0, bytes.Length);
-                success = true;
-            }
-            catch (Exception ex)
-            {
-                SampleLoggerOnTextFile.Log($"向温控仪串口写数据 出现异常：{ex.Message}");
-            }
-
-            return success;
-        }
-
-        public static bool Write_Displacement(byte[] bytes)
-        {
-            bool success = false;
-            try
-            {
-                SerialPort_Displacement.Write(bytes, 0, bytes.Length);
-                success = true;
-            }
-            catch (Exception ex)
-            {
-                SampleLoggerOnTextFile.Log($"向位移传感器串口写数据 出现异常：{ex.Message}");
-            }
-
-            return success;
+            SerialPort_Displacement = null;
         }
     }
 }

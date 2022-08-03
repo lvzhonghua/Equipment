@@ -46,8 +46,8 @@ namespace ResinSandPyrometer.Common
         /// <summary>
         /// 添加配置项
         /// </summary>
-        /// <param name="key">Key值</param>
-        /// <param name="value">姓名</param>
+        /// <param name="key">Key</param>
+        /// <param name="value">值</param>
         public static void AddAppSetting(string key, string value)
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);

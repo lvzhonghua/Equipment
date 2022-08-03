@@ -149,6 +149,7 @@
             this.btnBackToZero = new System.Windows.Forms.Button();
             this.btnCalibration = new System.Windows.Forms.Button();
             this.tmCheckTemperature = new System.Windows.Forms.Timer(this.components);
+            this.tmGetDisplacement = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -208,8 +209,8 @@
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(80, 26);
-            this.toolStripStatusLabel1.Text = "单片机端口：";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(71, 26);
+            this.toolStripStatusLabel1.Text = "单片机端口:";
             // 
             // tlblPort_Slave
             // 
@@ -220,8 +221,8 @@
             // toolStripStatusLabel3
             // 
             this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-            this.toolStripStatusLabel3.Size = new System.Drawing.Size(80, 26);
-            this.toolStripStatusLabel3.Text = "温控仪端口：";
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(71, 26);
+            this.toolStripStatusLabel3.Text = "温控仪端口:";
             // 
             // tlblPort_Temperature
             // 
@@ -232,8 +233,8 @@
             // toolStripStatusLabel2
             // 
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(104, 26);
-            this.toolStripStatusLabel2.Text = "位移传感器端口：";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(95, 26);
+            this.toolStripStatusLabel2.Text = "位移传感器端口:";
             // 
             // tlblPort_Displacement
             // 
@@ -714,7 +715,7 @@
             this.lblCurrentTemperature.Name = "lblCurrentTemperature";
             this.lblCurrentTemperature.Size = new System.Drawing.Size(294, 67);
             this.lblCurrentTemperature.TabIndex = 16;
-            this.lblCurrentTemperature.Text = "----";
+            this.lblCurrentTemperature.Text = "0000";
             this.lblCurrentTemperature.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lable1
@@ -1213,7 +1214,7 @@
             series3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             series3.Legend = "Legend1";
             series3.MarkerColor = System.Drawing.Color.Red;
-            series3.Name = "耐高温时间";
+            series3.Name = "载荷值";
             this.chartBalancePress.Series.Add(series3);
             this.chartBalancePress.Size = new System.Drawing.Size(744, 403);
             this.chartBalancePress.TabIndex = 0;
@@ -1452,6 +1453,11 @@
             this.tmCheckTemperature.Interval = 1000;
             this.tmCheckTemperature.Tick += new System.EventHandler(this.tmCheckTemperature_Tick);
             // 
+            // tmGetDisplacement
+            // 
+            this.tmGetDisplacement.Interval = 200;
+            this.tmGetDisplacement.Tick += new System.EventHandler(this.tmGetDisplacement_Tick);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1616,6 +1622,7 @@
         private System.Windows.Forms.ToolStripButton btnDebug;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.TextBox txtInnerDiameter;
+        private System.Windows.Forms.Timer tmGetDisplacement;
     }
 }
 
