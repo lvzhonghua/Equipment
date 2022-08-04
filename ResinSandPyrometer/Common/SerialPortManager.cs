@@ -80,9 +80,12 @@ namespace ResinSandPyrometer.Common
             SerialPort_Slave.ErrorReceived -= eventHandler;
         }
 
-        public static void OpenSerial_Temperature()
+        public static void OpenSerial_Temperature(ref bool isExists)
         {
             //由于温控仪与位移传感器共用一个串口，所以必须关闭一个，才能打开另一个
+
+            isExists = false;
+
             try
             {
                 if (SerialPort_Displacement != null && SerialPort_Displacement.IsOpen == true)
@@ -95,7 +98,11 @@ namespace ResinSandPyrometer.Common
                 SampleLoggerOnTextFile.Log($"OpenSerial_Temperature方法 关闭位移传感器串口 出现异常：{ex.Message}");
             }
 
-            if (SerialPort_Temperature != null && SerialPort_Temperature.IsOpen) return;
+            if (SerialPortManager.SerialPort_Temperature != null && SerialPortManager.SerialPort_Temperature.IsOpen)
+            {
+                isExists = true;
+                return;
+            }
 
             try
             {
@@ -114,9 +121,11 @@ namespace ResinSandPyrometer.Common
             }
         }
 
-        public static void OpenSerial_Displacement() 
+        public static void OpenSerial_Displacement(ref bool isExists) 
         {
             //由于温控仪与位移传感器共用一个串口，所以必须关闭一个，才能打开另一个
+
+            isExists = false;
 
             try
             {
@@ -130,7 +139,11 @@ namespace ResinSandPyrometer.Common
                 SampleLoggerOnTextFile.Log($"OpenSerial_Displacement方法 关闭温控仪串口 出现异常：{ex.Message}");
             }
 
-            if (SerialPortManager.SerialPort_Displacement != null && SerialPortManager.SerialPort_Displacement.IsOpen) return;
+            if (SerialPortManager.SerialPort_Displacement != null && SerialPortManager.SerialPort_Displacement.IsOpen)
+            {
+                isExists = true;
+                return;
+            }
 
             try
             {
@@ -139,7 +152,7 @@ namespace ResinSandPyrometer.Common
                 SerialPort_Displacement.BaudRate = 9600;                         //波特率
                 SerialPort_Displacement.Parity = Parity.None;                     //奇偶校验
                 SerialPort_Displacement.DataBits = 8;                               //数据位
-                SerialPort_Displacement.StopBits = StopBits.One;                //停止位 
+                SerialPort_Displacement.StopBits = StopBits.One;               //停止位 
 
                 SerialPort_Displacement.Open();
 

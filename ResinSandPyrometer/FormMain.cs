@@ -122,14 +122,22 @@ namespace ResinSandPyrometer
 
         private void InitSerialPort_Temperature()
         {
-            this.tlblPort_Temperature.Text = SerialPortManager.Temperature_COM;
-            this.tlblPort_Temperature.ForeColor = Color.Green;
+            this.Invoke(new Action(() => 
+            {
+                this.tlblPort_Temperature.Text = SerialPortManager.Temperature_COM;
+                this.tlblPort_Temperature.ForeColor = Color.Green;
 
-            this.tmCheckTemperature.Enabled = true;
+                this.tmCheckTemperature.Enabled = true;
+            }));
 
-            SerialPortManager.OpenSerial_Temperature();
-            SerialPortManager.AddDataReceivedEventHandler_Temperature(this.serialPort_Temperature_DataReceived);
-            SerialPortManager.AddErrorReceivedEventHandler_Temperature(this.serialPort_Temperature_ErrorReceived);
+            bool isExists = false;
+
+            SerialPortManager.OpenSerial_Temperature(ref isExists);
+            if (isExists == false)
+            {
+                SerialPortManager.AddDataReceivedEventHandler_Temperature(this.serialPort_Temperature_DataReceived);
+                SerialPortManager.AddErrorReceivedEventHandler_Temperature(this.serialPort_Temperature_ErrorReceived);
+            }
         }
 
         #region 单片机
@@ -432,7 +440,11 @@ namespace ResinSandPyrometer
                         this.btnSettingFurnaceTemperature.Enabled = true;
                         this.btnSaveData.Enabled = true;
                         this.lblStatusTip.Text = "测试结束，请保存数据";
+
                     }));
+
+                    this.InitSerialPort_Temperature();
+
                     break;
             }
 
@@ -894,13 +906,21 @@ namespace ResinSandPyrometer
         #region 位移传感器
         private void InitSerialPort_Displacement()
         {
-            this.tlblPort_Displacement.Text = SerialPortManager.Displacement_COM;
-            this.tlblPort_Displacement.ForeColor = Color.Green;
+            this.Invoke(new Action(() =>
+            {
+                this.tlblPort_Displacement.Text = SerialPortManager.Displacement_COM;
+                this.tlblPort_Displacement.ForeColor = Color.Green;
+            }));
 
-            SerialPortManager.OpenSerial_Displacement();
+            bool isExists = false;
 
-            SerialPortManager.AddDataReceivedEventHandler_Displacement(new SerialDataReceivedEventHandler(serialPort_Displacement_DataReceived));
-            SerialPortManager.AddErrorReceivedEventHandler_Displacement(new SerialErrorReceivedEventHandler(serialPort_Displacement_ErrorReceived));
+            SerialPortManager.OpenSerial_Displacement(ref isExists);
+
+            if (isExists == false)
+            {
+                SerialPortManager.AddDataReceivedEventHandler_Displacement(new SerialDataReceivedEventHandler(serialPort_Displacement_DataReceived));
+                SerialPortManager.AddErrorReceivedEventHandler_Displacement(new SerialErrorReceivedEventHandler(serialPort_Displacement_ErrorReceived));
+            }
         }
 
         private void serialPort_Displacement_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
@@ -1052,6 +1072,7 @@ namespace ResinSandPyrometer
                     break;
 
                 case 3:
+                    this.InitSerialPort_Displacement();
                     this.globaState.GoToFourStep();
                     this.tmCheckTemperature.Stop();
                     this.tmGetDisplacement.Start();
@@ -1330,7 +1351,7 @@ namespace ResinSandPyrometer
                         Thread.Sleep(300);
                         break;
                     case 3:
-                        this.InitSerialPort_Displacement();
+                        ////this.InitSerialPort_Displacement();
 
                         this.labOfSelected = Labs.FourthLab;
                         this.isReachedGo = false;
@@ -1357,7 +1378,7 @@ namespace ResinSandPyrometer
         /// <param name="targetTemperature">目标炉温</param>
         private void SetTargetTemperature(int targetTemperature)
         {
-            SerialPortManager.OpenSerial_Temperature();
+            this.InitSerialPort_Temperature();
 
             Command command = CommandGenerator.Generate_SetFurnaceTargetTemperature(targetTemperature);
 
