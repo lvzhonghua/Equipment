@@ -455,11 +455,11 @@
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.groupBox1.Location = new System.Drawing.Point(16, 241);
+            this.groupBox1.Location = new System.Drawing.Point(16, 122);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Size = new System.Drawing.Size(299, 287);
+            this.groupBox1.Size = new System.Drawing.Size(299, 406);
             this.groupBox1.TabIndex = 25;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "试样信息";
@@ -473,7 +473,7 @@
             this.label23.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label23.Location = new System.Drawing.Point(8, 29);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(88, 16);
+            this.label23.Size = new System.Drawing.Size(87, 16);
             this.label23.TabIndex = 17;
             this.label23.Text = "试样编号：";
             // 
@@ -499,7 +499,7 @@
             this.label25.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label25.Location = new System.Drawing.Point(7, 90);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(88, 16);
+            this.label25.Size = new System.Drawing.Size(87, 16);
             this.label25.TabIndex = 18;
             this.label25.Text = "试样内径：";
             // 
@@ -512,7 +512,7 @@
             this.label7.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label7.Location = new System.Drawing.Point(7, 122);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(88, 16);
+            this.label7.Size = new System.Drawing.Size(87, 16);
             this.label7.TabIndex = 18;
             this.label7.Text = "试样外径：";
             // 
@@ -525,7 +525,7 @@
             this.label22.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label22.Location = new System.Drawing.Point(8, 59);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(88, 16);
+            this.label22.Size = new System.Drawing.Size(87, 16);
             this.label22.TabIndex = 18;
             this.label22.Text = "试样名称：";
             // 
@@ -551,7 +551,7 @@
             this.label11.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label11.Location = new System.Drawing.Point(8, 242);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(88, 16);
+            this.label11.Size = new System.Drawing.Size(87, 16);
             this.label11.TabIndex = 19;
             this.label11.Text = "重复次数：";
             // 
@@ -564,7 +564,7 @@
             this.label19.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label19.Location = new System.Drawing.Point(8, 154);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(88, 16);
+            this.label19.Size = new System.Drawing.Size(87, 16);
             this.label19.TabIndex = 23;
             this.label19.Text = "试样高度：";
             // 
@@ -655,7 +655,7 @@
             this.label13.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label13.Location = new System.Drawing.Point(8, 183);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(88, 16);
+            this.label13.Size = new System.Drawing.Size(87, 16);
             this.label13.TabIndex = 20;
             this.label13.Text = "测试人员：";
             // 
@@ -668,14 +668,14 @@
             this.label12.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label12.Location = new System.Drawing.Point(8, 212);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(88, 16);
+            this.label12.Size = new System.Drawing.Size(87, 16);
             this.label12.TabIndex = 21;
             this.label12.Text = "测试单位：";
             // 
             // btnSettingFurnaceTemperature
             // 
             this.btnSettingFurnaceTemperature.Font = new System.Drawing.Font("宋体", 12F);
-            this.btnSettingFurnaceTemperature.Location = new System.Drawing.Point(205, 172);
+            this.btnSettingFurnaceTemperature.Location = new System.Drawing.Point(205, 59);
             this.btnSettingFurnaceTemperature.Name = "btnSettingFurnaceTemperature";
             this.btnSettingFurnaceTemperature.Size = new System.Drawing.Size(110, 47);
             this.btnSettingFurnaceTemperature.TabIndex = 24;
@@ -688,7 +688,7 @@
             this.txtTargetTemperature.BackColor = System.Drawing.SystemColors.MenuText;
             this.txtTargetTemperature.Font = new System.Drawing.Font("Microsoft Sans Serif", 42F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTargetTemperature.ForeColor = System.Drawing.SystemColors.Window;
-            this.txtTargetTemperature.Location = new System.Drawing.Point(17, 159);
+            this.txtTargetTemperature.Location = new System.Drawing.Point(17, 46);
             this.txtTargetTemperature.Multiline = true;
             this.txtTargetTemperature.Name = "txtTargetTemperature";
             this.txtTargetTemperature.Size = new System.Drawing.Size(184, 71);
@@ -700,7 +700,7 @@
             // 
             this.label24.AutoSize = true;
             this.label24.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label24.Location = new System.Drawing.Point(20, 122);
+            this.label24.Location = new System.Drawing.Point(20, 9);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(142, 19);
             this.label24.TabIndex = 9;
@@ -711,22 +711,24 @@
             this.lblCurrentTemperature.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.lblCurrentTemperature.Font = new System.Drawing.Font("Microsoft Sans Serif", 42F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCurrentTemperature.ForeColor = System.Drawing.Color.Red;
-            this.lblCurrentTemperature.Location = new System.Drawing.Point(21, 43);
+            this.lblCurrentTemperature.Location = new System.Drawing.Point(180, 197);
             this.lblCurrentTemperature.Name = "lblCurrentTemperature";
             this.lblCurrentTemperature.Size = new System.Drawing.Size(294, 67);
             this.lblCurrentTemperature.TabIndex = 16;
             this.lblCurrentTemperature.Text = "0000";
             this.lblCurrentTemperature.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCurrentTemperature.Visible = false;
             // 
             // lable1
             // 
             this.lable1.AutoSize = true;
             this.lable1.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lable1.Location = new System.Drawing.Point(14, 12);
+            this.lable1.Location = new System.Drawing.Point(173, 169);
             this.lable1.Name = "lable1";
             this.lable1.Size = new System.Drawing.Size(142, 19);
             this.lable1.TabIndex = 8;
             this.lable1.Text = "当前温度(℃):";
+            this.lable1.Visible = false;
             // 
             // panel3
             // 

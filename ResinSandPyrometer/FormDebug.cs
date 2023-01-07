@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using System.IO.Ports;
 using System.Threading;
 using System.IO;
+using ResinSandPyrometer.CommandAndReply;
+using ResinSandPyrometer.Common;
 
 namespace ResinSandPyrometer
 {
@@ -151,6 +153,8 @@ namespace ResinSandPyrometer
             this.serial_Displacement.Open();
 
             this.txtLog_Displacement.AppendText($"{DateTime.Now.ToLongTimeString()}：成功连接位移传感器\r\n");
+
+            this.chartDisplacement.Series[0].Points.Clear();
         }
 
         private void Serial_Displacement_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -177,6 +181,8 @@ namespace ResinSandPyrometer
             this.Invoke(new Action(() => 
             {
                 this.txtLog_Displacement.AppendText($"{DateTime.Now.ToLongTimeString()}：{reply}\r\n");
+
+                this.chartDisplacement.Series[0].Points.AddY(reply.Displacement);
             }));
         }
 
@@ -585,6 +591,72 @@ namespace ResinSandPyrometer
             if (this.serial_Slave != null && this.serial_Slave.IsOpen) this.serial_Slave.Close();
             if (this.serial_Temperature != null && this.serial_Temperature.IsOpen) this.serial_Temperature.Close();
             if (this.serial_Displacement != null && this.serial_Displacement.IsOpen) this.serial_Displacement.Close();
+        }
+
+        private void btnDataLook_Click(object sender, EventArgs e)
+        {
+            if (this.chartDisplacement.Series[0].Points == null || this.chartDisplacement.Series[0].Points.Count == 0)
+            {
+                MessageBox.Show("目前没有数据，无法查看","信息", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            var pointCollection = this.chartDisplacement.Series[0].Points;
+            
+            DialogDataLook dlgDataLook = new DialogDataLook();
+            dlgDataLook.TopMost = true;
+            dlgDataLook.PointCollection = pointCollection;
+            dlgDataLook.Show();
+        }
+
+        private void tmAuto_Tick(object sender, EventArgs e)
+        {
+            Command command = CommandGenerator.Generate_GetDisplacement();
+
+            CommandExecutor.Send(this.serial_Displacement, command);
+        }
+
+        private void btnAuto_Click(object sender, EventArgs e)
+        {
+            if (this.serial_Displacement == null || this.serial_Displacement.IsOpen == false)
+            {
+                this.txtLog_Displacement.AppendText($"{DateTime.Now.ToLongTimeString()}：位移传感器串口未连接\r\n");
+                return;
+            };
+
+            this.tmAuto.Enabled = !this.tmAuto.Enabled;
+        }
+
+        private void btnTempTest_Click(object sender, EventArgs e)
+        {
+            string data = this.txtData.Text.Trim();
+            string[] values = data.Split('-');
+
+            //for (int index = 0; index < 9; index++)
+            //{
+            //    values[index] = "0x" + values[index];
+            //}
+
+            byte[] buffer = new byte[9] /*{ 0x01, 0x04, 0x04, 0x80, 0x01, 0x01, 0x48, 0x22, 0x82 }*/;
+
+            for (int index = 0; index < 9; index++)
+            {
+                buffer[index] = (byte)Convert.ToInt64(values[index], 16);
+            }
+
+            string crc = CRC.ToModbusCRC16(buffer);
+
+            if (crc != "0000")
+            {
+                this.lblDisplacement.Text = "出错";
+                return;
+            };
+
+            Displacement_Reply reply = Displacement_ReplyAnalyzer.Analyse(buffer);
+
+            float displacement = reply.Displacement;
+            this.lblDisplacement.Text = displacement.ToString();
+
         }
     }
 }

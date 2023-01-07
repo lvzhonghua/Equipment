@@ -54,7 +54,11 @@ namespace ResinSandPyrometer.Common
         电机下降,
         加热炉下降,
         等待加热炉下降,
-        更新零点值,
+        
+        #region 2023-01-07 修改实验流程
+        //更新零点值,
+        #endregion
+
         采集位移数据并绘制曲线以及判断是否突变,
         测试结束
     }

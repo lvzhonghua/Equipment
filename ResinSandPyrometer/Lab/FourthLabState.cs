@@ -48,6 +48,7 @@ namespace ResinSandPyrometer.Lab
         public void TimeCount(int timeCount)
         {
             this.countTime++;
+
             if (this.countTime == 5 * timeCount)
             {
                 this.isTimeReached = true;
@@ -66,7 +67,11 @@ namespace ResinSandPyrometer.Lab
         public void Sleep()
         {
             this.count++;
-            if (this.count < 60) return;
+            #region 2023-01-07
+            //if (this.count < 60) return;
+            if (this.count < 1) return;
+            #endregion
+
             this.isOK = true;
         }
 
@@ -81,7 +86,11 @@ namespace ResinSandPyrometer.Lab
         public void Wait()
         {
             this.waitCout++;
-            if (this.waitCout < 40) return;
+            #region 2023-01-07 修改实验流程
+            //if (this.waitCout < 40) return;
+            if (this.waitCout < 18) return;
+            #endregion
+
             this.isWaitOver = true;
         }
 
@@ -95,16 +104,30 @@ namespace ResinSandPyrometer.Lab
 
         private Queue<float> displacementZeroQueue = new Queue<float>();
 
-        //取零点值最后十个数（去掉最大最小值，剩余的十个数平均值作为零点值）
-        public void GetDisplacementZero(float pressure)
+        //取零点值最后5个数（去掉最大最小值，剩余的5个数平均值作为零点值）
+        public void GetDisplacementZero(float displacement)
         {
-            if (pressure < 0.1f) return;
+            #region 2023-01-07
+            //if (this.displacementZeroQueue.Count == 5)
+            //{
+            //    this.displacementZeroQueue.Dequeue();
+            //}
+            //this.displacementZeroQueue.Enqueue(displacement);
 
-            if (this.displacementZeroQueue.Count == 5)
+            //float[] zeroArray = displacementZeroQueue.ToArray();
+            //float sum = 0;
+            //for (int index = 0; index < zeroArray.Length; index++)
+            //{
+            //    sum += zeroArray[index];
+            //}
+            //this.displacementZero = sum / 5;
+            #endregion
+
+            if (this.displacementZeroQueue.Count == 1)
             {
                 this.displacementZeroQueue.Dequeue();
             }
-            this.displacementZeroQueue.Enqueue(pressure);
+            this.displacementZeroQueue.Enqueue(displacement);
 
             float[] zeroArray = displacementZeroQueue.ToArray();
             float sum = 0;
@@ -112,7 +135,8 @@ namespace ResinSandPyrometer.Lab
             {
                 sum += zeroArray[index];
             }
-            this.displacementZero = sum / 5;
+            this.displacementZero = sum / 1;
+
         }
 
         public void DisplacementZeroClear()
@@ -147,7 +171,10 @@ namespace ResinSandPyrometer.Lab
             this.changeCount++;
             if (this.changeCount < 300) return;
 
-            if ((this.maxDisplacement - point.Y) / this.maxDisplacement > 0.3 || this.changeCount > 1200)
+            #region 2023-01-07 
+            //if ((this.maxDisplacement - point.Y) / this.maxDisplacement > 0.3 || this.changeCount > 1200)
+            if ((this.maxDisplacement - point.Y) / this.maxDisplacement > 0.5 || this.changeCount > 1200)
+            #endregion
             {
                 this.isDisplacementSudChange = true;
             }

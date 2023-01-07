@@ -39,11 +39,14 @@ namespace ResinSandPyrometer.CommandAndReply
 
             int decimalsInt = BitConverter.ToInt16(decimalsBytes, 0);
 
-            string distanceStr = string.Format("{0}.{1}", integerInt, decimalsInt);
+            #region 2023-01-07 
+            //string distanceStr = string.Format("{0}.{1}", integerInt, decimalsInt);
+            string distanceStr = string.Format("{0}.{1:000}", integerInt, decimalsInt);
+            #endregion
 
             float distance = float.Parse(distanceStr);
 
-            string show = distance.ToString("0.00");
+            string show = distance.ToString("0.000");
 
             float displacement = 0;
 

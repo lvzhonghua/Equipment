@@ -148,7 +148,7 @@ namespace ResinSandPyrometer
 
         private void serialPort_Slave_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            Thread.Sleep(40);
+            Thread.Sleep(20);
             //获取串口传递过来数据（从串口读数据）
             byte[] buffer = new byte[5];
             try
@@ -175,7 +175,7 @@ namespace ResinSandPyrometer
                 case Slave_ReplyCode.R:
                     this.Invoke(new Action(delegate ()
                     {
-                        //this.StartTest();
+                        this.StartTest();
                         this.lblReceivedInfo.Text = reply.Code + "  " + reply.Answer_Content;
                     }));
                     break;
@@ -293,7 +293,21 @@ namespace ResinSandPyrometer
                         case Labs.FourthLab:
                             Setting.TestType = 3;
                             this.isStartDisplacement = true;
-                            this.globaState.FouthLabState.Step = FourthLabStep.取预置零点值;
+                            #region 2023-01-07 修改第四个实验的过程
+                            //this.globaState.FouthLabState.Step = FourthLabStep.取预置零点值;
+                            this.globaState.FouthLabState.Step = FourthLabStep.加热炉下降;
+
+                            //try
+                            //{
+                            //    Command command = CommandGenerator.Generate_GetDisplacement();
+                            //    CommandExecutor.Send(SerialPortManager.SerialPort_Displacement, command);
+                            //}
+                            //catch (Exception ex)
+                            //{
+                            //    SampleLoggerOnTextFile.Log($"位移传感器写入故障：{ex.Message}");
+                            //}
+
+                            #endregion
                             break;
                     }
                     break;
@@ -316,8 +330,12 @@ namespace ResinSandPyrometer
                             break;
                         case Labs.FourthLab:
                             if (this.globaState.FouthLabState.IsWaitOver) return;
-                           
-                            this.globaState.FouthLabState.Step = FourthLabStep.更新零点值;
+
+                            #region 2023-01-07 修改第四个实验的过程
+                            //this.globaState.FouthLabState.Step = FourthLabStep.更新零点值;
+                            this.globaState.FouthLabState.Step = FourthLabStep.取预置零点值;
+                            #endregion
+
                             this.globaState.FouthLabState.IsWaitOver = false;
 
                             break;
@@ -335,37 +353,39 @@ namespace ResinSandPyrometer
                 case FourthLabStep.NONE:
                     break;
 
-                case FourthLabStep.取预置零点值:
-                    this.globaState.FouthLabState.TimeCount(1);
-                    this.globaState.FouthLabState.GetDisplacementZero(displacement);//零点值
-                    if (this.globaState.FouthLabState.IsTimeReached == true)
-                    {
-                        command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.运行);
-                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+                #region 2023-01-07 废弃代码
+                //case FourthLabStep.取预置零点值:
+                //    this.globaState.FouthLabState.TimeCount(1);
+                //    this.globaState.FouthLabState.GetDisplacementZero(displacement);//零点值
+                //    if (this.globaState.FouthLabState.IsTimeReached == true)
+                //    {
+                //        command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.运行);
+                //        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
 
-                        this.globaState.FouthLabState.Step = FourthLabStep.电机上升;
-                    }
+                //        this.globaState.FouthLabState.Step = FourthLabStep.电机上升;
+                //    }
 
-                    break;
+                //    break;
 
-                case FourthLabStep.电机上升:
-                    if (Math.Abs(this.globaState.FouthLabState.DisplacementZero - displacement) >= 2)
-                    {
-                        command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.停止);
-                        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+                //case FourthLabStep.电机上升:
+                //    if (Math.Abs(this.globaState.FouthLabState.DisplacementZero - displacement) >= 2)
+                //    {
+                //        command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.停止);
+                //        CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
 
-                        this.globaState.FouthLabState.DisplacementZeroClear();
-                        this.globaState.FouthLabState.Step = FourthLabStep.电机下降;
-                        this.globaState.FouthLabState.IsTimeReached = false;
-                    }
+                //        this.globaState.FouthLabState.DisplacementZeroClear();
+                //        this.globaState.FouthLabState.Step = FourthLabStep.电机下降;
+                //        this.globaState.FouthLabState.IsTimeReached = false;
+                //    }
 
-                    break;
-                case FourthLabStep.电机下降:
-                    command = CommandGenerator.Generate_MotorStep(MotorUpOrDown.下降一毫米);
-                    CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+                //    break;
+                //case FourthLabStep.电机下降:
+                //    command = CommandGenerator.Generate_MotorStep(MotorUpOrDown.下降一毫米);
+                //    CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
 
-                    this.globaState.FouthLabState.Step = FourthLabStep.加热炉下降;
-                    break;
+                //    this.globaState.FouthLabState.Step = FourthLabStep.加热炉下降;
+                //    break;
+                #endregion
 
                 case FourthLabStep.加热炉下降:
                     this.globaState.FouthLabState.Sleep();
@@ -390,12 +410,16 @@ namespace ResinSandPyrometer
                     this.globaState.FouthLabState.Wait();
                     if (this.globaState.FouthLabState.IsWaitOver)
                     {
-                        this.globaState.FouthLabState.Step = FourthLabStep.更新零点值;
+                        #region 2023-01-07 修改实验流程
+                        this.globaState.FouthLabState.DisplacementZeroClear();
+                        #endregion
+
+                        this.globaState.FouthLabState.Step = FourthLabStep.取预置零点值;
                     }
                     break;
 
-                case FourthLabStep.更新零点值:
-                    this.globaState.FouthLabState.TimeCount(2);
+                case FourthLabStep.取预置零点值:
+                    this.globaState.FouthLabState.TimeCount(1);
                     this.globaState.FouthLabState.GetDisplacementZero(displacement);//零点值
                     if (this.globaState.FouthLabState.IsTimeReached)
                     {
@@ -447,11 +471,6 @@ namespace ResinSandPyrometer
 
                     break;
             }
-
-            this.Invoke(new Action(() =>
-            {
-                this.lblDebugInfo.Text = $"零点:{this.globaState.FouthLabState.DisplacementZero:0.00}mm，距离:{Math.Abs(this.globaState.FouthLabState.DisplacementZero - displacement):0.00}mm";
-            }));
         }
 
         //条件热稳定性
@@ -756,6 +775,7 @@ namespace ResinSandPyrometer
                     }
                     this.Invoke(new Action(() => { this.lblTimeCount.Text = this.globaState.FirstLabState.TimeCount(Setting.SoakingTime).ToString(); })); //保温时间和延时
 
+                    SampleLoggerOnTextFile.Log($"FirstStep.取预置零点值");
                     break;
 
                 case FirstLabStep.抗压试样保温时间计时:
@@ -765,27 +785,33 @@ namespace ResinSandPyrometer
                     {
                         this.isMotorZero = false;
                         this.startTime = DateTime.Now;
-                        this.globaState.FirstLabState.Step = FirstLabStep.托盘快速上升2mm;
+                        //this.globaState.FirstLabState.Step = FirstLabStep.托盘快速上升2mm;
+                        this.globaState.FirstLabState.Step = FirstLabStep.托盘缓慢上升;
                         this.globaState.FirstLabState.IsTimeReached = false;
                     }
 
+                    SampleLoggerOnTextFile.Log($"FirstStep.抗压试样保温时间计时");
                     break;
 
-                case FirstLabStep.托盘快速上升2mm:
+                //case FirstLabStep.托盘快速上升2mm:
                     
-                    command = CommandAndReply.CommandGenerator.Generate_MotorTest(CommandAndReply.MotorTestType.加载电机上升);
-                    CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+                //    command = CommandAndReply.CommandGenerator.Generate_MotorTest(CommandAndReply.MotorTestType.加载电机上升);
+                //    CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
 
-                    this.globaState.FirstLabState.Step = FirstLabStep.托盘缓慢上升;
+                //    this.globaState.FirstLabState.Step = FirstLabStep.托盘缓慢上升;
 
-                    this.Invoke(new Action(() => { this.lblTimeCount.Text = this.globaState.FirstLabState.TimeCount(Setting.SoakingTime).ToString(); })); //保温时间和延时
-                    break;
+                //    this.Invoke(new Action(() => { this.lblTimeCount.Text = this.globaState.FirstLabState.TimeCount(Setting.SoakingTime).ToString(); })); //保温时间和延时
+
+                //    SampleLoggerOnTextFile.Log($"FirstStep.托盘快速上升2mm");
+                //    break;
 
                 case FirstLabStep.托盘缓慢上升:
                     command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.运行);
                     CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
 
                     this.globaState.FirstLabState.Step = FirstLabStep.采集数据压力是否突变;
+
+                    SampleLoggerOnTextFile.Log($"FirstStep.托盘缓慢上升");
                     break;
 
                 case FirstLabStep.采集数据压力是否突变:
@@ -796,7 +822,7 @@ namespace ResinSandPyrometer
                     this.globaState.FirstLabState.GetMaxPressure(point);//得到最大压力值和对应的时间
                     this.globaState.FirstLabState.CheckPressureSubChange(point.Y);//检查抗压强强值是否过大
 
-                    if (this.globaState.FirstLabState.IsPressureSudChange)//抗压强度值是否突变
+                    if ((DateTime.Now - this.startTime).TotalSeconds >= 60 && this.globaState.FirstLabState.IsPressureSudChange)//抗压强度值是否突变
                     {
                         command = CommandGenerator.Generate_MotorRunOrStop(MotorRunOrStop.停止);
                         CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
@@ -810,6 +836,8 @@ namespace ResinSandPyrometer
 
                         this.chartPressure.Series[0].Points.AddXY(point.X, point.Y);//将点添加到压强--时间曲线中去
                     }));
+
+                    SampleLoggerOnTextFile.Log($"FirstStep.采集数据压力是否突变");
                     break;
 
                 case FirstLabStep.测试结束:
@@ -826,6 +854,8 @@ namespace ResinSandPyrometer
 
                             this.lblStatusTip.Text = "测试结束，请保存数据";
                     }));
+
+                    SampleLoggerOnTextFile.Log($"FirstStep.测试结束");
 
                     break;
             }
@@ -867,13 +897,16 @@ namespace ResinSandPyrometer
 
             Temperature_Reply reply = Temperature_ReplyAnalyzer.Analyse(buffer);
             float temperature = reply.Temperature;
-            float settingTemperature = reply.SettingTemperature;
 
-            if (settingTemperature != Setting.SettingTemperature)
-            {
-                Command command = CommandGenerator.Generate_SetFurnaceTargetTemperature(Setting.SettingTemperature);
-                CommandExecutor.Send(SerialPortManager.SerialPort_Temperature, command);
-            }
+            #region 2023-01-06 取消强行配置炉温
+            //float settingTemperature = reply.SettingTemperature;
+
+            //if (settingTemperature != Setting.SettingTemperature)
+            //{
+            //    Command command = CommandGenerator.Generate_SetFurnaceTargetTemperature(Setting.SettingTemperature);
+            //    CommandExecutor.Send(SerialPortManager.SerialPort_Temperature, command);
+            //}
+            #endregion
 
             if (this.isTemperatureReached == true)
             {
@@ -898,7 +931,9 @@ namespace ResinSandPyrometer
                 this.isTemperatureReached = this.temperatureState.CountTime(temperature, Setting.SettingTemperature);
             }
 
-            this.Invoke(new Action(() => { this.lblCurrentTemperature.Text = temperature.ToString(); }));
+            #region 2023-01-06 温度显示整数
+            this.Invoke(new Action(() => { this.lblCurrentTemperature.Text = ((int)temperature).ToString(); }));
+            #endregion
 
         }
         #endregion
@@ -930,7 +965,7 @@ namespace ResinSandPyrometer
 
         private void serialPort_Displacement_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            Thread.Sleep(20);
+            Thread.Sleep(10);
             
             byte[] buffer = new byte[9];
             try
@@ -946,7 +981,12 @@ namespace ResinSandPyrometer
 
             if (CRC.ToModbusCRC16(buffer) != "0000") return;
             Displacement_Reply reply = Displacement_ReplyAnalyzer.Analyse(buffer);
-            this.Invoke(new Action(() => { this.lblDisplacement.Text = $"位移:{reply.Displacement:0.00}mm"; }));
+            this.Invoke(new Action(() => 
+            {
+                this.lblDisplacement.Text = $"位移:{reply.Displacement:0.00}mm";
+                this.lblDebugInfo.Text = $"零点:{this.globaState.FouthLabState.DisplacementZero:0.00}mm，距离:{reply.Displacement - this.globaState.FouthLabState.DisplacementZero:0.00}mm";
+            }));
+
             PointF point = new PointF(0f, 0f);
             this.ExecuteFouthLab(point, reply.Displacement);
         }
@@ -968,13 +1008,16 @@ namespace ResinSandPyrometer
             this.txtCompany.Text = Setting.ExperimentUnit;
             this.txtRepeatNumber.Text = Setting.RepeatTimes.ToString();
             this.btnStartTest.Enabled = true;
-            if (this.isReset)
-            {
-                Command command = CommandGenerator.Generate_EndTest();
-                CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
 
-                this.isReset = false;
-            }
+            #region 2023-01-06
+            //if (this.isReset)
+            //{
+            //    Command command = CommandGenerator.Generate_EndTest();
+            //    CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
+
+            //    this.isReset = false;
+            //}
+            #endregion
         }
 
         private void btnSettings_Click(object sender, EventArgs e)

@@ -8,9 +8,10 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>ResinSandPyrometer</RootNamespace>
     <AssemblyName>ResinSandPyrometer</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -79,6 +80,12 @@
     <Compile Include="Common\SerialPortManager.cs" />
     <Compile Include="Common\Setting.cs" />
     <Compile Include="Common\SettingReaderAndWriter.cs" />
+    <Compile Include="DialogDataLook.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogDataLook.Designer.cs">
+      <DependentUpon>DialogDataLook.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormCalcForce.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,6 +138,9 @@
     <Compile Include="Lab\SecondLabState.cs" />
     <Compile Include="Lab\TemperatureState.cs" />
     <Compile Include="Utilities.cs" />
+    <EmbeddedResource Include="DialogDataLook.resx">
+      <DependentUpon>DialogDataLook.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormCalcForce.resx">
       <DependentUpon>FormCalcForce.cs</DependentUpon>
     </EmbeddedResource>
@@ -177,6 +187,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="dvdprofiler_128px_1126212_easyicon.net.ico" />
+    <None Include="Resources\test_16.png" />
+    <None Include="Resources\自动_blue_16.png" />
+    <None Include="Resources\数据库_16.png" />
     <None Include="Resources\校准_red_16.png" />
     <None Include="Resources\发送_16.png" />
     <None Include="Resources\断开链接2_16.png" />

@@ -29,6 +29,10 @@ namespace ResinSandPyrometer
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.txtLog_Temperature = new System.Windows.Forms.TextBox();
@@ -42,6 +46,7 @@ namespace ResinSandPyrometer
             this.cboCommand_Temperature = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.chartDisplacement = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.txtLog_Displacement = new System.Windows.Forms.TextBox();
             this.tttt = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
@@ -52,6 +57,13 @@ namespace ResinSandPyrometer
             this.btnSend_Displacement = new System.Windows.Forms.ToolStripButton();
             this.cboCommand_Displacement = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnAuto = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnDataLook = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnTempTest = new System.Windows.Forms.ToolStripButton();
+            this.txtData = new System.Windows.Forms.ToolStripTextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.txtLog_Slave = new System.Windows.Forms.TextBox();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
@@ -70,10 +82,13 @@ namespace ResinSandPyrometer
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.txtAutoDetect = new System.Windows.Forms.TextBox();
             this.btnAutoDetect = new System.Windows.Forms.Button();
+            this.tmAuto = new System.Windows.Forms.Timer(this.components);
+            this.lblDisplacement = new System.Windows.Forms.ToolStripLabel();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chartDisplacement)).BeginInit();
             this.tttt.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.toolStrip2.SuspendLayout();
@@ -92,7 +107,7 @@ namespace ResinSandPyrometer
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(724, 419);
+            this.tabControl1.Size = new System.Drawing.Size(1083, 641);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -103,7 +118,7 @@ namespace ResinSandPyrometer
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(716, 393);
+            this.tabPage1.Size = new System.Drawing.Size(1075, 615);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "温控仪";
             // 
@@ -115,7 +130,7 @@ namespace ResinSandPyrometer
             this.txtLog_Temperature.Name = "txtLog_Temperature";
             this.txtLog_Temperature.ReadOnly = true;
             this.txtLog_Temperature.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog_Temperature.Size = new System.Drawing.Size(710, 362);
+            this.txtLog_Temperature.Size = new System.Drawing.Size(1069, 584);
             this.txtLog_Temperature.TabIndex = 1;
             // 
             // toolStrip1
@@ -131,7 +146,7 @@ namespace ResinSandPyrometer
             this.toolStripLabel2});
             this.toolStrip1.Location = new System.Drawing.Point(3, 3);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(710, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1069, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -209,24 +224,43 @@ namespace ResinSandPyrometer
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage2.Controls.Add(this.chartDisplacement);
             this.tabPage2.Controls.Add(this.txtLog_Displacement);
             this.tabPage2.Controls.Add(this.tttt);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(716, 393);
+            this.tabPage2.Size = new System.Drawing.Size(1075, 615);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "位移传感器";
             // 
+            // chartDisplacement
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.chartDisplacement.ChartAreas.Add(chartArea1);
+            this.chartDisplacement.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend1.Name = "Legend1";
+            this.chartDisplacement.Legends.Add(legend1);
+            this.chartDisplacement.Location = new System.Drawing.Point(3, 152);
+            this.chartDisplacement.Name = "chartDisplacement";
+            this.chartDisplacement.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SemiTransparent;
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series1.Legend = "Legend1";
+            series1.Name = "位移";
+            this.chartDisplacement.Series.Add(series1);
+            this.chartDisplacement.Size = new System.Drawing.Size(1069, 460);
+            this.chartDisplacement.TabIndex = 4;
+            // 
             // txtLog_Displacement
             // 
-            this.txtLog_Displacement.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtLog_Displacement.Dock = System.Windows.Forms.DockStyle.Top;
             this.txtLog_Displacement.Location = new System.Drawing.Point(3, 28);
             this.txtLog_Displacement.Multiline = true;
             this.txtLog_Displacement.Name = "txtLog_Displacement";
             this.txtLog_Displacement.ReadOnly = true;
             this.txtLog_Displacement.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog_Displacement.Size = new System.Drawing.Size(710, 362);
+            this.txtLog_Displacement.Size = new System.Drawing.Size(1069, 124);
             this.txtLog_Displacement.TabIndex = 3;
             // 
             // tttt
@@ -239,10 +273,18 @@ namespace ResinSandPyrometer
             this.btnDisconnect_Displacement,
             this.btnSend_Displacement,
             this.cboCommand_Displacement,
-            this.toolStripLabel4});
+            this.toolStripLabel4,
+            this.toolStripSeparator5,
+            this.btnAuto,
+            this.toolStripSeparator6,
+            this.btnDataLook,
+            this.toolStripSeparator7,
+            this.btnTempTest,
+            this.txtData,
+            this.lblDisplacement});
             this.tttt.Location = new System.Drawing.Point(3, 3);
             this.tttt.Name = "tttt";
-            this.tttt.Size = new System.Drawing.Size(710, 25);
+            this.tttt.Size = new System.Drawing.Size(1069, 25);
             this.tttt.TabIndex = 2;
             this.tttt.Text = "toolStrip2";
             // 
@@ -308,6 +350,54 @@ namespace ResinSandPyrometer
             this.toolStripLabel4.Size = new System.Drawing.Size(32, 22);
             this.toolStripLabel4.Text = "指令";
             // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnAuto
+            // 
+            this.btnAuto.Image = global::ResinSandPyrometer.Properties.Resources.自动_blue_16;
+            this.btnAuto.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnAuto.Name = "btnAuto";
+            this.btnAuto.Size = new System.Drawing.Size(76, 22);
+            this.btnAuto.Text = "自动取数";
+            this.btnAuto.Click += new System.EventHandler(this.btnAuto_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnDataLook
+            // 
+            this.btnDataLook.Image = global::ResinSandPyrometer.Properties.Resources.数据库_16;
+            this.btnDataLook.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDataLook.Name = "btnDataLook";
+            this.btnDataLook.Size = new System.Drawing.Size(76, 22);
+            this.btnDataLook.Text = "查看数据";
+            this.btnDataLook.Click += new System.EventHandler(this.btnDataLook_Click);
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnTempTest
+            // 
+            this.btnTempTest.Image = global::ResinSandPyrometer.Properties.Resources.test_16;
+            this.btnTempTest.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnTempTest.Name = "btnTempTest";
+            this.btnTempTest.Size = new System.Drawing.Size(76, 22);
+            this.btnTempTest.Text = "临时测试";
+            this.btnTempTest.Click += new System.EventHandler(this.btnTempTest_Click);
+            // 
+            // txtData
+            // 
+            this.txtData.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
+            this.txtData.Name = "txtData";
+            this.txtData.Size = new System.Drawing.Size(200, 25);
+            // 
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
@@ -316,7 +406,7 @@ namespace ResinSandPyrometer
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(716, 393);
+            this.tabPage3.Size = new System.Drawing.Size(1075, 615);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "下位机";
             // 
@@ -328,7 +418,7 @@ namespace ResinSandPyrometer
             this.txtLog_Slave.Name = "txtLog_Slave";
             this.txtLog_Slave.ReadOnly = true;
             this.txtLog_Slave.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog_Slave.Size = new System.Drawing.Size(710, 362);
+            this.txtLog_Slave.Size = new System.Drawing.Size(1069, 584);
             this.txtLog_Slave.TabIndex = 4;
             // 
             // toolStrip2
@@ -346,7 +436,7 @@ namespace ResinSandPyrometer
             this.btnCalibrate});
             this.toolStrip2.Location = new System.Drawing.Point(3, 3);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(710, 25);
+            this.toolStrip2.Size = new System.Drawing.Size(1069, 25);
             this.toolStrip2.TabIndex = 3;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -470,7 +560,7 @@ namespace ResinSandPyrometer
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(716, 393);
+            this.tabPage4.Size = new System.Drawing.Size(1075, 615);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "力的计算";
             // 
@@ -492,7 +582,7 @@ namespace ResinSandPyrometer
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(716, 393);
+            this.tabPage5.Size = new System.Drawing.Size(1075, 615);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "串口自动匹配";
             // 
@@ -506,7 +596,7 @@ namespace ResinSandPyrometer
             this.txtAutoDetect.Name = "txtAutoDetect";
             this.txtAutoDetect.ReadOnly = true;
             this.txtAutoDetect.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtAutoDetect.Size = new System.Drawing.Size(702, 350);
+            this.txtAutoDetect.Size = new System.Drawing.Size(1061, 572);
             this.txtAutoDetect.TabIndex = 2;
             // 
             // btnAutoDetect
@@ -519,11 +609,22 @@ namespace ResinSandPyrometer
             this.btnAutoDetect.UseVisualStyleBackColor = true;
             this.btnAutoDetect.Click += new System.EventHandler(this.btnAutoDetect_Click);
             // 
+            // tmAuto
+            // 
+            this.tmAuto.Interval = 200;
+            this.tmAuto.Tick += new System.EventHandler(this.tmAuto_Tick);
+            // 
+            // lblDisplacement
+            // 
+            this.lblDisplacement.Name = "lblDisplacement";
+            this.lblDisplacement.Size = new System.Drawing.Size(32, 22);
+            this.lblDisplacement.Text = "位移";
+            // 
             // FormDebug
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(724, 419);
+            this.ClientSize = new System.Drawing.Size(1083, 641);
             this.Controls.Add(this.tabControl1);
             this.Name = "FormDebug";
             this.Text = "调试工具";
@@ -535,6 +636,7 @@ namespace ResinSandPyrometer
             this.toolStrip1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chartDisplacement)).EndInit();
             this.tttt.ResumeLayout(false);
             this.tttt.PerformLayout();
             this.tabPage3.ResumeLayout(false);
@@ -591,5 +693,15 @@ namespace ResinSandPyrometer
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.TextBox txtAutoDetect;
         private System.Windows.Forms.Button btnAutoDetect;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartDisplacement;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripButton btnDataLook;
+        private System.Windows.Forms.ToolStripButton btnAuto;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.Timer tmAuto;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripButton btnTempTest;
+        private System.Windows.Forms.ToolStripTextBox txtData;
+        private System.Windows.Forms.ToolStripLabel lblDisplacement;
     }
 }
