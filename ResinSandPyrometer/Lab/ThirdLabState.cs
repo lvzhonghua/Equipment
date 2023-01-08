@@ -67,7 +67,7 @@ namespace ResinSandPyrometer.Lab
 
         private int countTime = 0;//收到指令的个数
 
-        public void TimeCount(int timeCount)
+        public void TimeCount(float timeCount)
         {
             this.countTime++;
             if (this.countTime == 5 * timeCount)
@@ -93,22 +93,35 @@ namespace ResinSandPyrometer.Lab
         //检查压力是否突变
         public void CheckBlancePressureChange(float pressure, float setPress)
         {
-            if (this.balancePressureSudChangeQueue.Count == 50)
+            #region 2023-01-08
+            //if (this.balancePressureSudChangeQueue.Count == 50)
+            if (this.balancePressureSudChangeQueue.Count == 10)
+            #endregion
             {
                 this.balancePressureSudChangeQueue.Dequeue();
             }
             this.balancePressureSudChangeQueue.Enqueue(pressure);
 
             this.changeCount++;
-            if (this.changeCount < 300) return;
+
+            #region 2023-01-08
+            //if (this.changeCount < 300) return;
+            if (this.changeCount < 100) return;
+            #endregion
 
             int sum = 0;
-            if (this.balancePressureSudChangeQueue.Count == 50)
+            #region 2023-01-08
+            //if (this.balancePressureSudChangeQueue.Count == 50)
+            if (this.balancePressureSudChangeQueue.Count == 10)
+            #endregion
             {
                 float[] array = this.balancePressureSudChangeQueue.ToArray();
                 for (int index = 0; index < array.Length; index++)
                 {
-                    if (array[index] > setPress - 0.005f) sum++;
+                    #region 2023-01-08
+                    //if (array[index] > setPress - 0.005f) sum++;
+                    if (array[index] > setPress * 0.8f) sum++;
+                    #endregion
                 }
 
                 if (sum == 0 || changeCount > 1250)  this.isBalancePressureSudChange = true;

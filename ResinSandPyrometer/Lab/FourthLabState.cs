@@ -135,7 +135,7 @@ namespace ResinSandPyrometer.Lab
             {
                 sum += zeroArray[index];
             }
-            this.displacementZero = sum / 1;
+            this.displacementZero = sum / zeroArray.Length;
 
         }
 

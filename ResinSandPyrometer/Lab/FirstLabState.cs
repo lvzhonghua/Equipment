@@ -136,7 +136,7 @@ namespace ResinSandPyrometer.Lab
             set { this.isPressureSudChange = value; }
         }
 
-        //检查位移是否突变
+        //检查压强是否突变
         private int changeCount = 0;
         public void CheckPressureSubChange(float pressure)
         {
@@ -154,12 +154,12 @@ namespace ResinSandPyrometer.Lab
             this.commandCount = 0;
             this.isCommandReached = false;
             this.countTime = 0;
-            this.isTimeReached = false;
             this.changeCount = 0;
             this.isPressureSudChange = false;
             this.maxPressure = 0;
             this.maxPreesureTime = 0;
             this.pressureZero = 0;
+            this.isTimeReached = false;
         }
     }
 }

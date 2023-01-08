@@ -38,14 +38,26 @@ namespace ResinSandPyrometer.Lab
 
         private Queue<float> pressZeroQueue = new Queue<float>();
 
+        #region 2023-01-08
+        private bool isPressureZero = false;
+
+        public bool IsPressureZero
+        {
+            get { return this.isPressureZero; }
+        }
+
+        #endregion
+
         //取零点值最后十个数（去掉最大最小值，剩余的十个数平均值作为零点值）
         public void GetPressureZero(float pressure)
         {
             if (pressure < 0.1f) return;
 
-            if (this.pressZeroQueue.Count == 5)
+            if (this.pressZeroQueue.Count == 3)
             {
                 this.pressZeroQueue.Dequeue();
+
+                this.isPressureZero = true;
             }
             this.pressZeroQueue.Enqueue(pressure);
 
@@ -55,7 +67,7 @@ namespace ResinSandPyrometer.Lab
             {
                 sum += zeroArray[index];
             }
-            this.pressureZero = sum / 5;
+            this.pressureZero = sum / zeroArray.Length;
         }
 
         private bool isTimeReached = false;
@@ -154,9 +166,16 @@ namespace ResinSandPyrometer.Lab
             this.maxPress = 0;
             this.maxPress_Time = 0;
             this.changeCount = 0;
+            
+            #region 2023-01-08
+            this.pressZeroQueue.Clear();
+            this.isPressureZero = false;
+            #endregion
+
             this.pressureSudChangeQueue.Clear();
             this.isPressureSudChange = false;
             this.pressureZero = 0;
+            this.isTimeReached = false;
         }
 
     }

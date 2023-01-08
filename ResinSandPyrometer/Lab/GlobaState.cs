@@ -78,6 +78,11 @@ namespace ResinSandPyrometer.Lab
             this.labNum = Labs.FirstLab;
             this.isStartTest = true;
             this.isEndTest = false;
+
+            #region 2023-01-08
+            this.pressureZeroQueue.Clear();
+            this.isTimeReached = false;
+            #endregion
         }
 
         //高温膨胀力
@@ -86,6 +91,11 @@ namespace ResinSandPyrometer.Lab
             this.labNum = Labs.SecondLab;
             this.isEndTest = false;
             this.isStartTest = true;
+
+            #region 2023-01-08
+            this.pressureZeroQueue.Clear();
+            this.isTimeReached = false;
+            #endregion
         }
 
         //耐高温时间
@@ -94,6 +104,11 @@ namespace ResinSandPyrometer.Lab
             this.labNum = Labs.ThirdLab;
             this.isEndTest = false;
             this.isStartTest = true;
+
+            #region 2023-01-08
+            this.pressureZeroQueue.Clear();
+            this.isTimeReached = false;
+            #endregion
         }
 
         //高温急热膨胀力
@@ -152,7 +167,7 @@ namespace ResinSandPyrometer.Lab
             {
                 sum += zeroArray[i];
             }
-            this.pressureZero = sum / 5;
+            this.pressureZero = sum / zeroArray.Length;
         }
 
     }
