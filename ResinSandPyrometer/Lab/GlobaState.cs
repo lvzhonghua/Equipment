@@ -21,7 +21,7 @@ namespace ResinSandPyrometer.Lab
         //第二个实验（膨胀力）变量状态
         private SecondLabState secondLabState = new SecondLabState();
 
-        public SecondLabState SecondStepState
+        public SecondLabState SecondLabState
         {
             get { return this.secondLabState; }
             set { this.secondLabState = value; }

@@ -36,7 +36,7 @@ namespace ResinSandPyrometer.Lab
             set { this.maxPreesureTime = value; }
         }
 
-        public int countTime  = 0;
+        public int countTime = 0;
 
         private bool isTimeReached = false;
 
@@ -91,7 +91,7 @@ namespace ResinSandPyrometer.Lab
             float[] zeroArray = this.pressureZeroQueue.ToArray();
 
             //if (zeroArray.Length < 10) return;
-            
+
             float sum = 0;
             for (int i = 0; i < zeroArray.Length; i++)
             {
@@ -136,6 +136,10 @@ namespace ResinSandPyrometer.Lab
             set { this.isPressureSudChange = value; }
         }
 
+        #region 2023-01-09
+        private Queue<float> balancePressureSudChangeQueue = new Queue<float>();
+        #endregion
+
         //检查压强是否突变
         private int changeCount = 0;
         public void CheckPressureSubChange(float pressure)
@@ -143,7 +147,29 @@ namespace ResinSandPyrometer.Lab
             this.changeCount++;
             if (this.changeCount < 75) return;
 
-            if ((this.maxPressure - pressure) / this.maxPressure > 0.75 /*0.5*/ || this.changeCount >600 /*450*/)
+            #region 2023-01-09
+            if (this.balancePressureSudChangeQueue.Count == 10)
+            {
+                this.balancePressureSudChangeQueue.Dequeue();
+            }
+            this.balancePressureSudChangeQueue.Enqueue(pressure);
+
+            int sum = 0;
+
+            if (this.balancePressureSudChangeQueue.Count == 10)
+            {
+                float[] array = this.balancePressureSudChangeQueue.ToArray();
+                for (int index = 0; index < array.Length; index++)
+                {
+                    if ((this.maxPressure - array[index]) / this.maxPressure > 0.75f) sum++;
+                }
+            }
+            #endregion
+
+            #region 2023-01-09
+            //if ((this.maxPressure - pressure) / this.maxPressure > 0.75f /*0.5*/ || this.changeCount >600 /*450*/)
+            if (sum == 10 || this.changeCount > 600)
+            #endregion
             {
                 this.isPressureSudChange = true;
             }
@@ -160,6 +186,14 @@ namespace ResinSandPyrometer.Lab
             this.maxPreesureTime = 0;
             this.pressureZero = 0;
             this.isTimeReached = false;
+
+            #region 2023-01-09
+            this.pressureZeroQueue.Clear();
+            #endregion
+
+            #region 2023-01-09
+            this.balancePressureSudChangeQueue.Clear();
+            #endregion
         }
     }
 }

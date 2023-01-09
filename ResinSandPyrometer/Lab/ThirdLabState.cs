@@ -93,6 +93,13 @@ namespace ResinSandPyrometer.Lab
         //检查压力是否突变
         public void CheckBlancePressureChange(float pressure, float setPress)
         {
+            this.changeCount++;
+
+            #region 2023-01-08
+            //if (this.changeCount < 300) return;
+            if (this.changeCount < 100) return;
+            #endregion
+
             #region 2023-01-08
             //if (this.balancePressureSudChangeQueue.Count == 50)
             if (this.balancePressureSudChangeQueue.Count == 10)
@@ -101,13 +108,6 @@ namespace ResinSandPyrometer.Lab
                 this.balancePressureSudChangeQueue.Dequeue();
             }
             this.balancePressureSudChangeQueue.Enqueue(pressure);
-
-            this.changeCount++;
-
-            #region 2023-01-08
-            //if (this.changeCount < 300) return;
-            if (this.changeCount < 100) return;
-            #endregion
 
             int sum = 0;
             #region 2023-01-08
