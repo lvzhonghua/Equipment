@@ -122,6 +122,11 @@ namespace ResinSandPyrometer.Common
         /// </summary>
         public static int RepeatTimes { get; set; }
 
+        /// <summary>
+        /// 预载荷（顶杆重量）
+        /// </summary>
+        public static int Preload { get; set; }
+
         private static int testType = 0;
         public static int TestType
         {
@@ -196,6 +201,7 @@ namespace ResinSandPyrometer.Common
             SensorSys = float.Parse(allSettings["SensorSys"]);
             SensorMV = int.Parse(allSettings["SensorMV"]);
             TxtRevise = float.Parse(allSettings["TxtRevise"]);
+            Preload = int.Parse(allSettings["Preload"]);
         }
 
         public static void Save(string key,string value)
@@ -236,7 +242,8 @@ namespace ResinSandPyrometer.Common
                                          string furnaceFallingDistance, 
                                          string soakingTime, 
                                          string preloadedForce, 
-                                         string preloadedPressure)
+                                         string preloadedPressure,
+                                         string preload)
         {
             SettingReaderAndWriter.WriteAppSetting("MotorIdlePath", motorIdlePath);
             SettingReaderAndWriter.WriteAppSetting("MotorLoadingSpeed", motorLoadingSpeed);
@@ -246,6 +253,7 @@ namespace ResinSandPyrometer.Common
             SettingReaderAndWriter.WriteAppSetting("SoakingTime", soakingTime);
             SettingReaderAndWriter.WriteAppSetting("PreloadedForce", preloadedForce);
             SettingReaderAndWriter.WriteAppSetting("PreloadedPressure", preloadedPressure);
+            SettingReaderAndWriter.WriteAppSetting("Preload", preload);
             MotorIdlePath = float.Parse(motorIdlePath);
             MotorLoadingSpeed = int.Parse(motorLoadingSpeed);
             DisplacementMotorIdlePath = float.Parse(displacementMotorIdlePath);
@@ -254,6 +262,7 @@ namespace ResinSandPyrometer.Common
             SoakingTime = int.Parse(soakingTime);
             PreloadedForce = int.Parse(preloadedForce);
             PreloadedPressure = float.Parse(preloadedPressure);
+            Preload = int.Parse(preload);
         }
 
     }

@@ -54,6 +54,7 @@ namespace ResinSandPyrometer
             this.lblHeatDis.Text = Setting.FurnaceFallingDistance.ToString();
             this.txtTargetTemperature.Text = Setting.SettingTemperature.ToString();
             this.lblDispalcementMotorIdlePath.Text = Setting.DisplacementMotorIdlePath.ToString();
+            this.txtRepeatNumber.Text = "1";
             #region 2023-01-08
             //this.btnStartTest.Enabled = false;
             this.btnStartTest.Enabled = true;
@@ -441,7 +442,8 @@ namespace ResinSandPyrometer
                     break;
 
                 case FourthLabStep.采集位移数据并绘制曲线以及判断是否突变:
-                    point.X = (int)(DateTime.Now - this.startTime).TotalSeconds;
+                    //point.X = (int)(DateTime.Now - this.startTime).TotalSeconds;
+                    point.X = (float)(DateTime.Now - this.startTime).TotalSeconds;
                     point.Y = (float)Math.Round((displacement - this.globaState.FouthLabState.DisplacementZero) / Setting.SpecimenHeight * 100, 2);
                     Setting.Points.Add(point);
 
@@ -453,7 +455,8 @@ namespace ResinSandPyrometer
                         this.lblMaxExpansionRate.Text = this.globaState.FouthLabState.MaxDisplacement.ToString();
                         this.lblMaxExpansionRateTime.Text = BytesOperator.GetOneVaule(this.globaState.FouthLabState.MaxDisplacementTime).ToString();
 
-                        this.chartExpansionRate.Series[0].Points.AddXY(point.X, point.Y);//将点添加到膨胀率--时间曲线中去
+                        //this.chartExpansionRate.Series[0].Points.AddXY(point.X, point.Y);//将点添加到膨胀率--时间曲线中去
+                        this.chartExpansionRate.Series[0].Points.AddY(point.Y);//将点添加到膨胀率--时间曲线中去
                     }));
 
                     if (this.globaState.FouthLabState.IsDisplacementSudChange)//抗压强度值是否突变
@@ -594,8 +597,8 @@ namespace ResinSandPyrometer
 
                     break;
                 case ThirdLabStep.采样数据并绘制压强时间曲线及判断压强值是否突变:
-                    point.Y = (force - this.globaState.PressureZero) / Setting.GetArea();
                     point.X = (int)(DateTime.Now - this.startTime).TotalSeconds;
+                    point.Y = (force - this.globaState.PressureZero) / Setting.GetArea();
 
                     this.globaState.ThirdLabState.GetBalanceTime(point.X);
                     Setting.Points.Add(point);
@@ -623,7 +626,8 @@ namespace ResinSandPyrometer
                     
                     this.Invoke(new Action(() =>
                     {
-                        this.txtBalancePressureTime.Text = BytesOperator.GetOneVaule(this.globaState.ThirdLabState.BalanceTime).ToString();
+                        //this.txtBalancePressureTime.Text = BytesOperator.GetOneVaule(this.globaState.ThirdLabState.BalanceTime).ToString();
+                        this.txtBalancePressureTime.Text = ((int)this.globaState.ThirdLabState.BalanceTime).ToString();
 
                         //将点添加到预压强--时间曲线中去
                         this.chartBalancePress.Series[0].Points.AddXY(point.X, point.Y);
@@ -655,7 +659,8 @@ namespace ResinSandPyrometer
 
             this.Invoke(new Action(() =>
             {
-                this.lblDebugInfo.Text = $"皮重:{this.globaState.PressureZero:0.00}牛，原始值:{force:0.00}牛，压力:{Math.Abs(this.globaState.PressureZero - force):0.00}牛";
+                //this.lblDebugInfo.Text = $"皮重:{this.globaState.PressureZero:0.00}牛，原始值:{force:0.00}牛，压力:{Math.Abs(this.globaState.PressureZero - force):0.00}牛";
+                this.lblDebugInfo.Text = $"皮重:{this.globaState.PressureZero:0.00}牛";
             }));
         }
 
@@ -680,7 +685,8 @@ namespace ResinSandPyrometer
 
                     this.Invoke(new Action(() =>
                     {
-                        this.lblDebugInfo.Text = $"皮重:{this.globaState.PressureZero:0.00}牛，原始值:{force:0.00}牛，压力:{force - this.globaState.PressureZero:0.00}牛";
+                        //this.lblDebugInfo.Text = $"皮重:{this.globaState.PressureZero:0.00}牛，原始值:{force:0.00}牛，压力:{force - this.globaState.PressureZero:0.00}牛";
+                        this.lblDebugInfo.Text = $"皮重:{this.globaState.PressureZero:0.00}牛";
                     }));
 
                     break;
@@ -697,7 +703,8 @@ namespace ResinSandPyrometer
 
                     this.Invoke(new Action(() =>
                     {
-                        this.lblDebugInfo.Text = $"皮重:{this.globaState.PressureZero:0.00}牛，原始值:{force:0.00}牛，压力:{force - this.globaState.PressureZero:0.00}牛";
+                        //this.lblDebugInfo.Text = $"皮重:{this.globaState.PressureZero:0.00}牛，原始值:{force:0.00}牛，压力:{force - this.globaState.PressureZero:0.00}牛";
+                        this.lblDebugInfo.Text = $"皮重:{this.globaState.PressureZero:0.00}牛";
                     }));
 
                     break;
@@ -735,7 +742,8 @@ namespace ResinSandPyrometer
 
                     this.Invoke(new Action(() =>
                     {
-                        this.lblDebugInfo.Text = $"皮重:{this.globaState.PressureZero:0.00}牛，原始值:{force:0.00}牛，压力:{force - this.globaState.PressureZero:0.00}牛";
+                        //this.lblDebugInfo.Text = $"皮重:{this.globaState.PressureZero:0.00}牛，原始值:{force:0.00}牛，压力:{force - this.globaState.PressureZero:0.00}牛";
+                        this.lblDebugInfo.Text = $"皮重:{this.globaState.PressureZero:0.00}牛";
                     }));
 
                     break;
@@ -755,7 +763,8 @@ namespace ResinSandPyrometer
 
                     this.Invoke(new Action(() =>
                     {
-                        this.lblDebugInfo.Text = $"皮重:{this.globaState.PressureZero:0.00}牛，原始值:{force:0.00}牛，压力:{force - this.globaState.PressureZero:0.00}牛";
+                        //this.lblDebugInfo.Text = $"皮重:{this.globaState.PressureZero:0.00}牛，原始值:{force:0.00}牛，压力:{force - this.globaState.PressureZero:0.00}牛";
+                        this.lblDebugInfo.Text = $"皮重:{this.globaState.PressureZero:0.00}牛";
                     }));
 
                     break;
@@ -774,7 +783,8 @@ namespace ResinSandPyrometer
 
                     this.Invoke(new Action(() =>
                     {
-                        this.lblDebugInfo.Text = $"皮重:{this.globaState.PressureZero:0.00}牛，原始值:{force:0.00}牛，压力:{force - this.globaState.PressureZero:0.00}牛";
+                        //this.lblDebugInfo.Text = $"皮重:{this.globaState.PressureZero:0.00}牛，原始值:{force:0.00}牛，压力:{force - this.globaState.PressureZero:0.00}牛";
+                        this.lblDebugInfo.Text = $"皮重:{this.globaState.PressureZero:0.00}牛";
                     }));
 
                     break;
@@ -782,7 +792,8 @@ namespace ResinSandPyrometer
                 #endregion
 
                 case SecondLabStep.采集数据并绘制膨胀力和时间曲线及膨胀力是否突变:
-                    point.X = (int)(DateTime.Now - this.startTime).TotalSeconds;
+                    //point.X = (int)(DateTime.Now - this.startTime).TotalSeconds;
+                    point.X = (float)(DateTime.Now - this.startTime).TotalSeconds;
                     point.Y = (force - this.globaState.SecondLabState.PressureZero);
                     Setting.Points.Add(point);
                     this.globaState.SecondLabState.GetMaxPress(point);//最大膨胀力和时间
@@ -794,19 +805,24 @@ namespace ResinSandPyrometer
 
                     this.Invoke(new Action(() => 
                     {
-                        this.lblPengZhangPower.Text = BytesOperator.GetThreeValue(this.globaState.SecondLabState.MaxPress);
+                        #region 2023-01-09
+                        //this.lblPengZhangPower.Text = BytesOperator.GetThreeValue(this.globaState.SecondLabState.MaxPress);
+                        this.lblPengZhangPower.Text = $"{this.globaState.SecondLabState.MaxPress:0.00}";
+                        #endregion
 
                         #region 2023-01-08
                         //this.lblPengZhangTime.Text = BytesOperator.GetThreeValue(this.globaState.SecondStepState.MaxPress_Time);
                         this.lblPengZhangTime.Text = $"{this.globaState.SecondLabState.MaxPress_Time:0}";
                         #endregion
 
-                        this.chartPengZhang.Series[0].Points.AddXY(point.X, point.Y);//将点添加到膨胀力--时间曲线中去
+                        //this.chartPengZhang.Series[0].Points.AddXY(point.X, point.Y);//将点添加到膨胀力--时间曲线中去
+                        this.chartPengZhang.Series[0].Points.AddY(point.Y);//将点添加到膨胀力--时间曲线中去
                     }));
 
                     this.Invoke(new Action(() =>
                     {
-                        this.lblDebugInfo.Text = $"第二次零点:{this.globaState.SecondLabState.PressureZero:0.00}牛，原始值:{force:0.00}牛，压力:{force - this.globaState.SecondLabState.PressureZero:0.00}牛";
+                        //this.lblDebugInfo.Text = $"第二次零点:{this.globaState.SecondLabState.PressureZero:0.00}牛，原始值:{force:0.00}牛，压力:{force - this.globaState.SecondLabState.PressureZero:0.00}牛";
+                        this.lblDebugInfo.Text = $"第二次零点:{this.globaState.SecondLabState.PressureZero:0.00}牛";
                     }));
 
                     break;
@@ -902,8 +918,14 @@ namespace ResinSandPyrometer
                     break;
 
                 case FirstLabStep.采集数据压力是否突变:
-                    point.X = (int)(DateTime.Now - this.startTime).TotalSeconds;
-                    point.Y = (force - this.globaState.FirstLabState.PressureZero) / Setting.GetArea() * Setting.PresureRate;
+                    //point.X = (int)(DateTime.Now - this.startTime).TotalSeconds;
+                    point.X = (float)(DateTime.Now - this.startTime).TotalSeconds;
+
+                    #region 2023-01-09
+                    //point.Y = (force - this.globaState.FirstLabState.PressureZero) / Setting.GetArea() * Setting.PresureRate;
+                    point.Y = (force + Setting.Preload / 1000f * Setting.G - this.globaState.FirstLabState.PressureZero) / Setting.GetArea() * Setting.PresureRate;
+                    #endregion
+
                     Setting.Points.Add(point);
 
                     this.globaState.FirstLabState.GetMaxPressure(point);//得到最大压力值和对应的时间
@@ -924,7 +946,9 @@ namespace ResinSandPyrometer
                         this.lblPressure.Text = BytesOperator.GetOneVaule((this.globaState.FirstLabState.MaxPressure)).ToString();
                         this.lblPressureTime.Text = BytesOperator.GetOneVaule(this.globaState.FirstLabState.MaxPreesureTime).ToString();
 
-                        this.chartPressure.Series[0].Points.AddXY(point.X, point.Y);//将点添加到压强--时间曲线中去
+                        //this.chartPressure.Series[0].Points.AddXY(point.X, point.Y);//将点添加到压强--时间曲线中去
+                        this.chartPressure.Series[0].Points.AddY(point.Y);//将点添加到压强--时间曲线中去
+
                     }));
 
                     SampleLoggerOnTextFile.Log($"FirstStep.采集数据压力是否突变");
@@ -952,7 +976,8 @@ namespace ResinSandPyrometer
 
             this.Invoke(new Action(() =>
             {
-                this.lblDebugInfo.Text = $"皮重:{this.globaState.FirstLabState.PressureZero:0.00}牛，原始值:{force:0.00}牛，去皮重:{Math.Abs(this.globaState.FirstLabState.PressureZero - force):0.00}牛";
+                //this.lblDebugInfo.Text = $"皮重:{this.globaState.FirstLabState.PressureZero:0.00}牛，原始值:{force:0.00}牛，去皮重:{Math.Abs(this.globaState.FirstLabState.PressureZero - force):0.00}牛";
+                this.lblDebugInfo.Text = $"皮重:{this.globaState.FirstLabState.PressureZero:0.00}牛";
             }));
             //////if (this.globaState.FirstLabState.Step != FirstLabStep.测试结束)
             //////{
@@ -1148,6 +1173,19 @@ namespace ResinSandPyrometer
         private void tmCheckTemperature_Tick(object sender, EventArgs e)
         {
             this.CheckCurrentTemperature();
+
+            #region 2023-01-09
+
+            if (this.globaState.IsStartTest && !this.globaState.IsEndTest && this.labOfSelected == Labs.ThirdLab)
+            {
+                if (this.globaState.ThirdLabState.Step == ThirdLabStep.采样数据并绘制压强时间曲线及判断压强值是否突变)
+                {
+                    float balanceTime = (float)(DateTime.Now - this.startTime).TotalSeconds;
+                    this.txtBalancePressureTime.Text = ((int)balanceTime).ToString();
+                }
+            }
+
+            #endregion
         }
 
         private void btnStartTest_Click(object sender, EventArgs e)
@@ -1182,11 +1220,14 @@ namespace ResinSandPyrometer
             this.isReachedGo = true;
             this.lblTimeCount.Text = Setting.SoakingTime.ToString();
 
+            Setting.Points.Clear();
+
             switch (this.tabLabs.SelectedIndex)
             {
                 case 0:
                     this.globaState.GoToFirstLab();
                     this.globaState.FirstLabState.Step = FirstLabStep.NONE;
+                    this.chartPressure.Series[0].Points.Clear();
                     this.tmCheckTemperature.Start();
                     this.tmGetDisplacement.Stop();
                     break;
@@ -1194,6 +1235,7 @@ namespace ResinSandPyrometer
                 case 1:
                     this.globaState.GoToSecondLab();
                     this.globaState.SecondLabState.Step = SecondLabStep.开始调试并发送指令;
+                    this.chartPengZhang.Series[0].Points.Clear();
                     this.tmCheckTemperature.Start();
                     this.tmGetDisplacement.Stop();
 
@@ -1204,6 +1246,7 @@ namespace ResinSandPyrometer
                 case 2:
                     this.globaState.GoToThreeStep();
                     this.globaState.ThirdLabState.Step = ThirdLabStep.开始测试并发送指令;
+                    this.chartBalancePress.Series[0].Points.Clear();
                     this.tmCheckTemperature.Start();
                     this.tmGetDisplacement.Stop();
                     break;
@@ -1211,6 +1254,7 @@ namespace ResinSandPyrometer
                 case 3:
                     this.InitSerialPort_Displacement();
                     this.globaState.GoToFourStep();
+                    this.chartExpansionRate.Series[0].Points.Clear();
                     this.tmCheckTemperature.Stop();
                     this.tmGetDisplacement.Start();
                     break;

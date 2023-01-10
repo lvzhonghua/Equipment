@@ -51,6 +51,8 @@
             this.cboxMotorLoadingSpeed = new System.Windows.Forms.ComboBox();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtPreload = new System.Windows.Forms.TextBox();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -223,7 +225,7 @@
             this.label13.ForeColor = System.Drawing.Color.Black;
             this.label13.Location = new System.Drawing.Point(6, 67);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(219, 30);
+            this.label13.Size = new System.Drawing.Size(219, 24);
             this.label13.TabIndex = 34;
             this.label13.Text = "加热炉设定下降距离（mm):";
             // 
@@ -262,14 +264,16 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.cboxFurnaceLiftingSpeed);
+            this.groupBox2.Controls.Add(this.txtPreload);
             this.groupBox2.Controls.Add(this.cboxFallingDistance);
             this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.label13);
             this.groupBox2.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.groupBox2.ForeColor = System.Drawing.Color.Red;
             this.groupBox2.Location = new System.Drawing.Point(388, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(302, 111);
+            this.groupBox2.Size = new System.Drawing.Size(302, 141);
             this.groupBox2.TabIndex = 61;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "加热炉参数：";
@@ -384,6 +388,26 @@
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
+            // label7
+            // 
+            this.label7.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold);
+            this.label7.ForeColor = System.Drawing.Color.Black;
+            this.label7.Location = new System.Drawing.Point(6, 101);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(118, 24);
+            this.label7.TabIndex = 34;
+            this.label7.Text = "预载荷（克):";
+            // 
+            // txtPreload
+            // 
+            this.txtPreload.Location = new System.Drawing.Point(229, 98);
+            this.txtPreload.Margin = new System.Windows.Forms.Padding(2);
+            this.txtPreload.Name = "txtPreload";
+            this.txtPreload.Size = new System.Drawing.Size(65, 26);
+            this.txtPreload.TabIndex = 36;
+            this.txtPreload.Text = "65";
+            this.txtPreload.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBox_KeyPress);
+            // 
             // FormSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -408,6 +432,7 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -439,5 +464,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtDisplacementMotorIdlePath;
         private System.Windows.Forms.TextBox txtMotorIdlePath;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox txtPreload;
     }
 }

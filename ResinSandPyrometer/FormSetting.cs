@@ -28,18 +28,20 @@ namespace ResinSandPyrometer
             this.cboxSaveTemTime.Text = Setting.SoakingTime.ToString();
             this.cboxPreloadedForce.Text = Setting.PreloadedForce.ToString();
             this.cboxPreloadedPressure.Text = Setting.PreloadedPressure.ToString();
+            this.txtPreload.Text = Setting.Preload.ToString();
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
             Setting.SaveParameterSetting(this.txtMotorIdlePath.Text,
-                                       this.cboxMotorLoadingSpeed.Text,
-                                       this.txtDisplacementMotorIdlePath.Text,
-                                       this.cboxFurnaceLiftingSpeed.Text,
-                                       this.cboxFallingDistance.Text,
-                                       this.cboxSaveTemTime.Text,
-                                       this.cboxPreloadedForce.Text,
-                                       this.cboxPreloadedPressure.Text);
+                                                      this.cboxMotorLoadingSpeed.Text,
+                                                      this.txtDisplacementMotorIdlePath.Text,
+                                                      this.cboxFurnaceLiftingSpeed.Text,
+                                                      this.cboxFallingDistance.Text,
+                                                      this.cboxSaveTemTime.Text,
+                                                      this.cboxPreloadedForce.Text,
+                                                      this.cboxPreloadedPressure.Text,
+                                                      this.txtPreload.Text);
 
             this.DialogResult = DialogResult.OK;
         }

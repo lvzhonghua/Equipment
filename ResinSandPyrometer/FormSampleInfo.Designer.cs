@@ -33,7 +33,7 @@
             this.label9 = new System.Windows.Forms.Label();
             this.txtPersonName = new System.Windows.Forms.TextBox();
             this.txtUnit = new System.Windows.Forms.TextBox();
-            this.TxtReNum = new System.Windows.Forms.TextBox();
+            this.txtReNum = new System.Windows.Forms.TextBox();
             this.DateTime = new System.Windows.Forms.DateTimePicker();
             this.label6 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -60,7 +60,7 @@
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.txtPersonName);
             this.groupBox1.Controls.Add(this.txtUnit);
-            this.groupBox1.Controls.Add(this.TxtReNum);
+            this.groupBox1.Controls.Add(this.txtReNum);
             this.groupBox1.Controls.Add(this.DateTime);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label10);
@@ -117,15 +117,15 @@
             this.txtUnit.Text = "无锡三峰";
             this.txtUnit.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // TxtReNum
+            // txtReNum
             // 
-            this.TxtReNum.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.TxtReNum.Location = new System.Drawing.Point(84, 141);
-            this.TxtReNum.Name = "TxtReNum";
-            this.TxtReNum.Size = new System.Drawing.Size(225, 26);
-            this.TxtReNum.TabIndex = 2;
-            this.TxtReNum.Text = "1";
-            this.TxtReNum.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtReNum.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtReNum.Location = new System.Drawing.Point(84, 141);
+            this.txtReNum.Name = "txtReNum";
+            this.txtReNum.Size = new System.Drawing.Size(225, 26);
+            this.txtReNum.TabIndex = 2;
+            this.txtReNum.Text = "1";
+            this.txtReNum.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // DateTime
             // 
@@ -342,7 +342,7 @@
         private System.Windows.Forms.Label label9;
         public System.Windows.Forms.TextBox txtPersonName;
         public System.Windows.Forms.TextBox txtUnit;
-        public System.Windows.Forms.TextBox TxtReNum;
+        public System.Windows.Forms.TextBox txtReNum;
         public System.Windows.Forms.DateTimePicker DateTime;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label10;

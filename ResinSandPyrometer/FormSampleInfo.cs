@@ -28,7 +28,8 @@ namespace ResinSandPyrometer
             this.txtMat.Text = Setting.SpecimenName;
             this.txtInnerDiameter.Text = Setting.InnerDiameter.ToString();
             this.txtSpecimenDiameter.Text = Setting.SpecimenDiameter.ToString();
-            this.txtSpecimenHeight.Text = Setting.SpecimenHeight.ToString();                                                                                                                                         
+            this.txtSpecimenHeight.Text = Setting.SpecimenHeight.ToString();
+            this.txtReNum.Text = Setting.RepeatTimes.ToString();
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -49,7 +50,7 @@ namespace ResinSandPyrometer
                                                      this.txtInnerDiameter.Text,
                                                      this.txtSpecimenDiameter.Text,
                                                      this.txtSpecimenHeight.Text,
-                                                     this.TxtReNum.Text);
+                                                     this.txtReNum.Text);
 
             this.DialogResult = DialogResult.OK;
         }

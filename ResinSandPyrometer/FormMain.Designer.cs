@@ -30,22 +30,22 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend10 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title10 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea9 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend9 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title9 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea11 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend11 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series11 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title11 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea12 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend12 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series12 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title12 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title3 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title4 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tlblPort_Slave = new System.Windows.Forms.ToolStripStatusLabel();
@@ -896,34 +896,34 @@
             // 
             // chartPressure
             // 
-            chartArea10.AxisX.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Lines;
-            chartArea10.AxisX.Title = "时间（s）";
-            chartArea10.AxisY.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Lines;
-            chartArea10.AxisY.Title = "抗压强度（KPa）";
-            chartArea10.Name = "ChartArea1";
-            this.chartPressure.ChartAreas.Add(chartArea10);
+            chartArea1.AxisX.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Lines;
+            chartArea1.AxisX.Title = "时间（× 0.2 秒）";
+            chartArea1.AxisY.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Lines;
+            chartArea1.AxisY.Title = "抗压强度（KPa）";
+            chartArea1.Name = "ChartArea1";
+            this.chartPressure.ChartAreas.Add(chartArea1);
             this.chartPressure.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend10.Name = "Legend1";
-            this.chartPressure.Legends.Add(legend10);
+            legend1.Name = "Legend1";
+            this.chartPressure.Legends.Add(legend1);
             this.chartPressure.Location = new System.Drawing.Point(0, 0);
             this.chartPressure.Margin = new System.Windows.Forms.Padding(2);
             this.chartPressure.Name = "chartPressure";
-            series10.BorderWidth = 3;
-            series10.ChartArea = "ChartArea1";
-            series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series10.Color = System.Drawing.Color.Red;
-            series10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            series10.Legend = "Legend1";
-            series10.MarkerColor = System.Drawing.Color.Red;
-            series10.Name = "抗压强度";
-            this.chartPressure.Series.Add(series10);
+            series1.BorderWidth = 3;
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Color = System.Drawing.Color.Red;
+            series1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            series1.Legend = "Legend1";
+            series1.MarkerColor = System.Drawing.Color.Red;
+            series1.Name = "抗压强度";
+            this.chartPressure.Series.Add(series1);
             this.chartPressure.Size = new System.Drawing.Size(744, 403);
             this.chartPressure.TabIndex = 0;
             this.chartPressure.Text = "chart1";
-            title10.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            title10.Name = "Title1";
-            title10.Text = "抗压强度-时间";
-            this.chartPressure.Titles.Add(title10);
+            title1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            title1.Name = "Title1";
+            title1.Text = "抗压强度-时间";
+            this.chartPressure.Titles.Add(title1);
             // 
             // tabPage2
             // 
@@ -1064,34 +1064,34 @@
             // 
             // chartPengZhang
             // 
-            chartArea9.AxisX.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Lines;
-            chartArea9.AxisX.Title = "时间（s）";
-            chartArea9.AxisY.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Lines;
-            chartArea9.AxisY.Title = "膨胀力（N）";
-            chartArea9.Name = "ChartArea1";
-            this.chartPengZhang.ChartAreas.Add(chartArea9);
+            chartArea2.AxisX.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Lines;
+            chartArea2.AxisX.Title = "时间（× 0.2 秒）";
+            chartArea2.AxisY.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Lines;
+            chartArea2.AxisY.Title = "膨胀力（N）";
+            chartArea2.Name = "ChartArea1";
+            this.chartPengZhang.ChartAreas.Add(chartArea2);
             this.chartPengZhang.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend9.Name = "Legend1";
-            this.chartPengZhang.Legends.Add(legend9);
+            legend2.Name = "Legend1";
+            this.chartPengZhang.Legends.Add(legend2);
             this.chartPengZhang.Location = new System.Drawing.Point(0, 0);
             this.chartPengZhang.Margin = new System.Windows.Forms.Padding(2);
             this.chartPengZhang.Name = "chartPengZhang";
-            series9.BorderWidth = 3;
-            series9.ChartArea = "ChartArea1";
-            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series9.Color = System.Drawing.Color.Red;
-            series9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            series9.Legend = "Legend1";
-            series9.MarkerColor = System.Drawing.Color.Red;
-            series9.Name = "膨胀力";
-            this.chartPengZhang.Series.Add(series9);
+            series2.BorderWidth = 3;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Color = System.Drawing.Color.Red;
+            series2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            series2.Legend = "Legend1";
+            series2.MarkerColor = System.Drawing.Color.Red;
+            series2.Name = "膨胀力";
+            this.chartPengZhang.Series.Add(series2);
             this.chartPengZhang.Size = new System.Drawing.Size(744, 403);
             this.chartPengZhang.TabIndex = 0;
             this.chartPengZhang.Text = "chart1";
-            title9.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            title9.Name = "Title1";
-            title9.Text = "膨胀力-时间";
-            this.chartPengZhang.Titles.Add(title9);
+            title2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            title2.Name = "Title1";
+            title2.Text = "膨胀力-时间";
+            this.chartPengZhang.Titles.Add(title2);
             // 
             // tabPage3
             // 
@@ -1197,34 +1197,34 @@
             // 
             // chartBalancePress
             // 
-            chartArea11.AxisX.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Lines;
-            chartArea11.AxisX.Title = "时间（s）";
-            chartArea11.AxisY.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Lines;
-            chartArea11.AxisY.Title = "预载荷值（MPa）";
-            chartArea11.Name = "ChartArea1";
-            this.chartBalancePress.ChartAreas.Add(chartArea11);
+            chartArea3.AxisX.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Lines;
+            chartArea3.AxisX.Title = "时间（s）";
+            chartArea3.AxisY.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Lines;
+            chartArea3.AxisY.Title = "预载荷值（MPa）";
+            chartArea3.Name = "ChartArea1";
+            this.chartBalancePress.ChartAreas.Add(chartArea3);
             this.chartBalancePress.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend11.Name = "Legend1";
-            this.chartBalancePress.Legends.Add(legend11);
+            legend3.Name = "Legend1";
+            this.chartBalancePress.Legends.Add(legend3);
             this.chartBalancePress.Location = new System.Drawing.Point(0, 0);
             this.chartBalancePress.Margin = new System.Windows.Forms.Padding(2);
             this.chartBalancePress.Name = "chartBalancePress";
-            series11.BorderWidth = 3;
-            series11.ChartArea = "ChartArea1";
-            series11.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series11.Color = System.Drawing.Color.Red;
-            series11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            series11.Legend = "Legend1";
-            series11.MarkerColor = System.Drawing.Color.Red;
-            series11.Name = "载荷值";
-            this.chartBalancePress.Series.Add(series11);
+            series3.BorderWidth = 3;
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series3.Color = System.Drawing.Color.Red;
+            series3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            series3.Legend = "Legend1";
+            series3.MarkerColor = System.Drawing.Color.Red;
+            series3.Name = "载荷值";
+            this.chartBalancePress.Series.Add(series3);
             this.chartBalancePress.Size = new System.Drawing.Size(744, 403);
             this.chartBalancePress.TabIndex = 0;
             this.chartBalancePress.Text = "chart1";
-            title11.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            title11.Name = "Title1";
-            title11.Text = "预载荷值-时间";
-            this.chartBalancePress.Titles.Add(title11);
+            title3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            title3.Name = "Title1";
+            title3.Text = "预载荷值-时间";
+            this.chartBalancePress.Titles.Add(title3);
             // 
             // tabPage4
             // 
@@ -1329,34 +1329,34 @@
             // 
             // chartExpansionRate
             // 
-            chartArea12.AxisX.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Lines;
-            chartArea12.AxisX.Title = "时间（s）";
-            chartArea12.AxisY.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Lines;
-            chartArea12.AxisY.Title = "膨胀率（%）";
-            chartArea12.Name = "ChartArea1";
-            this.chartExpansionRate.ChartAreas.Add(chartArea12);
+            chartArea4.AxisX.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Lines;
+            chartArea4.AxisX.Title = "时间（× 0.2 秒）";
+            chartArea4.AxisY.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Lines;
+            chartArea4.AxisY.Title = "膨胀率（%）";
+            chartArea4.Name = "ChartArea1";
+            this.chartExpansionRate.ChartAreas.Add(chartArea4);
             this.chartExpansionRate.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend12.Name = "Legend1";
-            this.chartExpansionRate.Legends.Add(legend12);
+            legend4.Name = "Legend1";
+            this.chartExpansionRate.Legends.Add(legend4);
             this.chartExpansionRate.Location = new System.Drawing.Point(0, 0);
             this.chartExpansionRate.Margin = new System.Windows.Forms.Padding(2);
             this.chartExpansionRate.Name = "chartExpansionRate";
-            series12.BorderWidth = 3;
-            series12.ChartArea = "ChartArea1";
-            series12.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series12.Color = System.Drawing.Color.Red;
-            series12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            series12.Legend = "Legend1";
-            series12.MarkerColor = System.Drawing.Color.Red;
-            series12.Name = "膨胀率";
-            this.chartExpansionRate.Series.Add(series12);
+            series4.BorderWidth = 3;
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series4.Color = System.Drawing.Color.Red;
+            series4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            series4.Legend = "Legend1";
+            series4.MarkerColor = System.Drawing.Color.Red;
+            series4.Name = "膨胀率";
+            this.chartExpansionRate.Series.Add(series4);
             this.chartExpansionRate.Size = new System.Drawing.Size(748, 407);
             this.chartExpansionRate.TabIndex = 1;
             this.chartExpansionRate.Text = "chart1";
-            title12.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            title12.Name = "Title1";
-            title12.Text = "膨胀率-时间";
-            this.chartExpansionRate.Titles.Add(title12);
+            title4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            title4.Name = "Title1";
+            title4.Text = "膨胀率-时间";
+            this.chartExpansionRate.Titles.Add(title4);
             // 
             // panel4
             // 
