@@ -112,7 +112,11 @@ namespace ResinSandPyrometer.Lab
             int sum = 0;
             #region 2023-01-08
             //if (this.balancePressureSudChangeQueue.Count == 50)
-            if (this.balancePressureSudChangeQueue.Count == 10)
+            //if (this.balancePressureSudChangeQueue.Count == 10)
+            #endregion
+            #region 2023-03-27
+            //if (this.balancePressureSudChangeQueue.Count == 10)
+            if (this.balancePressureSudChangeQueue.Count == 50) //队列长度从10改回50
             #endregion
             {
                 float[] array = this.balancePressureSudChangeQueue.ToArray();
@@ -120,7 +124,12 @@ namespace ResinSandPyrometer.Lab
                 {
                     #region 2023-01-08
                     //if (array[index] > setPress - 0.005f) sum++;
-                    if (array[index] > setPress * 0.8f) sum++;
+                    //if (array[index] > setPress * 0.8f) sum++;
+                    #endregion
+
+                    #region 2023-03-27
+                    //if (array[index] > setPress * 0.8f) sum++;
+                    if (array[index] > setPress * 0.7f) sum++;  //判断标准从0.8f改为0.7f
                     #endregion
                 }
 

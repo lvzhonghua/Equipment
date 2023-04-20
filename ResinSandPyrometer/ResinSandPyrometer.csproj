@@ -128,9 +128,10 @@
     <Compile Include="FormSampleInfo.Designer.cs">
       <DependentUpon>FormSampleInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Lab\LabResultHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Lab\ChartResult.cs" />
+    <Compile Include="Lab\LabResult.cs" />
     <Compile Include="Lab\GlobaState.cs" />
     <Compile Include="Lab\FourthLabState.cs" />
     <Compile Include="Lab\FirstLabState.cs" />

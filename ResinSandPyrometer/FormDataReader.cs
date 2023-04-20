@@ -17,25 +17,17 @@ namespace ResinSandPyrometer
 {
     public partial class FormDataReader : Form
     {
-        private int testCount = 0;
-        int pathCount = 0;
+        private int lineCount = 0;
+        private int pathCount = 0;
 
-        Font myBigFont = new Font(new FontFamily("宋体"), 16);
+        private Font myBigFont = new Font(new FontFamily("宋体"), 16);
 
-        Font myFont = new Font(new FontFamily("宋体"), 12);
+        private Font myFont = new Font(new FontFamily("宋体"), 12);
 
-        Pen myPen = new Pen(Brushes.Black);
-        string[] myString = new string[35];
-        int testType = 0;
-        //public string GetTypeStr()
-        //{
-        //    if (this.testType == 0)
-        //        return "高温抗压强度试验";
-        //    else if (this.testType == 1)
-        //        return "高温膨胀力试验";
-        //    else
-        //        return "条件热稳定性试验";
-        //}
+        private Pen myPen = new Pen(Brushes.Black);
+        private string[] myString = new string[35];
+        private int testType = 0;
+
 
         public FormDataReader()
         {
@@ -58,83 +50,67 @@ namespace ResinSandPyrometer
 
         private void btnOpen_Click(object sender, EventArgs e)
         {
-            string path = String.Empty;
-            OpenFileDialog opnDlg = new OpenFileDialog();
+            OpenFileDialog openDlg = new OpenFileDialog();
 
-            opnDlg.Filter = "文本格式|*.txt";
-            int count = 1;
+            openDlg.Filter = "文本格式|*.txt";
 
-            DialogResult dlgResult = opnDlg.ShowDialog();
+            DialogResult dlgResult = openDlg.ShowDialog();
+            
             if (dlgResult != DialogResult.OK) return;
 
+            string path = openDlg.FileName;
 
-            path = opnDlg.FileName;
+            string folder = Path.GetDirectoryName(path);
+            string shortFileName = Path.GetFileName(path);
+            string samePart = shortFileName.Substring(0, shortFileName.LastIndexOf("-"));
 
-            path = path.Substring(0, path.LastIndexOf("."));
+            this.pathCount = 0;
 
+            string[] fileNames = Directory.GetFiles(folder, "*.txt");
+            
+            List<LabResult> chartResults = new List<LabResult>();
 
-
-            if (path.Substring(path.Length - 1) != "1")
+            foreach (string fileName in fileNames)
             {
-                MessageBox.Show("请选中第一个文件");
-                return;
-            }
-            this.pathCount = 1;
+                if(fileName.Contains(samePart) == false) continue;
 
-            path = path.Substring(0, path.Length - 1);
+                this.pathCount++;
 
-
-            for (int i = 2; i < 6; i++)
-            {
-
-                string path1 = path + i + ".txt";
-                if (File.Exists(path1))
-                {
-
-                    this.pathCount = i;
-
-
-                }
-                else
-                {
-                    break;
-                }
-            }
-            List<ChartResult> chartResults = new List<ChartResult>();
-
-
-
-            for (int i = 1; i < pathCount + 1; i++)
-            {
-                ChartResult cr = new ChartResult(path, i);
-                chartResults.Add(cr);
+                LabResult chartResult = new LabResult(fileName);
+                chartResults.Add(chartResult);
             }
 
+            chartResults.Sort(new PathComparer());
 
-            this.chart.Series[0].Points.Clear();
-            this.chart.Series[1].Points.Clear();
-            this.chart.Series[2].Points.Clear();
+            //this.chart.Series[0].Points.Clear();
+            //this.chart.Series[1].Points.Clear();
+            //this.chart.Series[2].Points.Clear();
+
             this.infoListBox.Items.Clear();
-            #region 打开文件
-            foreach (ChartResult cr in chartResults)
+
+            foreach (LabResult chartResult in chartResults)
             {
-                StreamReader sr = new StreamReader(cr.Path, Encoding.UTF8);
+                StreamReader streamReader = new StreamReader(chartResult.Path, Encoding.UTF8);
+
+                shortFileName = Path.GetFileName(chartResult.Path);
+                string fileSort = shortFileName.Substring(shortFileName.LastIndexOf("-") + 1, (shortFileName.LastIndexOf(".") - shortFileName.LastIndexOf("-") - 1));
+
                 string strLine = null;
                 string str = null;
                 float xPos = 0;
                 float yPos = 0;
-                this.testCount = 0;
-                #region 打开第一次试验
-                if (count == 1)
+                this.lineCount = 0;
+
+                if (fileSort == "1")    //第一个文件
                 {
-                    while ((strLine = sr.ReadLine()) != null)
+                    while ((strLine = streamReader.ReadLine()) != null)
                     {
                         if (strLine.Contains("Info"))
                         {
                             strLine = strLine.Substring(4);
                             this.infoListBox.Items.Add(strLine);
 
-                            switch (testCount)
+                            switch (this.lineCount)
                             {
                                 case 0:
                                     strLine = strLine.Substring(5);
@@ -146,7 +122,7 @@ namespace ResinSandPyrometer
                                         testType = 2;
                                     else
                                         testType = 3;
-                                    this.myString[testCount] = strLine;
+                                    this.myString[lineCount] = strLine;
                                     break;
                                 case 1:
                                 case 2:
@@ -157,28 +133,28 @@ namespace ResinSandPyrometer
                                 case 7:
                                 case 8:
                                     strLine = strLine.Substring(5);
-                                    this.myString[testCount] = strLine;
+                                    this.myString[lineCount] = strLine;
                                     break;
                                 case 9:
                                     strLine = strLine.Substring(5);
                                     switch (this.testType)
                                     {
                                         case 0:
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 3));
-                                            this.myString[testCount] = cr.ResultValue.ToString();
+                                            chartResult.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 3));
+                                            this.myString[lineCount] = chartResult.ResultValue.ToString();
                                             break;
                                         case 1:
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                            this.myString[testCount] = cr.ResultValue.ToString();
+                                            chartResult.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                            this.myString[lineCount] = chartResult.ResultValue.ToString();
                                             break;
                                         case 2:
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                            this.myString[testCount] = cr.ResultValue.ToString();
+                                            chartResult.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                            this.myString[lineCount] = chartResult.ResultValue.ToString();
                                             break;
                                         case 3:
                                             strLine = strLine.Substring(1);
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                            this.myString[testCount] = cr.ResultValue.ToString();
+                                            chartResult.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                            this.myString[lineCount] = chartResult.ResultValue.ToString();
                                             break;
                                     }
                                     break;
@@ -188,14 +164,14 @@ namespace ResinSandPyrometer
                                     {
                                         case 0:
                                         case 1:
-                                            this.myString[testCount] = strLine.Substring(0, strLine.Length - 1);
+                                            this.myString[lineCount] = strLine.Substring(0, strLine.Length - 1);
                                             break;
                                         case 2:
-                                            this.myString[testCount] = strLine.Substring(0, strLine.Length - 3);
+                                            this.myString[lineCount] = strLine.Substring(0, strLine.Length - 3);
                                             break;
                                         case 3:
                                             strLine = strLine.Substring(3);
-                                            this.myString[testCount] = strLine.Substring(0, strLine.Length - 1);
+                                            this.myString[lineCount] = strLine.Substring(0, strLine.Length - 1);
                                             break;
                                     }
                                     break;
@@ -205,7 +181,7 @@ namespace ResinSandPyrometer
                                     {
                                         case 0:
                                         case 1:
-                                            this.myString[testCount] = strLine.Substring(0, strLine.Length - 1);
+                                            this.myString[lineCount] = strLine.Substring(0, strLine.Length - 1);
                                             break;
                                         case 2:
                                         case 3:
@@ -213,7 +189,7 @@ namespace ResinSandPyrometer
                                     }
                                     break;
                             }
-                            this.testCount++;
+                            this.lineCount++;
                         }
                         else if (strLine.Contains("X"))
                         {
@@ -222,27 +198,21 @@ namespace ResinSandPyrometer
                             str = strLine.Substring(strLine.IndexOf("Y") + 1);
                             yPos = Convert.ToSingle(str);
                             PointF point = new PointF(xPos, yPos);
-                            cr.LinePoints.Add(point);
-                            //this.chart.Series[0].Points.AddXY(xPos, yPos);
+                            chartResult.LinePoints.Add(point);
                         }
-                        else { }
-
-
                     }
-                    count++;
-
                 }
-                #endregion
-                else if (count == 2)
+                else
                 {
-                    while ((strLine = sr.ReadLine()) != null)
+                    this.infoListBox.Items.Add("\r\n");
+
+                    while ((strLine = streamReader.ReadLine()) != null)
                     {
                         if (strLine.Contains("Info"))
                         {
                             strLine = strLine.Substring(4);
-                            switch (testCount)
+                            switch (lineCount)
                             {
-
                                 case 0:
                                     strLine = strLine.Substring(5);
                                     if (strLine == "高温抗压强度试验")
@@ -276,21 +246,21 @@ namespace ResinSandPyrometer
                                     switch (this.testType)
                                     {
                                         case 0:
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 3));
-                                            this.myString[13] = cr.ResultValue.ToString();
+                                            chartResult.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 3));
+                                            this.myString[13] = chartResult.ResultValue.ToString();
                                             break;
                                         case 1:
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                            this.myString[13] = cr.ResultValue.ToString();
+                                            chartResult.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                            this.myString[13] = chartResult.ResultValue.ToString();
                                             break;
                                         case 2:
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                            this.myString[12] = cr.ResultValue.ToString();
+                                            chartResult.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                            this.myString[12] = chartResult.ResultValue.ToString();
                                             break;
                                         case 3:
                                             strLine = strLine.Substring(1);
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                            this.myString[12] = cr.ResultValue.ToString();
+                                            chartResult.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
+                                            this.myString[12] = chartResult.ResultValue.ToString();
                                             break;
                                     }
                                     break;
@@ -327,7 +297,7 @@ namespace ResinSandPyrometer
                                     }
                                     break;
                             }
-                            this.testCount++;
+                            this.lineCount++;
                         }
                         else if (strLine.Contains("X"))
                         {
@@ -336,397 +306,55 @@ namespace ResinSandPyrometer
                             str = strLine.Substring(strLine.IndexOf("Y") + 1);
                             yPos = Convert.ToSingle(str);
                             PointF point = new PointF(xPos, yPos);
-                            cr.LinePoints.Add(point);
+                            chartResult.LinePoints.Add(point);
 
                         }
-                        else { }
-
                     }
-                    count++;
                 }
-                else if (count == 3)
-                {
-                    while ((strLine = sr.ReadLine()) != null)
-                    {
-                        if (strLine.Contains("Info"))
-                        {
-                            strLine = strLine.Substring(4);
-                            switch (testCount)
-                            {
-
-                                case 0:
-                                    strLine = strLine.Substring(5);
-                                    if (strLine == "高温抗压强度试验")
-                                        testType = 0;
-                                    else if (strLine == "高温膨胀力试验")
-                                        testType = 1;
-                                    else if (strLine == "耐高温时间试验")
-                                        testType = 2;
-                                    else
-                                        testType = 3;
-                                    break;
-                                case 8:
-                                    this.infoListBox.Items.Add(strLine);
-                                    strLine = strLine.Substring(5);
-                                    switch (this.testType)
-                                    {
-                                        case 0:
-                                        case 1:
-                                            this.myString[16] = strLine;
-                                            break;
-                                        case 2:
-                                        case 3:
-                                            this.myString[14] = strLine;
-                                            break;
-                                    }
-
-                                    break;
-                                case 9:
-                                    this.infoListBox.Items.Add(strLine);
-                                    strLine = strLine.Substring(5);
-                                    switch (this.testType)
-                                    {
-                                        case 0:
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 3));
-                                            this.myString[17] = cr.ResultValue.ToString();
-                                            break;
-                                        case 1:
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                            this.myString[17] = cr.ResultValue.ToString();
-                                            break;
-                                        case 2:
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                            this.myString[15] = cr.ResultValue.ToString();
-                                            break;
-                                        case 3:
-                                            strLine = strLine.Substring(1);
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                            this.myString[15] = cr.ResultValue.ToString();
-                                            break;
-                                    }
-                                    break;
-                                case 10:
-                                    this.infoListBox.Items.Add(strLine);
-                                    strLine = strLine.Substring(5);
-                                    switch (this.testType)
-                                    {
-                                        case 0:
-                                        case 1:
-                                            this.myString[18] = strLine.Substring(0, strLine.Length - 1);
-                                            break;
-                                        case 2:
-                                            this.myString[16] = strLine.Substring(0, strLine.Length - 3);
-                                            break;
-                                        case 3:
-                                            strLine = strLine.Substring(3);
-                                            this.myString[16] = strLine.Substring(0, strLine.Length - 1);
-                                            break;
-                                    }
-
-                                    break;
-                                case 11:
-                                    this.infoListBox.Items.Add(strLine);
-                                    strLine = strLine.Substring(5);
-                                    switch (this.testType)
-                                    {
-                                        case 0:
-                                        case 1:
-                                            this.myString[19] = strLine.Substring(0, strLine.Length - 1);
-                                            break;
-                                        case 2:
-                                        case 3:
-                                            break;
-                                    }
-                                    break;
-                            }
-                            this.testCount++;
-                        }
-                        else if (strLine.Contains("X"))
-                        {
-                            str = strLine.Substring(1, strLine.IndexOf(",") - 1);
-                            xPos = Convert.ToSingle(str);
-                            str = strLine.Substring(strLine.IndexOf("Y") + 1);
-                            yPos = Convert.ToSingle(str);
-                            PointF point = new PointF(xPos, yPos);
-                            cr.LinePoints.Add(point);
-
-                        }
-                        else { }
-
-                    }
-                    count++;
-                }
-
-                else if (count == 4)
-                {
-                    while ((strLine = sr.ReadLine()) != null)
-                    {
-                        if (strLine.Contains("Info"))
-                        {
-                            strLine = strLine.Substring(4);
-                            switch (testCount)
-                            {
-
-                                case 0:
-                                    strLine = strLine.Substring(5);
-                                    if (strLine == "高温抗压强度试验")
-                                        testType = 0;
-                                    else if (strLine == "高温膨胀力试验")
-                                        testType = 1;
-                                    else if (strLine == "耐高温时间试验")
-                                        testType = 2;
-                                    else
-                                        testType = 3;
-                                    break;
-                                case 8:
-                                    this.infoListBox.Items.Add(strLine);
-                                    strLine = strLine.Substring(5);
-                                    switch (this.testType)
-                                    {
-                                        case 0:
-                                        case 1:
-                                            this.myString[20] = strLine;
-                                            break;
-                                        case 2:
-                                        case 3:
-                                            this.myString[17] = strLine;
-                                            break;
-                                    }
-                                    break;
-                                case 9:
-                                    this.infoListBox.Items.Add(strLine);
-                                    strLine = strLine.Substring(5);
-                                    switch (this.testType)
-                                    {
-                                        case 0:
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 3));
-                                            this.myString[21] = cr.ResultValue.ToString();
-                                            break;
-                                        case 1:
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                            this.myString[21] = cr.ResultValue.ToString();
-                                            break;
-                                        case 2:
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                            this.myString[18] = cr.ResultValue.ToString();
-                                            break;
-                                        case 3:
-                                            strLine = strLine.Substring(1);
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                            this.myString[18] = cr.ResultValue.ToString();
-                                            break;
-                                    }
-
-                                    break;
-                                case 10:
-                                    this.infoListBox.Items.Add(strLine);
-                                    strLine = strLine.Substring(5);
-                                    switch (this.testType)
-                                    {
-                                        case 0:
-                                        case 1:
-                                            this.myString[22] = strLine.Substring(0, strLine.Length - 1);
-                                            break;
-                                        case 2:
-                                            this.myString[19] = strLine.Substring(0, strLine.Length - 3);
-                                            break;
-                                        case 3:
-                                            strLine = strLine.Substring(3);
-                                            this.myString[19] = strLine.Substring(0, strLine.Length - 1);
-                                            break;
-                                    }
-
-                                    break;
-                                case 11:
-                                    this.infoListBox.Items.Add(strLine);
-                                    strLine = strLine.Substring(5);
-                                    switch (this.testType)
-                                    {
-                                        case 0:
-                                        case 1:
-                                            this.myString[23] = strLine.Substring(0, strLine.Length - 1);
-                                            break;
-                                        case 2:
-                                        case 3:
-                                            break;
-                                    }
-                                    break;
-                            }
-                            this.testCount++;
-                        }
-                        else if (strLine.Contains("X"))
-                        {
-                            str = strLine.Substring(1, strLine.IndexOf(",") - 1);
-                            xPos = Convert.ToSingle(str);
-                            str = strLine.Substring(strLine.IndexOf("Y") + 1);
-                            yPos = Convert.ToSingle(str);
-                            PointF point = new PointF(xPos, yPos);
-                            cr.LinePoints.Add(point);
-
-                        }
-                        else { }
-
-                    }
-                    count++;
-                }
-                else if (count == 5)
-                {
-                    while ((strLine = sr.ReadLine()) != null)
-                    {
-                        if (strLine.Contains("Info"))
-                        {
-                            strLine = strLine.Substring(4);
-                            switch (testCount)
-                            {
-
-                                case 0:
-                                    this.infoListBox.Items.Add(strLine);
-                                    strLine = strLine.Substring(5);
-                                    if (strLine == "高温抗压强度试验")
-                                        testType = 0;
-                                    else if (strLine == "高温膨胀力试验")
-                                        testType = 1;
-                                    else if (strLine == "耐高温时间试验")
-                                        testType = 2;
-                                    else
-                                        testType = 3;
-
-                                    break;
-                                case 8:
-                                    this.infoListBox.Items.Add(strLine);
-                                    strLine = strLine.Substring(5);
-                                    switch (this.testType)
-                                    {
-                                        case 0:
-                                        case 1:
-                                            this.myString[24] = strLine;
-                                            break;
-                                        case 2:
-                                        case 3:
-                                            this.myString[20] = strLine;
-                                            break;
-                                    }
-                                    if (this.testType != 2)
-                                    {
-                                        this.myString[24] = strLine;
-                                    }
-                                    else
-                                        this.myString[20] = strLine;
-                                    break;
-                                case 9:
-                                    this.infoListBox.Items.Add(strLine);
-                                    strLine = strLine.Substring(5);
-                                    switch (this.testType)
-                                    {
-                                        case 0:
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 3));
-                                            this.myString[25] = cr.ResultValue.ToString();
-                                            break;
-                                        case 1:
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                            this.myString[25] = cr.ResultValue.ToString();
-                                            break;
-                                        case 2:
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                            this.myString[21] = cr.ResultValue.ToString();
-                                            break;
-                                        case 3:
-                                            strLine = strLine.Substring(1);
-                                            cr.ResultValue = Convert.ToSingle(strLine.Substring(0, strLine.Length - 1));
-                                            this.myString[21] = cr.ResultValue.ToString();
-                                            break;
-                                    }
-
-                                    break;
-                                case 10:
-                                    this.infoListBox.Items.Add(strLine);
-                                    strLine = strLine.Substring(5);
-                                    switch (this.testType)
-                                    {
-                                        case 0:
-                                        case 1:
-                                            this.myString[26] = strLine.Substring(0, strLine.Length - 1);
-                                            break;
-                                        case 2:
-                                            this.myString[22] = strLine.Substring(0, strLine.Length - 3);
-                                            break;
-                                        case 3:
-                                            strLine = strLine.Substring(3);
-                                            this.myString[22] = strLine.Substring(0, strLine.Length - 1);
-                                            break;
-                                    }
-
-                                    break;
-                                case 11:
-                                    this.infoListBox.Items.Add(strLine);
-                                    strLine = strLine.Substring(5);
-                                    switch (this.testType)
-                                    {
-                                        case 0:
-                                        case 1:
-                                            this.myString[27] = strLine.Substring(0, strLine.Length - 1);
-                                            break;
-                                        case 2:
-                                        case 3:
-                                            break;
-                                    }
-                                    break;
-                            }
-                            this.testCount++;
-                        }
-                        else if (strLine.Contains("X"))
-                        {
-                            str = strLine.Substring(1, strLine.IndexOf(",") - 1);
-                            xPos = Convert.ToSingle(str);
-                            str = strLine.Substring(strLine.IndexOf("Y") + 1);
-                            yPos = Convert.ToSingle(str);
-                            PointF point = new PointF(xPos, yPos);
-                            cr.LinePoints.Add(point);
-
-                        }
-                        else { }
-
-                    }
-                    count++;
-                }
-                sr.Close();
+                streamReader.Close();
             }
-            #endregion
 
             float sum = 0;
             float avg = 0;
 
             List<float> results = new List<float>();
 
-            foreach (ChartResult cr in chartResults)
+            foreach (LabResult chartResult in chartResults)
             {
-                sum += cr.ResultValue;
+                sum += chartResult.ResultValue;
                 //this.infoListBox.Items.Add(cr.resultValue);
-                results.Add(cr.ResultValue);
+                results.Add(chartResult.ResultValue);
             }
             results.Sort();
-            if (pathCount == 1)
+
+            for (int index = 1; index <= this.pathCount; index++)
             {
-
-                foreach (ChartResult cr in chartResults)
+                if (index == 1)
                 {
-                    if (cr.ResultValue == results[0])
+                    foreach (LabResult cr in chartResults)
                     {
-                        foreach (PointF point in cr.LinePoints)
+                        if (cr.ResultValue == results[0])
                         {
-                            this.chart.Series[0].Points.AddXY(point.X, point.Y);
-
+                            foreach (PointF point in cr.LinePoints)
+                            {
+                                this.chart.Series[0].Points.AddXY(point.X, point.Y);
+                            }
                         }
                     }
-
-
+                    continue;
                 }
 
 
+
+            }
+
+            if (pathCount == 1)
+            {
+
+                
             }
             else if (pathCount == 2)
             {
-
                 avg = sum / chartResults.Count;
 
                 switch (this.testType)
@@ -749,7 +377,7 @@ namespace ResinSandPyrometer
                         break;
                 }
 
-                foreach (ChartResult cr in chartResults)
+                foreach (LabResult cr in chartResults)
                 {
                     if (cr.ResultValue == results[0])
                     {
@@ -794,7 +422,7 @@ namespace ResinSandPyrometer
                         break;
                 }
 
-                foreach (ChartResult cr in chartResults)
+                foreach (LabResult cr in chartResults)
                 {
                     if (cr.ResultValue == results[0])
                     {
@@ -846,7 +474,7 @@ namespace ResinSandPyrometer
                         break;
                 }
 
-                foreach (ChartResult cr in chartResults)
+                foreach (LabResult cr in chartResults)
                 {
                     if (cr.ResultValue == results[1])
                     {
@@ -893,12 +521,7 @@ namespace ResinSandPyrometer
                         this.infoListBox.Items.Add("平均值：" + avg + "%");
                         break;
                 }
-                //this.btnPrint.Text = avg.ToString();
-
-                //this.btnOpen.Text = results[2].ToString();
-
-
-                foreach (ChartResult cr in chartResults)
+                foreach (LabResult cr in chartResults)
                 {
                     if (cr.ResultValue == results[1])
                     {
@@ -923,9 +546,7 @@ namespace ResinSandPyrometer
                         }
 
                     }
-
                 }
-
             }
 
             this.chart.Titles.Clear();
@@ -1136,7 +757,6 @@ namespace ResinSandPyrometer
                         e.Graphics.DrawLine(this.myPen, 414, 190, 414, 430);
                         e.Graphics.DrawLine(this.myPen, 599, 190, 599, 430);
 
-
                         e.Graphics.DrawString(this.myString[13], this.myFont, Brushes.Black, 235, 290);
 
                         e.Graphics.DrawString(this.myString[14], this.myFont, Brushes.Black, 420, 290);
@@ -1245,7 +865,6 @@ namespace ResinSandPyrometer
                         e.Graphics.DrawLine(this.myPen, 414, 190, 414, 350);
                         e.Graphics.DrawLine(this.myPen, 599, 190, 599, 350);
 
-
                         e.Graphics.DrawString(this.myString[13], this.myFont, Brushes.Black, 235, 290);
 
                         e.Graphics.DrawString(this.myString[14], this.myFont, Brushes.Black, 420, 290);
@@ -1282,7 +901,6 @@ namespace ResinSandPyrometer
                         e.Graphics.DrawLine(this.myPen, 229, 190, 229, 390);
                         e.Graphics.DrawLine(this.myPen, 414, 190, 414, 390);
                         e.Graphics.DrawLine(this.myPen, 599, 190, 599, 390);
-
 
                         e.Graphics.DrawString(this.myString[13], this.myFont, Brushes.Black, 235, 290);
 
@@ -1755,6 +1373,5 @@ namespace ResinSandPyrometer
 
         }
 
-        
     }
 }
