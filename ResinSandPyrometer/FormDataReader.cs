@@ -593,8 +593,7 @@ namespace ResinSandPyrometer
         {
             this.myPrintPreDoc.Document = this.myPrintDoc;
             DialogResult result = this.myPrintPreDoc.ShowDialog();
-            if (result == DialogResult.OK)
-                this.myPrintDoc.Print();
+            if (result == DialogResult.OK) this.myPrintDoc.Print();
         }
 
         private void myPrintDoc_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
@@ -616,17 +615,14 @@ namespace ResinSandPyrometer
             e.Graphics.DrawLine(this.myPen, 44, 190, 784, 190);
             e.Graphics.DrawLine(this.myPen, 44, 230, 784, 230);
 
-
             e.Graphics.DrawString("试样名称:", this.myFont, Brushes.Black, 51, 74);
             e.Graphics.DrawString(this.myString[4], this.myFont, Brushes.Black, 125, 74);
-
 
             e.Graphics.DrawString("试样编号:", this.myFont, Brushes.Black, 251, 74);
             e.Graphics.DrawString(this.myString[3], this.myFont, Brushes.Black, 330, 74);
 
             e.Graphics.DrawString("测试温度:", this.myFont, Brushes.Black, 451, 74);
             e.Graphics.DrawString(this.myString[6], this.myFont, Brushes.Black, 525, 74);
-
 
             e.Graphics.DrawString("来样单位:", this.myFont, Brushes.Black, 591, 74);
             e.Graphics.DrawString(this.myString[7], this.myFont, Brushes.Black, 680, 74);
@@ -1083,7 +1079,6 @@ namespace ResinSandPyrometer
                         e.Graphics.DrawLine(this.myPen, 520, 190, 520, 390);
                         //e.Graphics.DrawLine(this.myPen, 599, 190, 599, 390);
 
-
                         e.Graphics.DrawString(this.myString[12], this.myFont, Brushes.Black, 260, 290);
 
                         e.Graphics.DrawString(this.myString[13], this.myFont, Brushes.Black, 550, 290);
@@ -1114,7 +1109,6 @@ namespace ResinSandPyrometer
                         e.Graphics.DrawLine(this.myPen, 230, 190, 230, 430);
                         e.Graphics.DrawLine(this.myPen, 520, 190, 520, 430);
                         //e.Graphics.DrawLine(this.myPen, 599, 190, 599, 430);
-
 
                         e.Graphics.DrawString(this.myString[12], this.myFont, Brushes.Black, 260, 290);
 
@@ -1191,9 +1185,9 @@ namespace ResinSandPyrometer
                     break;
                 case 3:
                     e.Graphics.DrawString("高温急热膨胀率实验", this.myFont, Brushes.Black, 200, 160);
-                    e.Graphics.DrawString("最大时间(S)", this.myFont, Brushes.Black, 260, 210);
+                    e.Graphics.DrawString("最大膨胀率(%)", this.myFont, Brushes.Black, 260, 210);
                     e.Graphics.DrawString(this.myString[9], this.myFont, Brushes.Black, 260, 250);
-                    e.Graphics.DrawString("最大膨胀率(%)", this.myFont, Brushes.Black, 550, 210);
+                    e.Graphics.DrawString("最大时间(S)", this.myFont, Brushes.Black, 550, 210);
                     e.Graphics.DrawString(this.myString[10], this.myFont, Brushes.Black, 550, 250);
                     if (this.pathCount == 1)
                     {
