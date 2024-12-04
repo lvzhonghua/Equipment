@@ -1110,9 +1110,16 @@ namespace GET3G_PC
             {
                 int targetTemprature = int.Parse(this.txtCustom.Text);
 
-                if (targetTemprature > 1050)
+                //if (targetTemprature > 1050)
+                //{
+                //    MessageBox.Show("目标温度不能超过摄氏1050度", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                //    this.txtCustom.Focus();
+                //    return;
+                //}
+
+                if (targetTemprature > 1200)
                 {
-                    MessageBox.Show("目标温度不能超过摄氏1050度", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show("目标温度不能超过摄氏1200度", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     this.txtCustom.Focus();
                     return;
                 }

@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace ResinSandPyrometer.Lab
 {
-    public class LabResult
+    internal class LabResult
     {
         /// <summary>
         /// 实验类型
         /// </summary>
-        public string LabType { get; set; }
+        public LabType Type { get; set; }
 
         /// <summary>
         /// 实验人员
@@ -69,23 +69,39 @@ namespace ResinSandPyrometer.Lab
         /// </summary>
         public float HoldingTime { get; set; }
 
-        public string Path { get; set; }
+        /// <summary>
+        /// 预载荷值
+        /// </summary>
+        public float PreloadValue { get; set; }
+
+        /// <summary>
+        /// 设定强度
+        /// </summary>
+        public float PresetIntensity { get; set; }
+
+        /// <summary>
+        /// 最终结果值
+        /// </summary>
+        public float ResultValue { get; set; } = 0f;
+        
+        /// <summary>
+        /// 实验结果文件
+        /// </summary>
+        public string FileName { get; set; }
 
         public List<PointF> LinePoints { get; set; } = new List<PointF>();
 
-        public float ResultValue { get; set; } = 0f;
-
         public LabResult(string fileName)
         {
-            this.Path = fileName;
+            this.FileName = fileName;
         }
     }
 
-    public class PathComparer : IComparer<LabResult>
+    internal class PathComparer : IComparer<LabResult>
     {
         public int Compare(LabResult x, LabResult y)
         {
-            return x.Path.CompareTo(y.Path);
+            return x.FileName.CompareTo(y.FileName);
         }
     }
 }

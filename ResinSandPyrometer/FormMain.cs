@@ -1193,15 +1193,15 @@ namespace ResinSandPyrometer
             float currentTemperature = float.Parse(this.lblCurrentTemperature.Text);
             float settingTemperature = Setting.SettingTemperature;
 
-            if (currentTemperature <= settingTemperature * 0.95f || currentTemperature >= settingTemperature * 1.05f)
-            {
-                DialogResult dlgResult = MessageBox.Show("当前炉温测量值不在设定炉温的范围内（上下5%的浮动），确定要开始实验吗？",
-                                                                              "询问",
-                                                                              MessageBoxButtons.YesNo,
-                                                                              MessageBoxIcon.Question);
+            //if (currentTemperature <= settingTemperature * 0.95f || currentTemperature >= settingTemperature * 1.05f)
+            //{
+            //    DialogResult dlgResult = MessageBox.Show("当前炉温测量值不在设定炉温的范围内（上下5%的浮动），确定要开始实验吗？",
+            //                                                                  "询问",
+            //                                                                  MessageBoxButtons.YesNo,
+            //                                                                  MessageBoxIcon.Question);
 
-                if (dlgResult == DialogResult.No) return;
-            }
+            //    if (dlgResult == DialogResult.No) return;
+            //}
 
             Command command = CommandGenerator.Generate_BeginTest();
             CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);
@@ -1656,6 +1656,12 @@ namespace ResinSandPyrometer
             {
                 SampleLoggerOnTextFile.Log($"位移传感器写入故障：{ex.Message}");
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FormDataReader_Old frmDataReader = new FormDataReader_Old();
+            frmDataReader.ShowDialog();
         }
     }
 }
