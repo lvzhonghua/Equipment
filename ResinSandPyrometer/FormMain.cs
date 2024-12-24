@@ -459,7 +459,10 @@ namespace ResinSandPyrometer
                         this.chartExpansionRate.Series[0].Points.AddY(point.Y);//将点添加到膨胀率--时间曲线中去
                     }));
 
-                    if (this.globaState.FouthLabState.IsDisplacementSudChange)//抗压强度值是否突变
+                    #region 2024-12-24 添加一个时间超长后，自动结束试验的条件
+                    //if (this.globaState.FouthLabState.IsDisplacementSudChange)//抗压强度值是否突变
+                    if (this.globaState.FouthLabState.IsDisplacementSudChange || Setting.Points.Count >= 180)//抗压强度值是否突变
+                    #endregion
                     {
                         command = CommandGenerator.Generate_EndTest();
                         CommandExecutor.Send(SerialPortManager.SerialPort_Slave, command);

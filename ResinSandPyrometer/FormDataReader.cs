@@ -59,6 +59,36 @@ namespace ResinSandPyrometer
             this.ShowLabResults(this.labResults);
         }
 
+        private float GetAverageValue(List<LabResult> labResults)
+        {
+            float average = 0;
+            float sum = 0;
+            float maxValue = float.MinValue;
+            float minValue = float.MaxValue;
+
+            for (int index = 0; index < labResults.Count; index++)
+            {
+                sum += labResults[index].Value;
+                if (maxValue < labResults[index].Value) maxValue = labResults[index].Value;
+                if (minValue > labResults[index].Value) minValue = labResults[index].Value;
+            }
+
+            if (labResults.Count == 0)
+            {
+                average = 0;
+            }
+            else if (labResults.Count <= 2)
+            {
+                average = sum / labResults.Count;
+            }
+            else if(labResults.Count > 2)
+            {
+                average = (sum - maxValue - minValue) / (labResults.Count - 2);
+            }
+
+            return average;
+        }
+
         private void ListLabResults(List<LabResult> labResults)
         {
             this.lstData.Items.Clear();
@@ -75,7 +105,6 @@ namespace ResinSandPyrometer
             this.lstData.Items.Add($"来样单位：{resultOfFirst.Factory}");
             this.lstData.Items.Add("  ");
 
-            this.averageValue = 0;
             for (int index = 0; index < labResults.Count; index++)
             {
                 this.lstData.Items.Add($"实验编号：{labResults[index].RepeatNumber}");
@@ -106,12 +135,10 @@ namespace ResinSandPyrometer
                         break;
                 }
 
-                this.averageValue += labResults[index].Value;
-
                 this.lstData.Items.Add("  ");
             }
 
-            this.averageValue = this.averageValue / labResults.Count;
+            this.averageValue = this.GetAverageValue(labResults);
 
             switch (resultOfFirst.Type)
             {
@@ -443,7 +470,13 @@ namespace ResinSandPyrometer
             for (int columnIndex = 1; columnIndex < 4; columnIndex++)
             {
                 PointF a = new PointF(xOffset + gridWidth * columnIndex, yOffset);
+
                 PointF b = new PointF(xOffset + gridWidth * columnIndex, yOffset + rowHeight * (this.labResults.Count + 2));
+                if (columnIndex == 2)
+                {
+                    b = new PointF(xOffset + gridWidth * columnIndex, yOffset + rowHeight * (this.labResults.Count + 1));
+                }
+               
                 graphics.DrawLine(Pens.Gray, a, b);
             }
 
@@ -513,13 +546,21 @@ namespace ResinSandPyrometer
             rectOfAverageValue_Label.Width = gridWidth;
             rectOfAverageValue_Label.Height = rowHeight;
             graphics.DrawString("平均值：", this.fontOfBold, Brushes.Black, rectOfAverageValue_Label, stringFormat);
-
+            
             RectangleF rectOfAverageValue = new RectangleF();
             rectOfAverageValue.X = rectOfAverageValue_Label.Right;
             rectOfAverageValue.Y = yOffset + rowHeight * (this.labResults.Count + 1);
-            rectOfAverageValue.Width = gridWidth;
+            rectOfAverageValue.Width = gridWidth * 2;
             rectOfAverageValue.Height = rowHeight;
-            graphics.DrawString($"{this.averageValue}", this.fontOfBold, Brushes.Black, rectOfAverageValue, stringFormat);
+
+            if (this.labResults.Count < 3)
+            {
+                graphics.DrawString($"{this.averageValue}", this.fontOfBold, Brushes.Black, rectOfAverageValue, stringFormat);
+            }
+            else
+            {
+                graphics.DrawString($"{this.averageValue} （去掉最大最小值后求平均）", this.fontOfBold, Brushes.Black, rectOfAverageValue, stringFormat);
+            }
         }
 
         private void printDoc_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
